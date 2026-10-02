@@ -1,6 +1,6 @@
 import { TestBed } from '@angular/core/testing';
 
-import { CustomizerSettingsService } from './customizer-settings.service';
+import { CustomizerSettingsService } from '../../../../core/util/customizer-settings.service';
 
 describe('CustomizerSettingsService', () => {
     let service: CustomizerSettingsService;

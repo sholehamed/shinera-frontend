@@ -1,11 +1,12 @@
- <div    class="signup-main" style="margin-top: 100px;">
+ <div class="signup-main" dir="rtl">
         <section class="intro">
-           
+
             <h1>کسب‌وکارت را بساز، پلنت را انتخاب کن و شروع کن.</h1>
             <p>
                 اطلاعات لازم را در چند مرحله کوتاه وارد کن. قبل از پرداخت می‌توانی همه‌چیز را
                 دوباره بررسی و اصلاح کنی.
             </p>
+            <p>فعلاً می‌توانید پلن‌ها را بررسی کنید. ثبت‌نام و پرداخت آنلاین هنوز فعال نیست و اطلاعات فرم ارسال یا ذخیره نمی‌شود.</p>
         </section>
 
         <div class="checkout-grid">
@@ -60,26 +61,35 @@
                                                 (click)="setBillingCycle('yearly')"
                                             >
                                                 سالانه
-                                                <small>مقرون‌به‌صرفه‌تر</small>
+
                                             </button>
                                         </div>
                                     </div>
 
+                                    @if (plansLoading()) {
+                                        <p role="status">در حال دریافت پلن‌ها...</p>
+                                    } @else if (plansError()) {
+                                        <div role="alert" class="catalog-state">
+                                            <p>دریافت پلن‌ها انجام نشد. دوباره تلاش کنید.</p>
+                                            <button type="button" mat-button (click)="loadPlans()">تلاش دوباره</button>
+                                        </div>
+                                    } @else if (plans().length === 0) {
+                                        <p role="status">در حال حاضر پلنی برای ثبت‌نام ارائه نشده است.</p>
+                                    }
+                                    @if (selectionError()) { <p role="alert">{{ selectionError() }}</p> }
                                     <div class="plans-grid">
-                                        @for (plan of plans; track plan.key) {
+                                        @for (plan of plans(); track plan.key) {
                                             <button
                                                 type="button"
                                                 class="plan-card"
+                                                [disabled]="priceFor(plan) === null"
+                                                [attr.aria-pressed]="selectedPlan?.key === plan.key"
                                                 [class.selected]="
                                                     form.controls.subscription.controls.planKey.value ===
                                                     plan.key
                                                 "
                                                 (click)="selectPlan(plan)"
                                             >
-                                                @if (plan.badge) {
-                                                    <span class="plan-badge">{{ plan.badge }}</span>
-                                                }
-
                                                 <div class="plan-check">
                                                     <span class="material-symbols-outlined">
                                                         {{
@@ -92,26 +102,22 @@
                                                 </div>
 
                                                 <h3>{{ plan.title }}</h3>
-                                                <p>{{ plan.subtitle }}</p>
+                                                <p>{{ plan.description }}</p>
 
                                                 <div class="price">
                                                     <strong>
                                                         {{
-                                                            formatMoney(
-                                                                billingCycle === 'yearly'
-                                                                    ? plan.yearlyPrice
-                                                                    : plan.monthlyPrice
-                                                            )
+                                                            formatMoney(priceFor(plan))
                                                         }}
                                                     </strong>
-                                                    <span>تومان / {{ billingCycle === 'yearly' ? 'سال' : 'ماه' }}</span>
+                                                    <span>ریال / {{ billingCycle === 'yearly' ? 'سال' : 'ماه' }}</span>
                                                 </div>
 
                                                 <ul>
-                                                    @for (feature of plan.features; track feature) {
+                                                    @for (feature of plan.features; track feature.code) {
                                                         <li>
                                                             <span class="material-symbols-outlined">check</span>
-                                                            {{ feature }}
+                                                            {{ feature.name }}
                                                         </li>
                                                     }
                                                 </ul>
@@ -119,17 +125,7 @@
                                         }
                                     </div>
 
-                                    <div class="inline-field">
-                                        <mat-form-field appearance="outline">
-                                            <mat-label>کد تخفیف</mat-label>
-                                            <input
-                                                matInput
-                                                formControlName="promoCode"
-                                                placeholder="مثلاً SHINERA1405"
-                                            />
-                                            <span matSuffix class="material-symbols-outlined">sell</span>
-                                        </mat-form-field>
-                                    </div>
+
                                 </section>
                             }
 
@@ -239,8 +235,7 @@
                                         <div>
                                             <strong>نکته امنیتی</strong>
                                             <p>
-                                                رمز عبور نباید در RegistrationDraft به‌صورت متن خام ذخیره شود.
-                                                سمت سرور آن را همان لحظه هش کن یا بعد از پرداخت لینک تنظیم رمز بده.
+                                                برای حساب خود یک رمز عبور قوی و منحصربه‌فرد انتخاب کنید.
                                             </p>
                                         </div>
                                     </div>
@@ -254,8 +249,7 @@
                                             <span class="section-kicker">کسب‌وکار و فضای کاری</span>
                                             <h2>اطلاعاتی که هویت فضای کاری را می‌سازد</h2>
                                             <p>
-                                                در رابط کاربری از واژه Tenant استفاده نمی‌کنیم؛ کاربر فقط
-                                                «فضای کاری» و «کسب‌وکار» را می‌بیند.
+                                                اطلاعات کسب‌وکار و نشانی فضای کاری خود را وارد کنید.
                                             </p>
                                         </div>
                                     </div>
@@ -342,7 +336,7 @@
                                             <span class="material-symbols-outlined">domain</span>
                                             <div>
                                                 <h3>فضای کاری Shinera</h3>
-                                                <p>این بخش مستقیماً به Tenant تبدیل می‌شود.</p>
+                                                <p>نشانی اختصاصی فضای کاری خود را انتخاب کنید.</p>
                                             </div>
                                         </div>
 
@@ -437,8 +431,7 @@
                                             <span class="section-kicker">تأیید نهایی</span>
                                             <h2>قبل از پرداخت، سفارش را مرور کن</h2>
                                             <p>
-                                                ایجاد Tenant، کاربر مالک، BusinessProfile، شعبه و Subscription
-                                                باید بعد از تأیید قطعی پرداخت در Backend انجام شود.
+                                                اطلاعات کسب‌وکار و پلن انتخابی خود را بررسی کنید.
                                             </p>
                                         </div>
                                     </div>
@@ -450,7 +443,7 @@
                                             </div>
                                             <div>
                                                 <span>پلن</span>
-                                                <strong>{{ selectedPlan.title }}</strong>
+                                                <strong>{{ selectedPlan?.title ?? 'پلنی انتخاب نشده است' }}</strong>
                                                 <small>
                                                     {{
                                                         billingCycle === 'yearly'
@@ -500,7 +493,7 @@
                                                 <span class="section-kicker">مبلغ قابل پرداخت</span>
                                                 <h3>
                                                     {{ formatMoney(selectedPrice) }}
-                                                    <small>تومان</small>
+                                                    <small>ریال</small>
                                                 </h3>
                                             </div>
 
@@ -529,19 +522,7 @@
                                             </p>
                                         }
 
-                                        @if (mockCheckoutId()) {
-                                            <div class="mock-success">
-                                                <span class="material-symbols-outlined">check_circle</span>
-                                                <div>
-                                                    <strong>Checkout ماک ساخته شد.</strong>
-                                                    <small>ID: {{ mockCheckoutId() }}</small>
-                                                    <p>
-                                                        Payload در Console ثبت شده است. وقتی Backend آماده شد،
-                                                        useMock را false کن.
-                                                    </p>
-                                                </div>
-                                            </div>
-                                        }
+                                        <p role="status">ثبت‌نام و پرداخت آنلاین هنوز فعال نشده است. اطلاعات این فرم ارسال یا ذخیره نمی‌شود.</p>
                                     </div>
                                 </section>
                             }
@@ -565,6 +546,7 @@
                                 mat-flat-button
                                 type="button"
                                 class="primary-action"
+                                [disabled]="plansLoading() || plansError() || selectedPrice === null"
                                 (click)="next()"
                             >
                                 ادامه
@@ -575,7 +557,7 @@
                                 mat-flat-button
                                 type="submit"
                                 class="primary-action payment-action"
-                                [disabled]="submitting()"
+                                [disabled]="submitting() || !checkoutEnabled || selectedPrice === null"
                             >
                                 @if (submitting()) {
                                     در حال ساخت سفارش...
@@ -602,13 +584,11 @@
                     <div class="selected-plan">
                         <div>
                             <span>پلن انتخابی</span>
-                            <h3>{{ selectedPlan.title }}</h3>
-                            <p>{{ selectedPlan.subtitle }}</p>
+                            <h3>{{ selectedPlan?.title ?? 'پلنی انتخاب نشده است' }}</h3>
+                            <p>{{ selectedPlan?.description }}</p>
                         </div>
 
-                        @if (selectedPlan.badge) {
-                            <span class="mini-badge">{{ selectedPlan.badge }}</span>
-                        }
+
                     </div>
 
                     <div class="summary-lines">
@@ -617,22 +597,14 @@
                             <strong>{{ billingCycle === 'yearly' ? 'سالانه' : 'ماهانه' }}</strong>
                         </div>
 
-                        <div>
-                            <span>تعداد شعبه در پلن</span>
-                            <strong>تا {{ selectedPlan.branchLimit }} شعبه</strong>
-                        </div>
 
-                        <div>
-                            <span>مالیات</span>
-                            <strong>در Backend محاسبه شود</strong>
-                        </div>
                     </div>
 
                     <div class="summary-total">
                         <span>مبلغ اشتراک</span>
                         <div>
                             <strong>{{ formatMoney(selectedPrice) }}</strong>
-                            <small>تومان</small>
+                            <small>ریال</small>
                         </div>
                     </div>
 
