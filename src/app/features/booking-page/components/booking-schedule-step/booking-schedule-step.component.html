@@ -1,0 +1,188 @@
+<div class="schedule-step">
+
+  <!-- Dates -->
+  <section class="date-section">
+
+    <div class="section-title">
+
+      <div>
+        <span class="material-symbols-outlined">
+          calendar_month
+        </span>
+
+        <div>
+          <strong>
+            انتخاب تاریخ
+          </strong>
+
+          <span>
+            روز موردنظر خود را انتخاب کنید
+          </span>
+        </div>
+      </div>
+
+    </div>
+
+
+    <div class="date-list">
+
+      @for (date of dates; track date.value) {
+
+        <button
+          type="button"
+          class="date-card"
+          [class.selected]="selectedDate?.value === date.value"
+          (click)="selectDate(date)"
+        >
+
+          <span class="day-name">
+            {{ date.dayName }}
+          </span>
+
+          <strong class="day-number">
+            {{ date.dayNumber }}
+          </strong>
+
+          <span class="month-name">
+            {{ date.monthName }}
+          </span>
+
+        </button>
+
+      }
+
+    </div>
+
+  </section>
+
+
+  <!-- Slots -->
+  <section class="slot-section">
+
+    <div class="section-title">
+
+      <div>
+        <span class="material-symbols-outlined">
+          schedule
+        </span>
+
+        <div>
+          <strong>
+            انتخاب ساعت
+          </strong>
+
+          <span>
+            زمان مناسب خود را انتخاب کنید
+          </span>
+        </div>
+      </div>
+
+    </div>
+
+
+    @if (availableSlots.length) {
+
+      <div class="slot-grid">
+
+        @for (slot of availableSlots; track slot.id) {
+
+          <button
+            type="button"
+            class="slot-button"
+            [class.selected]="selectedSlot?.id === slot.id"
+            (click)="selectSlot(slot)"
+          >
+
+            {{ slot.time }}
+
+            @if (selectedSlot?.id === slot.id) {
+
+              <span class="material-symbols-outlined">
+                check
+              </span>
+
+            }
+
+          </button>
+
+        }
+
+      </div>
+
+    } @else {
+
+      <div class="empty-slots">
+
+        <span class="material-symbols-outlined">
+          event_busy
+        </span>
+
+        <strong>
+          زمانی برای این روز موجود نیست
+        </strong>
+
+        <span>
+          لطفاً روز دیگری را انتخاب کنید.
+        </span>
+
+      </div>
+
+    }
+
+  </section>
+
+
+  <!-- Summary -->
+  @if (selectedDate && selectedSlot) {
+
+    <div class="selection-summary">
+
+      <div class="summary-icon">
+
+        <span class="material-symbols-outlined">
+          event_available
+        </span>
+
+      </div>
+
+      <div class="summary-content">
+
+        <span>
+          زمان انتخاب‌شده
+        </span>
+
+        <strong>
+          {{ selectedDate.dayName }}
+          {{ selectedDate.dayNumber }}
+          {{ selectedDate.monthName }}
+          — {{ selectedSlot.time }}
+        </strong>
+
+      </div>
+
+    </div>
+
+  }
+
+
+  <!-- Actions -->
+  <div class="schedule-actions">
+
+    <button
+      type="button"
+      class="continue-button"
+      [disabled]="!selectedDate || !selectedSlot"
+      (click)="continue()"
+    >
+
+      ادامه
+
+      <span class="material-symbols-outlined">
+        arrow_back
+      </span>
+
+    </button>
+
+  </div>
+
+</div>

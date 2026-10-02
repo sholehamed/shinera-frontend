@@ -1,0 +1,519 @@
+.profile-hero {
+    --hero-primary: var(--primaryColor);
+    --hero-primary-hover: var(--primaryHoverColor);
+
+    --hero-heading: var(--headingColor);
+    --hero-text: var(--bodyColor);
+    --hero-muted: var(--mutedColor);
+
+    --hero-bg: var(--bodyBgColor);
+    --hero-card-bg: var(--cardBgColor);
+    --hero-surface: var(--surfaceColor);
+    --hero-border: var(--borderColor);
+
+    --hero-shadow: rgba(0, 0, 0, .10);
+
+    position: relative;
+    overflow: hidden;
+
+    background: var(--hero-bg);
+
+    direction: rtl;
+
+
+    /* --------------------------------
+       Cover
+    -------------------------------- */
+
+    .hero-cover {
+        position: relative;
+
+        width: 100%;
+        height: 300px;
+
+        overflow: hidden;
+
+        background:
+            linear-gradient(
+                135deg,
+                color-mix(
+                    in srgb,
+                    var(--hero-primary) 25%,
+                    var(--hero-surface)
+                ),
+                var(--hero-surface)
+            );
+
+        img {
+            width: 100%;
+            height: 100%;
+
+            display: block;
+
+            object-fit: cover;
+        }
+
+        .hero-overlay {
+            position: absolute;
+
+            inset: 0;
+
+            background:
+                linear-gradient(
+                    180deg,
+                    rgba(0, 0, 0, .05) 0%,
+                    rgba(0, 0, 0, .12) 45%,
+                    rgba(0, 0, 0, .42) 100%
+                );
+        }
+    }
+
+
+    /* --------------------------------
+       Content
+    -------------------------------- */
+
+    .hero-content {
+        position: relative;
+
+        max-width: 1000px;
+
+        margin: -85px auto 0;
+
+        padding: 0 45px 45px;
+
+        z-index: 2;
+    }
+
+
+    /* --------------------------------
+       Profile Header
+    -------------------------------- */
+
+    .profile-header {
+        display: flex;
+
+        align-items: flex-end;
+
+        gap: 25px;
+    }
+
+
+    .profile-avatar {
+        flex: 0 0 auto;
+
+        width: 150px;
+        height: 150px;
+
+        padding: 5px;
+
+        border-radius: 28px;
+
+        background: var(--hero-card-bg);
+
+        box-shadow:
+            0 15px 35px var(--hero-shadow);
+
+        img {
+            width: 100%;
+            height: 100%;
+
+            display: block;
+
+            object-fit: cover;
+
+            border-radius: 23px;
+        }
+    }
+
+
+    /* --------------------------------
+       Profile Info
+    -------------------------------- */
+
+    .profile-info {
+        padding-bottom: 8px;
+
+        .profile-category {
+            display: flex;
+
+            align-items: center;
+
+            gap: 7px;
+
+            margin-bottom: 8px;
+
+            color: var(--hero-primary);
+
+            font-size: 13px;
+            font-weight: 600;
+
+            .status-dot {
+                width: 7px;
+                height: 7px;
+
+                display: inline-block;
+
+                border-radius: 50%;
+
+                background: var(--successColor);
+            }
+        }
+
+        h1 {
+            margin: 0 0 7px;
+
+            color: var(--hero-heading);
+
+            font-size: 32px;
+            font-weight: 750;
+
+            line-height: 1.3;
+        }
+
+        .tagline {
+            margin: 0;
+
+            color: var(--hero-text);
+
+            font-size: 15px;
+
+            line-height: 1.8;
+        }
+
+        .location {
+            display: flex;
+
+            align-items: center;
+
+            gap: 5px;
+
+            margin-top: 10px;
+
+            color: var(--hero-muted);
+
+            font-size: 13px;
+
+            .material-symbols-outlined {
+                font-size: 18px;
+                color: var(--hero-primary);
+            }
+        }
+    }
+
+
+    /* --------------------------------
+       Description
+    -------------------------------- */
+
+    .description {
+        max-width: 760px;
+
+        margin: 30px 0 0;
+
+        color: var(--hero-text);
+
+        font-size: 14px;
+
+        line-height: 2;
+    }
+
+
+    /* --------------------------------
+       Actions
+    -------------------------------- */
+
+    .hero-actions {
+        display: flex;
+
+        align-items: center;
+
+        gap: 12px;
+
+        margin-top: 25px;
+
+        .booking-button,
+        .contact-button {
+            min-width: 145px;
+            height: 48px;
+
+            padding: 0 22px !important;
+
+            display: inline-flex !important;
+
+            align-items: center !important;
+            justify-content: center !important;
+
+            gap: 8px;
+
+            border-radius: 12px !important;
+
+            font-size: 14px !important;
+            font-weight: 600 !important;
+
+            .material-symbols-outlined {
+                font-size: 19px;
+
+                line-height: 1;
+            }
+        }
+
+        .booking-button {
+            color: var(--whiteColor) !important;
+
+            background: var(--hero-primary) !important;
+
+            box-shadow:
+                0 8px 20px
+                color-mix(
+                    in srgb,
+                    var(--hero-primary) 20%,
+                    transparent
+                );
+
+            &:hover {
+                background: var(--hero-primary-hover) !important;
+            }
+        }
+
+        .contact-button {
+            border-color: var(--hero-border) !important;
+
+            color: var(--hero-heading) !important;
+
+            background: var(--hero-card-bg) !important;
+
+            &:hover {
+                border-color: var(--hero-primary) !important;
+
+                color: var(--hero-primary) !important;
+            }
+        }
+    }
+
+
+    /* --------------------------------
+       Meta
+    -------------------------------- */
+
+    .hero-meta {
+        display: flex;
+
+        align-items: center;
+
+        gap: 30px;
+
+        margin-top: 32px;
+
+        padding-top: 25px;
+
+        border-top: 1px solid var(--hero-border);
+
+        .meta-item {
+            display: flex;
+
+            align-items: center;
+
+            gap: 10px;
+
+            .meta-icon {
+                width: 38px;
+                height: 38px;
+
+                display: inline-flex;
+
+                align-items: center;
+                justify-content: center;
+
+                border-radius: 11px;
+
+                color: var(--hero-primary);
+
+                background:
+                    color-mix(
+                        in srgb,
+                        var(--hero-primary) 9%,
+                        var(--hero-card-bg)
+                    );
+
+                .material-symbols-outlined {
+                    font-size: 19px;
+                }
+            }
+
+            div {
+                display: flex;
+
+                flex-direction: column;
+
+                gap: 2px;
+            }
+
+            strong {
+                color: var(--hero-heading);
+
+                font-size: 13px;
+                font-weight: 600;
+            }
+
+            span {
+                color: var(--hero-muted);
+
+                font-size: 12px;
+            }
+        }
+    }
+}
+
+
+/* --------------------------------
+   Material
+-------------------------------- */
+
+::ng-deep {
+
+    .profile-hero {
+
+        .mat-mdc-button-base {
+            font-family: inherit;
+        }
+
+        .mat-mdc-button {
+
+            .mdc-button__label {
+                display: inline-flex;
+
+                align-items: center;
+                justify-content: center;
+
+                flex-direction: row;
+
+                gap: 8px;
+            }
+        }
+    }
+}
+
+
+/* --------------------------------
+   Mobile
+-------------------------------- */
+
+@media only screen and (max-width: 767px) {
+
+    .profile-hero {
+
+        .hero-cover {
+            height: 220px;
+        }
+
+        .hero-content {
+            margin-top: -60px;
+
+            padding: 0 20px 30px;
+        }
+
+        .profile-header {
+            align-items: center;
+
+            flex-direction: column;
+
+            gap: 15px;
+
+            text-align: center;
+        }
+
+        .profile-avatar {
+            width: 115px;
+            height: 115px;
+
+            border-radius: 22px;
+
+            img {
+                border-radius: 17px;
+            }
+        }
+
+        .profile-info {
+            padding-bottom: 0;
+
+            .profile-category {
+                justify-content: center;
+            }
+
+            h1 {
+                font-size: 26px;
+            }
+
+            .tagline {
+                font-size: 14px;
+            }
+
+            .location {
+                justify-content: center;
+            }
+        }
+
+        .description {
+            margin-top: 22px;
+
+            text-align: center;
+
+            font-size: 13px;
+        }
+
+        .hero-actions {
+            margin-top: 22px;
+
+            flex-direction: column;
+
+            .booking-button,
+            .contact-button {
+                width: 100%;
+            }
+        }
+
+        .hero-meta {
+            justify-content: center;
+
+            gap: 20px;
+
+            margin-top: 25px;
+
+            .meta-item {
+                .meta-icon {
+                    width: 34px;
+                    height: 34px;
+                }
+            }
+        }
+    }
+}
+
+
+/* --------------------------------
+   Tablet
+-------------------------------- */
+
+@media only screen and (min-width: 768px) and (max-width: 991px) {
+
+    .profile-hero {
+
+        .hero-content {
+            padding-left: 30px;
+            padding-right: 30px;
+        }
+
+        .profile-avatar {
+            width: 130px;
+            height: 130px;
+        }
+
+        .profile-info {
+
+            h1 {
+                font-size: 29px;
+            }
+        }
+    }
+}

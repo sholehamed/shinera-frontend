@@ -1,0 +1,403 @@
+<mat-card
+    class="top-customers-card mb-25 border-radius d-block bg-white border-0 shadow-none"
+    [class.component-dark-theme]="themeService.isDarkTheme()"
+    [class.component-rtl-enabled]="themeService.isRTLEnabledTheme()"
+>
+
+    <mat-card-header>
+
+        <div class="header-content">
+
+            <div>
+
+                <span class="eyebrow">
+                    رفتار مشتریان
+                </span>
+
+                <mat-card-title>
+
+                    <h5 class="mb-0">
+                        مشتریان برتر
+                    </h5>
+
+                </mat-card-title>
+
+                <span class="subtitle">
+                    بر اساس ارزش خرید و تعداد مراجعه
+                </span>
+
+            </div>
+
+
+            <button
+                mat-button
+                [matMenuTriggerFor]="periodMenu"
+                class="period-button"
+            >
+
+                <span>
+                    {{ selectedPeriodLabel }}
+                </span>
+
+                <mat-icon>
+                    keyboard_arrow_down
+                </mat-icon>
+
+            </button>
+
+        </div>
+
+    </mat-card-header>
+
+
+    <mat-menu
+        #periodMenu="matMenu"
+        xPosition="before"
+    >
+
+        @for (
+            option of periodOptions;
+            track option.value
+        ) {
+
+            <button
+                mat-menu-item
+                (click)="onPeriodChange(option.value)"
+            >
+
+                {{ option.label }}
+
+            </button>
+
+        }
+
+    </mat-menu>
+
+
+    <mat-card-content>
+
+        <div class="table-wrapper">
+
+            <div class="table-responsive">
+
+                <table
+                    mat-table
+                    [dataSource]="dataSource"
+                >
+
+                    <!-- Customer -->
+
+                    <ng-container
+                        matColumnDef="customer"
+                    >
+
+                        <th
+                            mat-header-cell
+                            *matHeaderCellDef
+                        >
+                            مشتری
+                        </th>
+
+                        <td
+                            mat-cell
+                            *matCellDef="let customer"
+                        >
+
+                            <div class="customer-info">
+
+                                <img
+                                    [src]="customer.imageUrl"
+                                    [alt]="customer.name"
+                                >
+
+                                <div>
+
+                                    <strong>
+                                        {{ customer.name }}
+                                    </strong>
+
+                                    <span>
+                                        #{{ customer.id }}
+                                    </span>
+
+                                </div>
+
+                            </div>
+
+                        </td>
+
+                    </ng-container>
+
+
+                    <!-- Last Visit -->
+
+                    <ng-container
+                        matColumnDef="lastVisit"
+                    >
+
+                        <th
+                            mat-header-cell
+                            *matHeaderCellDef
+                        >
+                            آخرین مراجعه
+                        </th>
+
+                        <td
+                            mat-cell
+                            *matCellDef="let customer"
+                        >
+
+                            <span class="table-value">
+                                {{
+                                    formatLastVisit(
+                                        customer.lastVisitDate
+                                    )
+                                }}
+                            </span>
+
+                        </td>
+
+                    </ng-container>
+
+
+                    <!-- Preferred Service -->
+
+                    <ng-container
+                        matColumnDef="preferredService"
+                    >
+
+                        <th
+                            mat-header-cell
+                            *matHeaderCellDef
+                        >
+                            خدمت محبوب
+                        </th>
+
+                        <td
+                            mat-cell
+                            *matCellDef="let customer"
+                        >
+
+                            <span class="service-name">
+                                {{ customer.preferredService }}
+                            </span>
+
+                        </td>
+
+                    </ng-container>
+
+
+                    <!-- Visit Count -->
+
+                    <ng-container
+                        matColumnDef="visitCount"
+                    >
+
+                        <th
+                            mat-header-cell
+                            *matHeaderCellDef
+                        >
+                            مراجعات
+                        </th>
+
+                        <td
+                            mat-cell
+                            *matCellDef="let customer"
+                        >
+
+                            <strong class="visit-count">
+                                {{ customer.visitCount }}
+                            </strong>
+
+                            <span class="visit-label">
+                                بار
+                            </span>
+
+                        </td>
+
+                    </ng-container>
+
+
+                    <!-- Total Spent -->
+
+                    <ng-container
+                        matColumnDef="totalSpent"
+                    >
+
+                        <th
+                            mat-header-cell
+                            *matHeaderCellDef
+                        >
+                            مجموع هزینه
+                        </th>
+
+                        <td
+                            mat-cell
+                            *matCellDef="let customer"
+                        >
+
+                            <strong class="total-spent">
+                                {{
+                                    formatCurrency(
+                                        customer.totalSpent
+                                    )
+                                }}
+                            </strong>
+
+                            <span class="currency-label">
+                                تومان
+                            </span>
+
+                        </td>
+
+                    </ng-container>
+
+
+                    <!-- Segment -->
+
+                    <ng-container
+                        matColumnDef="segment"
+                    >
+
+                        <th
+                            mat-header-cell
+                            *matHeaderCellDef
+                        >
+                            وضعیت
+                        </th>
+
+                        <td
+                            mat-cell
+                            *matCellDef="let customer"
+                        >
+
+                            <span
+                                class="segment-badge"
+                                [class.vip]="customer.segment === 'vip'"
+                                [class.loyal]="customer.segment === 'loyal'"
+                                [class.regular]="customer.segment === 'regular'"
+                                [class.new]="customer.segment === 'new'"
+                                [class.at-risk]="customer.segment === 'at-risk'"
+                            >
+
+                                {{
+                                    getSegmentText(
+                                        customer.segment
+                                    )
+                                }}
+
+                            </span>
+
+                        </td>
+
+                    </ng-container>
+
+
+                    <!-- Action -->
+
+                    <ng-container
+                        matColumnDef="action"
+                    >
+
+                        <th
+                            mat-header-cell
+                            *matHeaderCellDef
+                        ></th>
+
+                        <td
+                            mat-cell
+                            *matCellDef="let customer"
+                        >
+
+                            <button
+                                mat-icon-button
+                                [matMenuTriggerFor]="customerMenu"
+                                class="action-button"
+                            >
+
+                                <mat-icon>
+                                    more_vert
+                                </mat-icon>
+
+                            </button>
+
+
+                            <mat-menu
+                                #customerMenu="matMenu"
+                                xPosition="before"
+                            >
+
+                                <button
+                                    mat-menu-item
+                                >
+
+                                    <mat-icon>
+                                        visibility
+                                    </mat-icon>
+
+                                    مشاهده پروفایل
+
+                                </button>
+
+
+                                <button
+                                    mat-menu-item
+                                >
+
+                                    <mat-icon>
+                                        event
+                                    </mat-icon>
+
+                                    ثبت نوبت
+
+                                </button>
+
+
+                                <button
+                                    mat-menu-item
+                                >
+
+                                    <mat-icon>
+                                        history
+                                    </mat-icon>
+
+                                    سوابق مراجعه
+
+                                </button>
+
+                            </mat-menu>
+
+                        </td>
+
+                    </ng-container>
+
+
+                    <tr
+                        mat-header-row
+                        *matHeaderRowDef="displayedColumns"
+                    ></tr>
+
+                    <tr
+                        mat-row
+                        *matRowDef="
+                            let row;
+                            columns: displayedColumns
+                        "
+                    ></tr>
+
+                </table>
+
+            </div>
+
+
+            <mat-paginator
+                [pageSize]="5"
+                [pageSizeOptions]="[5, 10, 20]"
+                showFirstLastButtons
+            />
+
+        </div>
+
+    </mat-card-content>
+
+</mat-card>

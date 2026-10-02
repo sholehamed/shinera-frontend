@@ -1,0 +1,343 @@
+:host {
+    display: block;
+    height: 100%;
+    padding-bottom: 30px;
+}
+
+.booking-sources-card {
+
+    height: 100%;
+
+    min-height: 315px;
+
+    overflow: hidden;
+
+    border:
+        1px solid var(--borderColor) !important;
+
+
+    .mat-mdc-card-header {
+
+        padding: 20px 22px 15px;
+
+        margin: 0;
+
+    }
+
+
+    .card-header-content {
+
+        width: 100%;
+
+        display: flex;
+
+        align-items: flex-start;
+
+        justify-content: space-between;
+
+        gap: 14px;
+
+    }
+
+
+    .eyebrow {
+
+        display: block;
+
+        margin-bottom: 4px;
+
+        color: var(--primaryColor);
+
+        font-size: 10px;
+
+        font-weight: 600;
+
+    }
+
+
+    .mat-mdc-card-title {
+
+        margin: 0;
+
+
+        h5 {
+
+            color: var(--blackColor);
+
+            font-size: 16px;
+
+            font-weight: 700;
+
+        }
+
+    }
+
+
+    .subtitle {
+
+        margin-top: 4px;
+
+        color: var(--bodyColor);
+
+        font-size: 10px;
+
+        line-height: 1.6;
+
+    }
+
+
+    .period {
+
+        flex-shrink: 0;
+
+        padding: 5px 8px;
+
+        border-radius: 8px;
+
+        color: var(--bodyColor);
+
+        background:
+            rgba(100, 116, 139, .07);
+
+        font-size: 9px;
+
+        white-space: nowrap;
+
+    }
+
+
+    .mat-mdc-card-content {
+
+        padding: 0 22px 18px;
+
+    }
+
+
+    .sources-list {
+
+        display: flex;
+
+        flex-direction: column;
+
+    }
+
+
+    .source-item {
+
+        padding: 11px 0;
+
+        border-bottom:
+            1px solid var(--borderColor);
+
+
+        &:last-child {
+            border-bottom: 0;
+        }
+
+    }
+
+
+    .source-main {
+
+        display: flex;
+
+        align-items: center;
+
+        gap: 10px;
+
+    }
+
+
+    .source-icon {
+
+        width: 34px;
+
+        height: 34px;
+
+        min-width: 34px;
+
+        display: flex;
+
+        align-items: center;
+
+        justify-content: center;
+
+        border-radius: 10px;
+
+        color: var(--primaryColor);
+
+        background:
+            rgba(96, 93, 255, .07);
+
+
+        mat-icon {
+
+            width: 17px;
+
+            height: 17px;
+
+            font-size: 17px;
+
+            line-height: 17px;
+
+        }
+
+    }
+
+
+    .source-info {
+
+        min-width: 0;
+
+        flex: 1;
+
+    }
+
+
+    .source-title-row {
+
+        display: flex;
+
+        align-items: center;
+
+        justify-content: space-between;
+
+        gap: 8px;
+
+
+        strong {
+
+            color: var(--blackColor);
+
+            font-size: 11px;
+
+            font-weight: 700;
+
+        }
+
+    }
+
+
+    .source-count {
+
+        color: var(--blackColor);
+
+        font-size: 11px;
+
+        font-weight: 700;
+
+    }
+
+
+    .source-subtitle {
+
+        display: block;
+
+        margin-top: 2px;
+
+        color: var(--bodyColor);
+
+        font-size: 8px;
+
+    }
+
+
+    .source-progress {
+
+        display: grid;
+
+        grid-template-columns:
+            minmax(0, 1fr) 30px;
+
+        align-items: center;
+
+        gap: 8px;
+
+        margin-top: 7px;
+
+
+        mat-progress-bar {
+
+            --mdc-linear-progress-active-indicator-height: 4px;
+            --mdc-linear-progress-track-height: 4px;
+
+            border-radius: 999px;
+
+            overflow: hidden;
+
+        }
+
+
+        span {
+
+            color: var(--bodyColor);
+
+            font-size: 9px;
+
+            text-align: end;
+
+        }
+
+    }
+
+
+    .card-footer {
+
+        display: flex;
+
+        align-items: center;
+
+        justify-content: space-between;
+
+        margin-top: 8px;
+
+        padding-top: 12px;
+
+        border-top:
+            1px solid var(--borderColor);
+
+
+        span {
+
+            color: var(--bodyColor);
+
+            font-size: 9px;
+
+        }
+
+
+        strong {
+
+            color: var(--blackColor);
+
+            font-size: 13px;
+
+            font-weight: 800;
+
+        }
+
+    }
+
+
+    &.component-dark-theme {
+
+        .mat-mdc-card-title h5,
+        .source-title-row strong,
+        .source-count,
+        .card-footer strong {
+
+            color: var(--whiteColor);
+
+        }
+
+
+        .source-icon {
+
+            background:
+                rgba(255, 255, 255, .05);
+
+        }
+
+    }
+
+}

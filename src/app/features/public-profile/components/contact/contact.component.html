@@ -1,0 +1,221 @@
+<section class="profile-contact" id="contact">
+
+    <div class="container">
+
+        <div class="contact-wrapper">
+
+            <!-- Contact Info -->
+
+            <div class="contact-info">
+
+                <span class="contact-eyebrow">
+                    ارتباط با ما
+                </span>
+
+                <h2>
+                    سوالی دارید؟
+                    <br />
+                    با ما در ارتباط باشید
+                </h2>
+
+                <p>
+                    برای دریافت اطلاعات بیشتر، هماهنگی یا پرسیدن سوالات
+                    خود می‌توانید از راه‌های ارتباطی زیر با ما در تماس باشید.
+                </p>
+
+
+                <div class="contact-methods">
+
+                    @if (contact.phone) {
+                        <a
+                            class="contact-method"
+                            [href]="'tel:' + contact.phone"
+                        >
+                            <span class="method-icon">
+                                <i class="material-symbols-outlined">
+                                    call
+                                </i>
+                            </span>
+
+                            <span class="method-content">
+                                <small>تلفن</small>
+                                <strong dir="ltr">
+                                    {{ contact.phone }}
+                                </strong>
+                            </span>
+                        </a>
+                    }
+
+
+                    @if (contact.mobile) {
+                        <a
+                            class="contact-method"
+                            [href]="'tel:' + contact.mobile"
+                        >
+                            <span class="method-icon">
+                                <i class="material-symbols-outlined">
+                                    phone_iphone
+                                </i>
+                            </span>
+
+                            <span class="method-content">
+                                <small>موبایل</small>
+                                <strong dir="ltr">
+                                    {{ contact.mobile }}
+                                </strong>
+                            </span>
+                        </a>
+                    }
+
+
+                    @if (contact.email) {
+                        <a
+                            class="contact-method"
+                            [href]="'mailto:' + contact.email"
+                        >
+                            <span class="method-icon">
+                                <i class="material-symbols-outlined">
+                                    mail
+                                </i>
+                            </span>
+
+                            <span class="method-content">
+                                <small>ایمیل</small>
+                                <strong>
+                                    {{ contact.email }}
+                                </strong>
+                            </span>
+                        </a>
+                    }
+
+                </div>
+
+
+                <div class="social-links">
+
+                    @if (contact.instagram) {
+                        <a
+                            [href]="contact.instagram"
+                            target="_blank"
+                            rel="noopener noreferrer"
+                            aria-label="Instagram"
+                        >
+                            <i class="material-symbols-outlined">
+                                photo_camera
+                            </i>
+                        </a>
+                    }
+
+                    @if (contact.whatsapp) {
+                        <a
+                            [href]="contact.whatsapp"
+                            target="_blank"
+                            rel="noopener noreferrer"
+                            aria-label="WhatsApp"
+                        >
+                            <i class="material-symbols-outlined">
+                                chat
+                            </i>
+                        </a>
+                    }
+
+                </div>
+
+            </div>
+
+
+            <!-- Contact Form -->
+
+            <div class="contact-form-card">
+
+                <div class="form-header">
+                    <h3>
+                        برای ما پیام بفرستید
+                    </h3>
+
+                    <p>
+                        اطلاعات خود را وارد کنید تا در اولین فرصت با شما
+                        ارتباط برقرار کنیم.
+                    </p>
+                </div>
+
+
+                <form (ngSubmit)="submit()">
+
+                    <div class="form-field">
+
+                        <label for="contact-name">
+                            نام و نام خانوادگی
+                        </label>
+
+                        <input
+                            id="contact-name"
+                            type="text"
+                            name="name"
+                            [(ngModel)]="name"
+                            placeholder="نام خود را وارد کنید"
+                            autocomplete="name"
+                        />
+
+                    </div>
+
+
+                    <div class="form-field">
+
+                        <label for="contact-phone">
+                            شماره تماس
+                        </label>
+
+                        <input
+                            id="contact-phone"
+                            type="tel"
+                            name="phone"
+                            [(ngModel)]="phone"
+                            placeholder="مثلاً 09121234567"
+                            dir="ltr"
+                            autocomplete="tel"
+                        />
+
+                    </div>
+
+
+                    <div class="form-field">
+
+                        <label for="contact-message">
+                            پیام
+                        </label>
+
+                        <textarea
+                            id="contact-message"
+                            name="message"
+                            [(ngModel)]="message"
+                            rows="5"
+                            placeholder="پیام خود را بنویسید..."
+                        ></textarea>
+
+                    </div>
+
+
+                    <button
+                        mat-flat-button
+                        type="submit"
+                        class="submit-button"
+                    >
+                        <span>
+                            ارسال پیام
+                        </span>
+
+                        <i class="material-symbols-outlined">
+                            arrow_back
+                        </i>
+                    </button>
+
+                </form>
+
+            </div>
+
+        </div>
+
+    </div>
+
+</section>

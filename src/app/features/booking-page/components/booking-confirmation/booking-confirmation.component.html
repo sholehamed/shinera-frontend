@@ -1,0 +1,327 @@
+<section class="confirmation-step">
+
+  <div class="step-header">
+    <span class="eyebrow">آخرین بررسی</span>
+
+    <h2>اطلاعات نوبتت را بررسی کن</h2>
+
+    <p>
+      قبل از ثبت نهایی، اطلاعات انتخاب‌شده را بررسی کن.
+    </p>
+  </div>
+
+
+  @if (booking) {
+
+    <div class="confirmation-layout">
+
+      <!-- Main -->
+      <div class="confirmation-card">
+
+        <!-- Service -->
+        <div class="summary-section">
+
+          <div class="section-title">
+            <span class="material-symbols-outlined">
+              spa
+            </span>
+
+            <div>
+              <h3>خدمت</h3>
+              <span>خدمت انتخاب‌شده</span>
+            </div>
+          </div>
+
+          <div class="summary-content">
+
+            <div class="summary-main">
+              <strong>
+                {{ booking.service.name }}
+              </strong>
+
+              @if (booking.service.description) {
+                <span>
+                  {{ booking.service.description }}
+                </span>
+              }
+            </div>
+
+            <div class="summary-value">
+              {{ formatPrice(booking.service.price) }}
+            </div>
+
+          </div>
+
+        </div>
+
+
+        <!-- Staff -->
+        @if (booking.staff) {
+
+          <div class="summary-section">
+
+            <div class="section-title">
+              <span class="material-symbols-outlined">
+                person
+              </span>
+
+              <div>
+                <h3>متخصص</h3>
+                <span>ارائه‌دهنده خدمت</span>
+              </div>
+            </div>
+
+            <div class="staff-summary">
+
+              <div class="staff-avatar">
+                @if (booking.staff.image) {
+                  <img
+                    [src]="booking.staff.image"
+                    [alt]="booking.staff.name"
+                  />
+                } @else {
+                  <span class="material-symbols-outlined">
+                    person
+                  </span>
+                }
+              </div>
+
+              <div>
+                <strong>
+                  {{ booking.staff.name }}
+                </strong>
+
+                @if (booking.staff.title) {
+                  <span>
+                    {{ booking.staff.title }}
+                  </span>
+                }
+              </div>
+
+            </div>
+
+          </div>
+
+        }
+
+
+        <!-- Schedule -->
+        <div class="summary-section">
+
+          <div class="section-title">
+            <span class="material-symbols-outlined">
+              calendar_month
+            </span>
+
+            <div>
+              <h3>زمان نوبت</h3>
+              <span>تاریخ و ساعت مراجعه</span>
+            </div>
+          </div>
+
+          <div class="schedule-summary">
+
+            <div class="schedule-item">
+
+              <span class="material-symbols-outlined">
+                event
+              </span>
+
+              <div>
+                <span>تاریخ</span>
+                <strong>
+                  {{ booking.date.dayName }}
+                  {{ booking.date.dayNumber }}
+                  {{ booking.date.monthName }}
+                </strong>
+              </div>
+
+            </div>
+
+            <div class="schedule-item">
+
+              <span class="material-symbols-outlined">
+                schedule
+              </span>
+
+              <div>
+                <span>ساعت</span>
+                <strong>
+                  {{ booking.slot.time }}
+                </strong>
+              </div>
+
+            </div>
+
+          </div>
+
+        </div>
+
+
+        <!-- Customer -->
+        <div class="summary-section">
+
+          <div class="section-title">
+            <span class="material-symbols-outlined">
+              person_outline
+            </span>
+
+            <div>
+              <h3>اطلاعات تماس</h3>
+              <span>اطلاعات دریافت‌شده</span>
+            </div>
+          </div>
+
+          <div class="customer-summary">
+
+            <div class="customer-row">
+              <span>نام و نام خانوادگی</span>
+              <strong>
+                {{ booking.customer.fullName }}
+              </strong>
+            </div>
+
+            <div class="customer-row">
+              <span>شماره موبایل</span>
+              <strong dir="ltr">
+                {{ booking.customer.mobile }}
+              </strong>
+            </div>
+
+            @if (booking.customer.note) {
+              <div class="customer-row note-row">
+                <span>توضیحات</span>
+                <strong>
+                  {{ booking.customer.note }}
+                </strong>
+              </div>
+            }
+
+          </div>
+
+        </div>
+
+      </div>
+
+
+      <!-- Side summary -->
+      <aside class="booking-summary">
+
+        <div class="summary-heading">
+          <span class="material-symbols-outlined">
+            receipt_long
+          </span>
+
+          <div>
+            <h3>خلاصه نوبت</h3>
+            <span>اطلاعات نهایی</span>
+          </div>
+        </div>
+
+
+        <div class="summary-line">
+          <span>خدمت</span>
+          <strong>
+            {{ booking.service.name }}
+          </strong>
+        </div>
+
+        <div class="summary-line">
+          <span>مدت</span>
+          <strong>
+            {{ booking.service.duration }} دقیقه
+          </strong>
+        </div>
+
+        <div class="summary-line">
+          <span>تاریخ</span>
+          <strong>
+            {{ booking.date.dayNumber }}
+            {{ booking.date.monthName }}
+          </strong>
+        </div>
+
+        <div class="summary-line">
+          <span>ساعت</span>
+          <strong>
+            {{ booking.slot.time }}
+          </strong>
+        </div>
+
+        <div class="summary-divider"></div>
+
+        <div class="summary-total">
+          <span>مبلغ</span>
+
+          <strong>
+            {{ formatPrice(booking.service.price) }}
+          </strong>
+        </div>
+
+
+        <div class="confirmation-notice">
+
+          <span class="material-symbols-outlined">
+            info
+          </span>
+
+          <p>
+            با انتخاب «تأیید و ثبت نوبت»، درخواست رزرو شما ثبت خواهد شد.
+          </p>
+
+        </div>
+
+      </aside>
+
+    </div>
+
+
+    <!-- Actions -->
+    <div class="confirmation-actions">
+
+      <button
+        type="button"
+        class="back-button"
+        (click)="onBack()"
+      >
+        <span class="material-symbols-outlined">
+          arrow_forward
+        </span>
+
+        بازگشت و ویرایش
+      </button>
+
+
+      <button
+        type="button"
+        class="confirm-button"
+        (click)="confirm()"
+      >
+        تأیید و ثبت نوبت
+
+        <span class="material-symbols-outlined">
+          check
+        </span>
+      </button>
+
+    </div>
+
+  } @else {
+
+    <div class="empty-state">
+
+      <span class="material-symbols-outlined">
+        event_busy
+      </span>
+
+      <h3>اطلاعات نوبت کامل نیست</h3>
+
+      <p>
+        ابتدا مراحل قبلی رزرو را تکمیل کنید.
+      </p>
+
+    </div>
+
+  }
+
+</section>

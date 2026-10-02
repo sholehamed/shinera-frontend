@@ -1,0 +1,78 @@
+<section class="profile-booking-cta" id="booking">
+
+    <div class="container">
+
+        <div class="booking-cta-card">
+
+            <div class="booking-decoration booking-decoration-one"></div>
+            <div class="booking-decoration booking-decoration-two"></div>
+
+            <div class="booking-content">
+
+                <span class="booking-eyebrow">
+                    {{ data.eyebrow || 'رزرو نوبت' }}
+                </span>
+
+                <h2>
+                    {{ data.title || 'برای زیبایی خود وقت بگذارید' }}
+                </h2>
+
+                <p>
+                    {{
+                        data.description ||
+                        'خدمات موردنظر خود را انتخاب کنید و برای دریافت نوبت اقدام کنید.'
+                    }}
+                </p>
+
+
+                <div class="booking-actions">
+
+                    <a
+                        mat-flat-button
+                        class="booking-button"
+                        [routerLink]="data.buttonLink || '#'"
+                    >
+                        <span>
+                            {{ data.buttonText || 'دریافت نوبت' }}
+                        </span>
+
+                        <i class="material-symbols-outlined">
+                            arrow_back
+                        </i>
+                    </a>
+
+
+                    @if (data.phone) {
+
+                        <a
+                            class="booking-phone"
+                            [href]="'tel:' + data.phone"
+                        >
+                            <span class="phone-icon">
+                                <i class="material-symbols-outlined">
+                                    call
+                                </i>
+                            </span>
+
+                            <span class="phone-content">
+                                <small>
+                                    {{ data.secondaryText || 'تماس مستقیم' }}
+                                </small>
+
+                                <strong dir="ltr">
+                                    {{ data.phone }}
+                                </strong>
+                            </span>
+                        </a>
+
+                    }
+
+                </div>
+
+            </div>
+
+        </div>
+
+    </div>
+
+</section>

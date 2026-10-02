@@ -1,0 +1,66 @@
+<section class="profile-about" id="about">
+
+    <div class="container">
+
+        <div class="about-wrapper">
+
+            <!-- Image -->
+           @if (about.image) {
+    <div class="about-image">
+        <div class="about-image-frame">
+            <img
+                [src]="about.image"
+                [alt]="about.imageAlt || 'درباره مجموعه'"
+                loading="lazy"
+            />
+        </div>
+
+        <div class="about-image-decoration"></div>
+    </div>
+}
+
+            <!-- Content -->
+            <div class="about-content">
+
+                <span class="about-eyebrow">
+                    درباره ما
+                </span>
+
+                <h2>
+                    {{ about.title || 'درباره مجموعه' }}
+                </h2>
+
+                <div class="about-description">
+                    {{ about.description }}
+                </div>
+
+                @if (about.highlights?.length) {
+                    <div class="about-highlights">
+
+                        @for (item of about.highlights; track item.label) {
+                            <div class="about-highlight">
+
+                                <div class="highlight-icon">
+                                    <i class="material-symbols-outlined">
+                                        {{ item.icon || 'check_circle' }}
+                                    </i>
+                                </div>
+
+                                <div class="highlight-content">
+                                    <strong>{{ item.value }}</strong>
+                                    <span>{{ item.label }}</span>
+                                </div>
+
+                            </div>
+                        }
+
+                    </div>
+                }
+
+            </div>
+
+        </div>
+
+    </div>
+
+</section>

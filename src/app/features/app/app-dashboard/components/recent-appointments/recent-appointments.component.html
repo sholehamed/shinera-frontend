@@ -1,0 +1,517 @@
+<mat-card
+    class="recent-appointments-card mb-25 border-radius d-block bg-white border-0 shadow-none"
+    [class.component-rtl-enabled]="themeService.isRTLEnabledTheme()"
+    [class.component-dark-theme]="themeService.isDarkTheme()"
+>
+
+    <mat-card-header>
+
+        <div class="header-content">
+
+            <div class="header-title">
+
+                <span class="eyebrow">
+                    برنامه روزانه
+                </span>
+
+                <mat-card-title>
+                    <h5 class="mb-0">
+                        نوبت‌ها
+                    </h5>
+                </mat-card-title>
+
+                <span class="selected-date">
+                    {{ formattedDate }}
+                </span>
+
+            </div>
+
+
+            <button
+                mat-flat-button
+                class="create-btn"
+            >
+
+                <span class="button-content">
+
+                    <mat-icon>
+                        add
+                    </mat-icon>
+
+                    <span>
+                        ثبت نوبت جدید
+                    </span>
+
+                </span>
+
+            </button>
+
+        </div>
+
+    </mat-card-header>
+
+
+    <mat-card-content>
+
+        <!-- Filters -->
+
+        <div class="appointment-toolbar">
+
+    <!-- Right / primary filters -->
+
+    <div class="toolbar-primary">
+
+        <div class="quick-date-group">
+
+            <button
+                mat-button
+                type="button"
+                class="quick-date-btn"
+                [class.active]="isTodaySelected"
+                (click)="selectToday()"
+            >
+                امروز
+            </button>
+
+            <button
+                mat-button
+                type="button"
+                class="quick-date-btn"
+                [class.active]="isTomorrowSelected"
+                (click)="selectTomorrow()"
+            >
+                فردا
+            </button>
+
+        </div>
+
+
+        <span class="toolbar-divider"></span>
+
+
+        <!-- Status -->
+
+        <mat-form-field
+            appearance="outline"
+            subscriptSizing="dynamic"
+            class="toolbar-field status-field"
+        >
+
+            <mat-icon matPrefix>
+                tune
+            </mat-icon>
+
+            <mat-select
+                [(ngModel)]="filter.status"
+            >
+
+                @for (
+                    status of statusOptions;
+                    track status.value
+                ) {
+
+                    <mat-option
+                        [value]="status.value"
+                    >
+                        {{ status.title }}
+                    </mat-option>
+
+                }
+
+            </mat-select>
+
+        </mat-form-field>
+
+
+        <!-- Staff -->
+
+        @if (data.isSalon) {
+
+            <mat-form-field
+                appearance="outline"
+                subscriptSizing="dynamic"
+                class="toolbar-field staff-field"
+            >
+
+                <mat-icon matPrefix>
+                    person
+                </mat-icon>
+
+                <mat-select
+                    [(ngModel)]="filter.staffId"
+                >
+
+                    <mat-option
+                        [value]="null"
+                    >
+                        همه متخصص‌ها
+                    </mat-option>
+
+                    @for (
+                        staff of data.staff;
+                        track staff.id
+                    ) {
+
+                        <mat-option
+                            [value]="staff.id"
+                        >
+                            {{ staff.name }}
+                        </mat-option>
+
+                    }
+
+                </mat-select>
+
+            </mat-form-field>
+
+        }
+
+    </div>
+
+
+    <!-- Left / search -->
+
+    <div class="toolbar-secondary">
+
+        <div
+            class="search-box"
+            [class.has-value]="filter.search"
+        >
+
+            <mat-icon>
+                search
+            </mat-icon>
+
+            <input
+                type="text"
+                [(ngModel)]="filter.search"
+                placeholder="جستجوی مشتری، خدمت یا متخصص"
+            >
+
+            @if (filter.search) {
+
+                <button
+                    type="button"
+                    class="clear-search"
+                    (click)="filter.search = ''"
+                >
+                    <mat-icon>
+                        close
+                    </mat-icon>
+                </button>
+
+            }
+
+        </div>
+
+
+        @if (hasActiveFilters) {
+
+            <button
+                mat-button
+                type="button"
+                class="reset-btn"
+                (click)="clearFilters()"
+            >
+                <mat-icon>
+                    filter_alt_off
+                </mat-icon>
+
+                حذف فیلترها
+            </button>
+
+        }
+
+    </div>
+
+</div>
+
+
+        <div class="appointments-layout">
+
+            <!-- Calendar -->
+
+            <section class="calendar-panel">
+
+                <div class="panel-header">
+
+                    <div>
+                        <strong>
+                            تقویم
+                        </strong>
+
+                        <span>
+                            یک روز را انتخاب کنید
+                        </span>
+                    </div>
+
+                    <mat-icon>
+                        calendar_month
+                    </mat-icon>
+
+                </div>
+
+
+                <mat-calendar
+                    [selected]="selectedDate"
+                    (selectedChange)="onDateSelected($event)"
+                />
+
+            </section>
+
+
+            <!-- Appointment List -->
+
+            <section class="appointments-panel">
+
+                <div class="appointments-summary">
+
+                    <div class="day-info">
+
+                        <strong>
+                            {{ formattedDate }}
+                        </strong>
+
+                        <span>
+                            برنامه نوبت‌های انتخاب‌شده
+                        </span>
+
+                    </div>
+
+
+                    <div class="summary-values">
+
+                        <div>
+                            <strong>
+                                {{ totalAppointments }}
+                            </strong>
+
+                            <span>
+                                کل نوبت
+                            </span>
+                        </div>
+
+                        <span class="summary-divider"></span>
+
+                        <div>
+                            <strong>
+                                {{ completedCount }}
+                            </strong>
+
+                            <span>
+                                انجام شده
+                            </span>
+                        </div>
+
+                        <span class="summary-divider"></span>
+
+                        <div>
+                            <strong>
+                                {{ remainingCount }}
+                            </strong>
+
+                            <span>
+                                باقی‌مانده
+                            </span>
+                        </div>
+
+                    </div>
+
+                </div>
+
+
+              <div class="appointments-list">
+
+    @if (filteredAppointments.length) {
+
+        <ng-scrollbar
+            visibility="hover"
+            class="appointments-scrollbar"
+        >
+
+            <div class="appointment-items">
+
+                @for (
+                    appointment of filteredAppointments;
+                    track appointment.id
+                ) {
+
+                    <article
+                        class="appointment-item"
+                        [class.completed]="appointment.status === 'completed'"
+                        [class.upcoming]="appointment.status === 'upcoming'"
+                        [class.cancelled]="appointment.status === 'cancelled'"
+                        [class.no-show]="appointment.status === 'no-show'"
+                    >
+
+                        <div class="time-column">
+
+                            <strong>
+                                {{ appointment.startTime }}
+                            </strong>
+
+                            @if (appointment.endTime) {
+
+                                <span>
+                                    تا
+                                    {{ appointment.endTime }}
+                                </span>
+
+                            }
+
+                        </div>
+
+
+                        <span class="status-line"></span>
+
+
+                        <div class="appointment-main">
+
+                            <div class="service-row">
+
+                                <div>
+
+                                    <strong class="service-name">
+                                        {{ appointment.serviceName }}
+                                    </strong>
+
+                                    <span class="appointment-id">
+                                        نوبت #{{ appointment.id }}
+                                    </span>
+
+                                </div>
+
+
+                                <span
+                                    class="status-badge"
+                                    [class.completed]="appointment.status === 'completed'"
+                                    [class.upcoming]="appointment.status === 'upcoming'"
+                                    [class.cancelled]="appointment.status === 'cancelled'"
+                                    [class.no-show]="appointment.status === 'no-show'"
+                                >
+
+                                    <mat-icon>
+                                        {{ getStatusIcon(appointment.status) }}
+                                    </mat-icon>
+
+                                    {{ getStatusText(appointment.status) }}
+
+                                </span>
+
+                            </div>
+
+
+                            <div class="people-row">
+
+                                <div class="person">
+
+                                    <img
+                                        [src]="appointment.client.imageUrl"
+                                        [alt]="appointment.client.name"
+                                    >
+
+                                    <div>
+
+                                        <span>
+                                            مشتری
+                                        </span>
+
+                                        <strong>
+                                            {{ appointment.client.name }}
+                                        </strong>
+
+                                    </div>
+
+                                </div>
+
+
+                                @if (data.isSalon) {
+
+                                    <div class="person">
+
+                                        <img
+                                            [src]="appointment.staff.imageUrl"
+                                            [alt]="appointment.staff.name"
+                                        >
+
+                                        <div>
+
+                                            <span>
+                                                متخصص
+                                            </span>
+
+                                            <strong>
+                                                {{ appointment.staff.name }}
+                                            </strong>
+
+                                        </div>
+
+                                    </div>
+
+                                }
+
+                            </div>
+
+                        </div>
+
+
+                        <button
+                            mat-icon-button
+                            class="appointment-menu"
+                        >
+                            <mat-icon>
+                                more_vert
+                            </mat-icon>
+                        </button>
+
+                    </article>
+
+                }
+
+            </div>
+
+        </ng-scrollbar>
+
+    } @else {
+
+        <div class="appointments-empty-state">
+
+            <div class="empty-state-icon">
+                <mat-icon>
+                    event_busy
+                </mat-icon>
+            </div>
+
+            <h6>
+                نوبتی پیدا نشد
+            </h6>
+
+            <p>
+                برای این تاریخ و فیلترهای انتخاب‌شده
+                نوبتی وجود ندارد.
+            </p>
+
+            <button
+                mat-stroked-button
+                type="button"
+            >
+                <mat-icon>
+                    add
+                </mat-icon>
+
+                ثبت نوبت
+            </button>
+
+        </div>
+
+    }
+
+</div>
+
+            </section>
+
+        </div>
+
+    </mat-card-content>
+
+</mat-card>

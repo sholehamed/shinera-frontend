@@ -1,0 +1,410 @@
+.booking-page {
+  min-height: 100%;
+  background: var(--bodyBgColor);
+  color: var(--bodyColor);
+}
+
+.booking-main {
+  padding: 42px 24px 80px;
+}
+
+.booking-container {
+  width: 100%;
+  max-width: 860px;
+  margin: 0 auto;
+}
+
+
+// ========================================
+// Intro
+// ========================================
+
+.booking-intro {
+  text-align: center;
+  margin-bottom: 34px;
+
+  .eyebrow {
+    display: inline-block;
+    margin-bottom: 8px;
+
+    color: var(--primaryColor);
+    font-size: 13px;
+    font-weight: 700;
+  }
+
+  h1 {
+    margin: 0 0 8px;
+
+    color: var(--headingColor);
+    font-size: 30px;
+    line-height: 1.5;
+    font-weight: 800;
+  }
+
+  p {
+    margin: 0;
+
+    color: var(--bodyColor);
+    font-size: 14px;
+    line-height: 1.8;
+  }
+}
+
+
+// ========================================
+// Progress
+// ========================================
+
+.booking-progress {
+  display: flex;
+  align-items: center;
+
+  margin-bottom: 24px;
+  padding: 0 8px;
+}
+
+.progress-step {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+
+  flex-shrink: 0;
+
+  color: var(--mutedColor);
+
+  .step-number {
+    width: 34px;
+    height: 34px;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    border: 1px solid var(--borderColor);
+    border-radius: 50%;
+
+    background: var(--cardBgColor);
+
+    font-size: 12px;
+    font-weight: 700;
+
+    transition: .25s ease;
+  }
+
+  .step-title {
+    font-size: 13px;
+    font-weight: 600;
+  }
+
+  &.active {
+    color: var(--primaryColor);
+
+    .step-number {
+      border-color: var(--primaryColor);
+      background: var(--primaryColor);
+      color: var(--whiteColor);
+      box-shadow: 0 5px 14px rgba(166, 93, 109, .18);
+    }
+  }
+
+  &.completed {
+    color: var(--primaryColor);
+
+    .step-number {
+      border-color: var(--primaryColor);
+      background: var(--surfaceColor);
+      color: var(--primaryColor);
+    }
+  }
+}
+
+.progress-line {
+  flex: 1;
+
+  height: 1px;
+
+  margin: 0 14px;
+
+  background: var(--borderColor);
+}
+
+
+// ========================================
+// Card
+// ========================================
+
+.step-card {
+  padding: 28px;
+
+  border: 1px solid var(--borderColor);
+  border-radius: 18px;
+
+  background: var(--cardBgColor);
+
+  box-shadow:
+    0 8px 30px rgba(0, 0, 0, .035);
+}
+
+
+// ========================================
+// Step Header
+// ========================================
+
+.step-header {
+  margin-bottom: 24px;
+}
+
+.step-heading {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+}
+
+.step-number-large {
+  width: 44px;
+  height: 44px;
+
+  flex-shrink: 0;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  border-radius: 13px;
+
+  background: var(--surfaceColor);
+  color: var(--primaryColor);
+
+  font-size: 15px;
+  font-weight: 800;
+}
+
+.step-eyebrow {
+  display: block;
+
+  margin-bottom: 3px;
+
+  color: var(--primaryColor);
+
+  font-size: 11px;
+  font-weight: 700;
+}
+
+.step-header h2 {
+  margin: 0 0 3px;
+
+  color: var(--headingColor);
+
+  font-size: 20px;
+  font-weight: 800;
+}
+
+.step-header p {
+  margin: 0;
+
+  color: var(--bodyColor);
+
+  font-size: 13px;
+  line-height: 1.7;
+}
+
+
+// ========================================
+// Temporary Content
+// ========================================
+
+.service-placeholder {
+  min-height: 150px;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  gap: 16px;
+
+  padding: 28px;
+
+  border: 1px dashed var(--borderColor);
+  border-radius: 14px;
+
+  background: var(--surfaceColor);
+
+  text-align: right;
+}
+
+.placeholder-icon {
+  width: 52px;
+  height: 52px;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  flex-shrink: 0;
+
+  border-radius: 14px;
+
+  background: var(--cardBgColor);
+
+  color: var(--primaryColor);
+
+  .material-symbols-outlined {
+    font-size: 27px;
+  }
+}
+
+.placeholder-text {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+
+  strong {
+    color: var(--headingColor);
+    font-size: 14px;
+  }
+
+  span {
+    color: var(--mutedColor);
+    font-size: 12px;
+  }
+}
+
+
+// ========================================
+// Actions
+// ========================================
+
+.step-actions {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+
+  margin-top: 24px;
+}
+
+.primary-button,
+.secondary-button {
+  min-height: 44px;
+
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+
+  gap: 7px;
+
+  padding: 0 18px;
+
+  border-radius: 9px;
+
+  font-family: inherit;
+  font-size: 13px;
+  font-weight: 600;
+
+  cursor: pointer;
+
+  text-decoration: none;
+
+  transition:
+    background .2s ease,
+    border-color .2s ease,
+    color .2s ease,
+    box-shadow .2s ease;
+}
+
+.primary-button {
+  border: 1px solid var(--primaryColor);
+
+  background: var(--primaryColor);
+  color: var(--whiteColor);
+
+  &:hover {
+    background: var(--primaryHoverColor);
+    border-color: var(--primaryHoverColor);
+
+    box-shadow: 0 6px 16px rgba(166, 93, 109, .18);
+  }
+}
+
+.secondary-button {
+  border: 1px solid var(--borderColor);
+
+  background: var(--cardBgColor);
+  color: var(--headingColor);
+
+  &:hover {
+    border-color: var(--primaryColor);
+    color: var(--primaryColor);
+  }
+}
+
+
+// ========================================
+// Responsive
+// ========================================
+
+@media (max-width: 700px) {
+
+  .booking-main {
+    padding: 30px 16px 60px;
+  }
+
+  .booking-intro {
+    margin-bottom: 26px;
+
+    h1 {
+      font-size: 24px;
+    }
+
+    p {
+      font-size: 13px;
+    }
+  }
+
+  .booking-progress {
+    padding: 0;
+  }
+
+  .progress-step {
+
+    .step-title {
+      display: none;
+    }
+  }
+
+  .progress-line {
+    min-width: 28px;
+    margin: 0 8px;
+  }
+
+  .step-card {
+    padding: 20px 16px;
+    border-radius: 15px;
+  }
+
+  .step-heading {
+    gap: 11px;
+  }
+
+  .step-number-large {
+    width: 40px;
+    height: 40px;
+  }
+
+  .step-header h2 {
+    font-size: 18px;
+  }
+
+  .service-placeholder {
+    min-height: 120px;
+    padding: 20px;
+  }
+
+  .step-actions {
+    gap: 10px;
+  }
+
+  .primary-button,
+  .secondary-button {
+    min-height: 44px;
+  }
+}

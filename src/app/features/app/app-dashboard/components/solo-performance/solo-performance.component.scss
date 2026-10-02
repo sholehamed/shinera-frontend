@@ -1,0 +1,585 @@
+:host {
+    display: block;
+    height: 100%;
+    padding-bottom: 30px;
+}
+
+
+.solo-performance-card {
+
+    height: 100%;
+
+    overflow: hidden;
+
+    border:
+        1px solid var(--borderColor) !important;
+
+
+    .mat-mdc-card-header {
+
+        padding:
+            20px 22px 14px;
+
+        margin: 0;
+
+    }
+
+
+    .header-content {
+
+        width: 100%;
+
+        display: flex;
+
+        align-items: flex-start;
+
+        justify-content: space-between;
+
+        gap: 15px;
+
+    }
+
+
+    .eyebrow {
+
+        display: block;
+
+        margin-bottom: 4px;
+
+        color:
+            var(--primaryColor);
+
+        font-size: 9px;
+
+        font-weight: 600;
+
+    }
+
+
+    .mat-mdc-card-title {
+
+        margin: 0;
+
+
+        h5 {
+
+            color:
+                var(--blackColor);
+
+            font-size: 16px;
+
+            font-weight: 700;
+
+        }
+
+    }
+
+
+    .period-label {
+
+        display: block;
+
+        margin-top: 4px;
+
+        color:
+            var(--bodyColor);
+
+        font-size: 9px;
+
+    }
+
+
+    .trend-badge {
+
+        display: inline-flex;
+
+        align-items: center;
+
+        gap: 4px;
+
+        padding:
+            5px 8px;
+
+        border-radius: 8px;
+
+        font-size: 9px;
+
+        font-weight: 600;
+
+
+        mat-icon {
+
+            width: 14px;
+
+            height: 14px;
+
+            font-size: 14px;
+
+            line-height: 14px;
+
+        }
+
+
+        &.positive {
+
+            color: #159447;
+
+            background:
+                rgba(21, 148, 71, .08);
+
+        }
+
+
+        &.negative {
+
+            color:
+                var(--dangerColor);
+
+            background:
+                rgba(255, 64, 35, .08);
+
+        }
+
+    }
+
+
+    .mat-mdc-card-content {
+
+        padding:
+            0 22px 18px;
+
+    }
+
+
+    .performance-grid {
+
+        display: grid;
+
+        grid-template-columns:
+            repeat(
+                2,
+                minmax(0, 1fr)
+            );
+
+        gap: 10px;
+
+    }
+
+
+    .performance-item {
+
+        min-width: 0;
+
+        display: flex;
+
+        align-items: center;
+
+        gap: 10px;
+
+        min-height: 94px;
+
+        padding:
+            13px 12px;
+
+        border:
+            1px solid var(--borderColor);
+
+        border-radius: 12px;
+
+        background:
+            rgba(
+                100,
+                116,
+                139,
+                .025
+            );
+
+        transition:
+            transform .2s ease,
+            border-color .2s ease,
+            background-color .2s ease;
+
+
+        &:hover {
+
+            transform:
+                translateY(-1px);
+
+            border-color:
+                rgba(
+                    96,
+                    93,
+                    255,
+                    .20
+                );
+
+            background:
+                rgba(
+                    96,
+                    93,
+                    255,
+                    .025
+                );
+
+        }
+
+    }
+
+
+    .metric-icon {
+
+        width: 38px;
+
+        height: 38px;
+
+        min-width: 38px;
+
+        display: flex;
+
+        align-items: center;
+
+        justify-content: center;
+
+        border-radius: 11px;
+
+
+        mat-icon {
+
+            width: 19px;
+
+            height: 19px;
+
+            font-size: 19px;
+
+            line-height: 19px;
+
+        }
+
+
+        &.appointments {
+
+            color:
+                var(--primaryColor);
+
+            background:
+                rgba(
+                    96,
+                    93,
+                    255,
+                    .08
+                );
+
+        }
+
+
+        &.revenue {
+
+            color: #d07b9a;
+
+            background:
+                rgba(
+                    208,
+                    123,
+                    154,
+                    .10
+                );
+
+        }
+
+
+        &.completion {
+
+            color: #159447;
+
+            background:
+                rgba(
+                    21,
+                    148,
+                    71,
+                    .08
+                );
+
+        }
+
+
+        &.rating {
+
+            color: #e4a03b;
+
+            background:
+                rgba(
+                    228,
+                    160,
+                    59,
+                    .10
+                );
+
+        }
+
+    }
+
+
+    .metric-content {
+
+        min-width: 0;
+
+    }
+
+
+    .metric-label {
+
+        display: block;
+
+        color:
+            var(--bodyColor);
+
+        font-size: 9px;
+
+    }
+
+
+    .metric-value {
+
+        display: block;
+
+        margin-top: 3px;
+
+        color:
+            var(--blackColor);
+
+        font-size: 17px;
+
+        font-weight: 800;
+
+        line-height: 1.2;
+
+    }
+
+
+    .metric-detail {
+
+        display: block;
+
+        margin-top: 3px;
+
+        color:
+            var(--bodyColor);
+
+        font-size: 8px;
+
+    }
+
+
+    .performance-footer {
+
+        display: flex;
+
+        align-items: center;
+
+        justify-content: space-between;
+
+        gap: 12px;
+
+        margin-top: 13px;
+
+        padding:
+            12px 14px;
+
+        border-top:
+            1px solid var(--borderColor);
+
+    }
+
+
+    .footer-item {
+
+        min-width: 0;
+
+        flex: 1;
+
+        text-align: center;
+
+
+        .footer-label {
+
+            display: block;
+
+            color:
+                var(--bodyColor);
+
+            font-size: 8px;
+
+        }
+
+
+        strong {
+
+            display: block;
+
+            margin-top: 3px;
+
+            color:
+                var(--blackColor);
+
+            font-size: 11px;
+
+            font-weight: 700;
+
+        }
+
+
+        &.revenue-change {
+
+            strong {
+
+                color: #159447;
+
+            }
+
+        }
+
+    }
+
+
+    .footer-divider {
+
+        width: 1px;
+
+        height: 28px;
+
+        flex-shrink: 0;
+
+        background:
+            var(--borderColor);
+
+    }
+
+
+    &.component-dark-theme {
+
+        .mat-mdc-card-title h5,
+        .metric-value,
+        .footer-item strong {
+
+            color:
+                var(--whiteColor);
+
+        }
+
+
+        .performance-item {
+
+            background:
+                rgba(
+                    255,
+                    255,
+                    255,
+                    .02
+                );
+
+
+            &:hover {
+
+                background:
+                    rgba(
+                        255,
+                        255,
+                        255,
+                        .035
+                    );
+
+            }
+
+        }
+
+    }
+
+}
+
+
+@media only screen and (max-width: 1199px) {
+
+    .solo-performance-card {
+
+        .performance-grid {
+
+            grid-template-columns:
+                1fr;
+
+        }
+
+    }
+
+}
+
+
+@media only screen and (max-width: 767px) {
+
+    .solo-performance-card {
+
+        .mat-mdc-card-header {
+
+            padding:
+                18px 16px 12px;
+
+        }
+
+
+        .mat-mdc-card-content {
+
+            padding:
+                0 16px 16px;
+
+        }
+
+
+        .performance-grid {
+
+            grid-template-columns:
+                repeat(
+                    2,
+                    minmax(0, 1fr)
+                );
+
+        }
+
+
+        .performance-item {
+
+            min-height: 88px;
+
+            padding:
+                11px 10px;
+
+        }
+
+
+        .metric-icon {
+
+            width: 34px;
+
+            height: 34px;
+
+            min-width: 34px;
+
+        }
+
+    }
+
+}
+
+
+@media only screen and (max-width: 480px) {
+
+    .solo-performance-card {
+
+        .performance-grid {
+
+            grid-template-columns:
+                1fr;
+
+        }
+
+    }
+
+}

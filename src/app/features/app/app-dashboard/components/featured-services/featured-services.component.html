@@ -1,0 +1,342 @@
+<mat-card
+    class="featured-services-card mb-25 border-radius d-block bg-white border-0 shadow-none"
+    [class.component-dark-theme]="themeService.isDarkTheme()"
+    [class.component-rtl-enabled]="themeService.isRTLEnabledTheme()"
+>
+
+    <mat-card-header>
+
+        <div class="card-header-content">
+
+            <div class="title-wrapper">
+
+                <span class="eyebrow">
+                    عملکرد خدمات
+                </span>
+
+                <mat-card-title>
+                    <h5 class="mb-0">
+                        {{ data.title }}
+                    </h5>
+                </mat-card-title>
+
+                <p class="subtitle mb-0">
+                    {{ data.subtitle }}
+                </p>
+
+            </div>
+
+
+            <div class="header-actions">
+
+                <span class="period">
+                    {{ data.periodLabel }}
+                </span>
+
+                <button
+                    mat-button
+                    type="button"
+                    class="view-all-btn"
+                >
+                    <span class="button-content">
+
+                        <span>
+                            مشاهده همه
+                        </span>
+
+                        <mat-icon>
+                            arrow_back
+                        </mat-icon>
+
+                    </span>
+                </button>
+
+            </div>
+
+        </div>
+
+    </mat-card-header>
+
+
+    <mat-card-content>
+
+        @if (isLoading) {
+
+            <div class="state-container">
+
+                <mat-icon class="loading-icon">
+                    hourglass_top
+                </mat-icon>
+
+                <span>
+                    در حال دریافت اطلاعات...
+                </span>
+
+            </div>
+
+        } @else if (!data.services.length) {
+
+            <div class="state-container empty-state">
+
+                <div class="empty-icon">
+                    <mat-icon>
+                        content_cut
+                    </mat-icon>
+                </div>
+
+                <strong>
+                    هنوز داده‌ای وجود ندارد
+                </strong>
+
+                <span>
+                    پس از ثبت و ارائه خدمات، عملکرد آن‌ها اینجا نمایش داده می‌شود.
+                </span>
+
+            </div>
+
+        } @else {
+
+            <div class="services-grid">
+
+                @for (
+                    service of data.services;
+                    track service.id;
+                    let index = $index
+                ) {
+
+                    <article class="service-card">
+
+                        <div class="service-top">
+
+                            <span class="rank">
+                                {{ index + 1 }}
+                            </span>
+
+                            <div
+                                class="trend"
+                                [class.trend-up]="service.trend === 'up'"
+                                [class.trend-down]="service.trend === 'down'"
+                                [class.trend-flat]="service.trend === 'flat'"
+                            >
+
+                                <mat-icon>
+                                    {{
+                                        service.trend === 'up'
+                                            ? 'trending_up'
+                                            : service.trend === 'down'
+                                                ? 'trending_down'
+                                                : 'remove'
+                                    }}
+                                </mat-icon>
+
+                                <span>
+                                    {{ getTrendLabel(service) }}
+                                </span>
+
+                            </div>
+
+                        </div>
+
+
+                        <div class="service-main">
+
+                            <div class="service-icon">
+
+                                <img
+                                    [src]="service.icon"
+                                    [alt]="service.name"
+                                >
+
+                            </div>
+
+                            <div class="service-title">
+
+                                <strong>
+                                    {{ service.name }}
+                                </strong>
+
+                                <span>
+                                    {{ service.category }}
+                                </span>
+
+                            </div>
+
+                        </div>
+
+
+                        <div class="service-stats">
+
+                            <div class="stat">
+
+                                <span class="stat-label">
+                                    تعداد ارائه
+                                </span>
+
+                                <strong>
+                                    {{ service.servedCount | number }}
+                                </strong>
+
+                            </div>
+
+                            <div class="stat revenue">
+
+                                <span class="stat-label">
+                                    درآمد
+                                </span>
+
+                                <strong>
+                                    {{ formatCurrency(service.revenue) }}
+                                </strong>
+
+                            </div>
+
+                        </div>
+
+
+                        <div class="performance">
+
+                            <div class="performance-header">
+
+                                <span>
+                                    سهم عملکرد
+                                </span>
+
+                                <strong>
+                                    {{ service.performancePercent }}٪
+                                </strong>
+
+                            </div>
+
+                            <div class="progress-track">
+
+                                <span
+                                    class="progress-value"
+                                    [style.width.%]="service.performancePercent"
+                                ></span>
+
+                            </div>
+
+                        </div>
+
+                    </article>
+
+                }
+
+            </div>
+
+<div class="services-summary">
+
+    <div class="summary-item">
+
+        <div class="summary-icon">
+            <mat-icon>
+                payments
+            </mat-icon>
+        </div>
+
+        <div class="summary-content">
+
+            <span>
+                میانگین درآمد هر ارائه
+            </span>
+
+            <strong>
+                {{ formatCurrency(
+                    data.summary.averageRevenuePerService
+                ) }}
+            </strong>
+
+        </div>
+
+    </div>
+
+
+    <div class="summary-item">
+
+        <div class="summary-icon growth">
+            <mat-icon>
+                trending_up
+            </mat-icon>
+        </div>
+
+        <div class="summary-content">
+
+            <span>
+                بیشترین رشد
+            </span>
+
+            <strong>
+                {{ data.summary.topGrowthService.name }}
+            </strong>
+
+            <small class="positive">
+                +{{ data.summary.topGrowthService.changePercent }}٪
+            </small>
+
+        </div>
+
+    </div>
+
+
+    <div class="summary-item">
+
+        <div class="summary-icon revenue">
+            <mat-icon>
+                pie_chart
+            </mat-icon>
+        </div>
+
+        <div class="summary-content">
+
+            <span>
+                بیشترین سهم درآمد
+            </span>
+
+            <strong>
+                {{ data.summary.topRevenueService.name }}
+            </strong>
+
+            <small>
+                {{ data.summary.topRevenueService.revenueSharePercent }}٪
+            </small>
+
+        </div>
+
+    </div>
+
+</div>
+            <div class="card-footer">
+
+                <div class="footer-stat">
+
+                    <span>
+                        مجموع خدمات
+                    </span>
+
+                    <strong>
+                        {{ data.totalServed | number }}
+                    </strong>
+
+                </div>
+
+                <span class="footer-divider"></span>
+
+                <div class="footer-stat">
+
+                    <span>
+                        مجموع درآمد
+                    </span>
+
+                    <strong>
+                        {{ formatCurrency(data.totalRevenue) }}
+                    </strong>
+
+                </div>
+
+            </div>
+
+        }
+
+    </mat-card-content>
+
+</mat-card>
