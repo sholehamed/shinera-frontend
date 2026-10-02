@@ -6,9 +6,16 @@
                 اطلاعات لازم را در چند مرحله کوتاه وارد کن. قبل از پرداخت می‌توانی همه‌چیز را
                 دوباره بررسی و اصلاح کنی.
             </p>
-            <p>فعلاً می‌توانید پلن‌ها را بررسی کنید. ثبت‌نام و پرداخت آنلاین هنوز فعال نیست و اطلاعات فرم ارسال یا ذخیره نمی‌شود.</p>
+            <p>ثبت‌نام فقط برای پلن‌های بدون هزینه که فعال شده‌اند در دسترس است. پلن‌های پولی به‌زودی قابل ثبت خواهند بود.</p>
         </section>
 
+        @if (registration(); as receipt) {
+            <section role="status" class="wizard-card registration-result">
+                <h2>فضای کاری شما ساخته شد</h2>
+                <p>نشانی فضای کاری: {{ receipt.slug }}</p>
+                <p>ثبت‌نام انجام شد. ورود به حساب در حال حاضر در دسترس نیست.</p>
+            </section>
+        } @else {
         <div class="checkout-grid">
             <section class="wizard-card">
                 <nav class="stepper" aria-label="مراحل ثبت‌نام">
@@ -77,6 +84,9 @@
                                         <p role="status">در حال حاضر پلنی برای ثبت‌نام ارائه نشده است.</p>
                                     }
                                     @if (selectionError()) { <p role="alert">{{ selectionError() }}</p> }
+                                    @if (selectedPlan && !checkoutEnabled) {
+                                        <p role="status">ثبت‌نام این پلن هنوز فعال نیست.</p>
+                                    }
                                     <div class="plans-grid">
                                         @for (plan of plans(); track plan.key) {
                                             <button
@@ -209,7 +219,7 @@
                                                 form.controls.owner.controls.password.touched &&
                                                 form.controls.owner.controls.password.invalid
                                             ) {
-                                                <mat-error>حداقل ۸ کاراکتر.</mat-error>
+                                                <mat-error>بین ۱۲ تا ۱۲۸ کاراکتر.</mat-error>
                                             }
                                         </mat-form-field>
 
@@ -373,54 +383,7 @@
                                         </div>
                                     </div>
 
-                                    <div formGroupName="branch" class="subsection branch-section">
-                                        <div class="branch-toggle-row">
-                                            <div class="subsection-title">
-                                                <span class="material-symbols-outlined">account_tree</span>
-                                                <div>
-                                                    <h3>اطلاعات شعبه</h3>
-                                                    <p>
-                                                        اگر لازم است اطلاعات شعبه اصلی جدا از پروفایل
-                                                        کسب‌وکار ثبت شود، فعالش کن.
-                                                    </p>
-                                                </div>
-                                            </div>
-
-                                            <mat-slide-toggle formControlName="enabled">
-                                                ثبت شعبه اصلی
-                                            </mat-slide-toggle>
-                                        </div>
-
-                                        @if (hasBranch) {
-                                            <div class="branch-fields">
-                                                <div class="form-grid">
-                                                    <mat-form-field appearance="outline">
-                                                        <mat-label>نام شعبه</mat-label>
-                                                        <input matInput formControlName="name" />
-                                                    </mat-form-field>
-
-                                                    <mat-form-field appearance="outline">
-                                                        <mat-label>تلفن شعبه</mat-label>
-                                                        <input matInput formControlName="phone" />
-                                                    </mat-form-field>
-
-                                                    <mat-form-field appearance="outline">
-                                                        <mat-label>شهر</mat-label>
-                                                        <input matInput formControlName="city" />
-                                                    </mat-form-field>
-
-                                                    <mat-form-field appearance="outline" class="full">
-                                                        <mat-label>آدرس شعبه</mat-label>
-                                                        <textarea
-                                                            matInput
-                                                            rows="3"
-                                                            formControlName="address"
-                                                        ></textarea>
-                                                    </mat-form-field>
-                                                </div>
-                                            </div>
-                                        }
-                                    </div>
+                                    <p>شعبهٔ اصلی به‌صورت خودکار ساخته می‌شود. تنظیمات شعبه پس از ورود تکمیل خواهد شد.</p>
                                 </section>
                             }
 
@@ -429,7 +392,7 @@
                                     <div class="section-head simple">
                                         <div>
                                             <span class="section-kicker">تأیید نهایی</span>
-                                            <h2>قبل از پرداخت، سفارش را مرور کن</h2>
+                                            <h2>اطلاعات ثبت‌نام را بررسی کن</h2>
                                             <p>
                                                 اطلاعات کسب‌وکار و پلن انتخابی خود را بررسی کنید.
                                             </p>
@@ -452,7 +415,7 @@
                                                     }}
                                                 </small>
                                             </div>
-                                            <button type="button" (click)="currentStep.set(0)">ویرایش</button>
+                                            <button type="button" (click)="goToStep(0)">ویرایش</button>
                                         </article>
 
                                         <article class="review-card">
@@ -467,7 +430,7 @@
                                                 </strong>
                                                 <small>{{ form.controls.owner.controls.mobile.value }}</small>
                                             </div>
-                                            <button type="button" (click)="currentStep.set(1)">ویرایش</button>
+                                            <button type="button" (click)="goToStep(1)">ویرایش</button>
                                         </article>
 
                                         <article class="review-card">
@@ -483,14 +446,14 @@
                                                     {{ form.controls.workspace.controls.slug.value }}.shinera.ir
                                                 </small>
                                             </div>
-                                            <button type="button" (click)="currentStep.set(2)">ویرایش</button>
+                                            <button type="button" (click)="goToStep(2)">ویرایش</button>
                                         </article>
                                     </div>
 
                                     <div class="payment-box">
                                         <div class="payment-head">
                                             <div>
-                                                <span class="section-kicker">مبلغ قابل پرداخت</span>
+                                                <span class="section-kicker">مبلغ اشتراک</span>
                                                 <h3>
                                                     {{ formatMoney(selectedPrice) }}
                                                     <small>ریال</small>
@@ -499,7 +462,7 @@
 
                                             <span class="payment-method">
                                                 <span class="material-symbols-outlined">credit_card</span>
-                                                درگاه پرداخت امن
+                                                ثبت‌نام بدون پرداخت
                                             </span>
                                         </div>
 
@@ -522,7 +485,10 @@
                                             </p>
                                         }
 
-                                        <p role="status">ثبت‌نام و پرداخت آنلاین هنوز فعال نشده است. اطلاعات این فرم ارسال یا ذخیره نمی‌شود.</p>
+                                        @if (!checkoutEnabled) {
+                                            <p role="status">ثبت‌نام این پلن در حال حاضر در دسترس نیست.</p>
+                                        }
+                                        @if (registrationError()) { <p role="alert" class="form-error">{{ registrationError() }}</p> }
                                     </div>
                                 </section>
                             }
@@ -546,7 +512,7 @@
                                 mat-flat-button
                                 type="button"
                                 class="primary-action"
-                                [disabled]="plansLoading() || plansError() || selectedPrice === null"
+                                [disabled]="plansLoading() || plansError() || selectedPrice === null || !checkoutEnabled"
                                 (click)="next()"
                             >
                                 ادامه
@@ -560,9 +526,9 @@
                                 [disabled]="submitting() || !checkoutEnabled || selectedPrice === null"
                             >
                                 @if (submitting()) {
-                                    در حال ساخت سفارش...
+                                    در حال ایجاد فضای کاری...
                                 } @else {
-                                    رفتن به پرداخت
+                                    ثبت‌نام و ایجاد فضای کاری
                                     <span class="material-symbols-outlined">lock</span>
                                 }
                             </button>
@@ -611,8 +577,7 @@
                     <div class="summary-note">
                         <span class="material-symbols-outlined">info</span>
                         <p>
-                            اطلاعات نهایی تنها پس از تأیید پرداخت ساخته می‌شوند. برگشت مرورگر از
-                            درگاه به‌تنهایی معیار موفقیت پرداخت نیست.
+                            با تأیید ثبت‌نام، حساب مالک و شعبهٔ اصلی برای فضای کاری شما ساخته می‌شود.
                         </p>
                     </div>
 
@@ -627,10 +592,11 @@
                         </div>
                         <div>
                             <span class="material-symbols-outlined">bolt</span>
-                            شروع سریع بعد از پرداخت
+                            آماده‌سازی فضای کاری
                         </div>
                     </div>
                 </div>
             </aside>
         </div>
+        }
     </div>

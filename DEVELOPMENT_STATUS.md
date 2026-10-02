@@ -1,28 +1,19 @@
 # Development status — 2026-10-02
 
-## Completed in this slice
+## Completed
 
-- Landing and signup consume the same real public plan catalog (`GET /api/public/plans`).
-- Registered the missing HttpClient provider and lazy-loaded the signup page.
-- Persian loading, empty, retry and invalid-plan states; no silent fallback to another plan from a deep link.
-- Billing-cycle selection respects published IRR prices; zero is valid, missing prices disable selection. All amounts are labeled ریال.
-- Removed mock checkout, simulated success, credential/payload logging, speculative plan prices, unimplemented coupon field and developer instructions from the UI.
-- Checkout explicitly disabled until server-side registration/payment exists; availability notice appears before entering personal data.
-- 14 unit tests passing, including 9 new signup cases. Repaired three existing test setup defects (stale service import, missing route provider, obsolete starter heading assertion).
-- Playwright configured with five browser journeys on desktop and mobile (10 cases) and CI workflows.
+- Landing/signup use the real public plan catalog; Persian loading, empty, retry and invalid-plan states. Values are IRR without guessed pricing or fallback selections.
+- Signup submits `POST /api/public/registrations` only when the published zero-IRR price has `canRegister=true`. Paid/disabled plans block progress before account details.
+- Typed payload, client validation, stable request ID for retries, new ID after edits, duplicate-submit lock, Persian allowlisted errors and a real server receipt. Password controls are cleared on success.
+- Account, workspace/main branch and subscription are provisioned by the paired backend; signup does not claim a payment or authenticated session.
+- Removed mock checkout, credential logging, unused coupon/branch controls. Added success/error/retry/payload tests and browser journeys.
 
-## Existing/incomplete
+## Verification
 
-Landing, profile, booking and dashboard UI exists, with substantial demo data outside this slice. Registration remains an unsubmitted form. Existing auth services do not establish a complete authentication/tenant flow. Do not consider these modules production-complete.
+- Development compilation passed. Angular tests: 18 passed across 5 files. Backend counterpart: 27 tests passed.
+- Playwright discovers seven journeys on desktop/mobile (14 cases), including complete signup and paid-plan blocking. Execution/visual verification is not claimed: downloading Chromium again returned an invalid archive.
+- Production compilation remains blocked by pre-existing initial-bundle/component-style budgets. Limits were not increased; the CI production-budget job preserves this release gate.
 
-## Verification and remaining gates
+## Remaining
 
-- Development build passed.
-- Unit tests: 14 passed across 5 files.
-- Production build still fails existing initial-bundle and component-style budgets. Limits were not increased. The dedicated production-budget CI job keeps this release gate visible.
-- Playwright test discovery passed. Browser launch was blocked because Chromium/headless downloads returned a Site Unavailable HTML page. The first run's 8 cases failed at launch, before assertions; two landing cases were added afterward. No browser test or visual verification is claimed as passed.
-- Backend counterpart passed build and 11 tests; SQL Server migration execution and real database/browser integration are not yet verified.
-
-## Next work
-
-Pair with backend registration/identity persistence, tenant/main-branch membership and verified checkout. Then activate checkout with server-side pricing, validation, idempotency and appropriate browser tests. Publish approved catalog values via authenticated administration. A fresh catalog intentionally shows the empty state.
+OpenIddict login, contact verification, tenant/branch authorization and paid checkout require further backend/frontend work. Registration is disabled by default and the empty catalog intentionally has no invented production prices. SQL Server migrations and real API/database/browser integration remain unverified. Existing profile, booking and dashboard screens contain demo data outside this slice.
