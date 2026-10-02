@@ -1,86 +1,9 @@
-# Shinera Signup + Checkout
+# Signup and plan selection
 
-A dark RTL signup/checkout page styled to match the Shinera public landing page.
+The active route is `/start?plan=<catalog-code>`. Plans, prices and visible features come from the real `GET /api/public/plans` envelope through SignupCheckoutService. Landing uses the same service. Missing/inactive plans are never silently replaced; missing IRR prices are not treated as zero.
 
-## Flow
+The first stage (plan selection) is connected. Owner/business/review forms remain preparation for registration. Checkout is disabled and the UI explains this before any personal details are entered. No owner data is submitted, logged or persisted. No mock payment or mock success exists.
 
-1. Plan + billing cycle
-2. Owner account
-3. BusinessProfile + Tenant(workspace) + optional Branch
-4. Review + payment
+Before enabling checkout, implement server validation, authoritative price lookup, registration drafts, secure credential handling, provider-verified payment completion and idempotent transactional creation of tenant, owner, main branch, memberships and subscription. Returning from a payment provider is not proof of payment.
 
-## Plan parameter
-
-Both forms are supported:
-
-- `/start/salon-pro`
-- `/start?plan=salon-pro`
-
-Keys in the mock data:
-
-- `solo`
-- `solo-pro`
-- `salon`
-- `salon-pro`
-
-## Backend handoff
-
-The component builds a `SignupCheckoutPayload` containing:
-
-- `planKey`
-- `billingCycle`
-- `tenant`
-- `businessProfile`
-- `owner`
-- `branch`
-- `metadata`
-
-`SignupCheckoutService.useMock` is `true` by default.
-
-When the backend is ready:
-
-1. Set `useMock = false`.
-2. Implement `POST /api/public/signup/checkout`.
-3. Return:
-   ```json
-   {
-     "checkoutId": "guid",
-     "paymentUrl": "https://gateway/...",
-     "mode": "gateway"
-   }
-   ```
-
-## Recommended server-side flow
-
-Do NOT depend on the browser return/callback alone.
-
-1. `POST /api/public/signup/checkout`
-   - Validate payload.
-   - Check plan and price from the server-side plan catalog.
-   - Reserve/check workspace slug.
-   - Create a `RegistrationDraft`.
-   - Hash the password immediately or avoid storing it by using a post-payment password setup flow.
-   - Create `PaymentAttempt`.
-   - Return gateway URL.
-
-2. Gateway webhook/callback:
-   - Verify transaction with gateway.
-   - Enforce idempotency by payment/checkout id.
-   - In one DB transaction create:
-     - Tenant
-     - BusinessProfile
-     - Main Branch (or default branch)
-     - Owner User
-     - TenantMembership / BranchMembership
-     - Subscription
-   - Mark draft/payment as completed.
-
-3. Browser success page:
-   - Poll/read checkout status from backend.
-   - Never mark payment successful only because query string says success.
-
-## UX notes
-
-- The UI intentionally says "فضای کاری" instead of "Tenant".
-- Technical defaults (`fa-IR`, `Asia/Tehran`, `IRR`) are prefilled and not asked from the user.
-- Multi-branch details should ideally be completed after checkout/onboarding, to keep conversion friction low.
+See root TESTING.md and DEVELOPMENT_STATUS.md for commands, coverage and remaining work.

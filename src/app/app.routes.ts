@@ -5,7 +5,6 @@ import { PublicProfileComponent } from './features/public-profile/public-profile
 import { PublicBookingPageComponent } from './features/booking-page/booking-page.component';
 import { CustomerPagesComponent } from './layouts/cp-layout/customer-pages.component';
 import { PanelLayoutComponent } from './layouts/panel-layout/panel-layout.component';
-import { SignupCheckoutComponent } from './features/signup-checkout/signup-checkout.component';
 import { SignInComponent } from './features/auth/sign-in/sign-in.component';
 
 export const routes: Routes = [
@@ -13,7 +12,7 @@ export const routes: Routes = [
     path: '',
     component: FrontPagesComponent,
     children: [{ path: '', component: HomeComponent },
-      { path: 'start', component: SignupCheckoutComponent }
+      { path: 'start', loadComponent: () => import('./features/signup-checkout/signup-checkout.component').then(m => m.SignupCheckoutComponent) }
     ],
   },
   { path: 'app', redirectTo: 'app/dashboard' },
