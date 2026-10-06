@@ -1,0 +1,367 @@
+.profile-booking-cta {
+    --booking-heading: var(--whiteColor);
+    --booking-text: rgba(255, 255, 255, .82);
+    --booking-muted: rgba(255, 255, 255, .65);
+
+    --booking-primary: var(--primaryColor);
+    --booking-primary-hover: var(--primaryHoverColor);
+
+    --booking-bg: var(--bodyBgColor);
+    --booking-card-bg: var(--cardBgColor);
+    --booking-border: var(--borderColor);
+
+    padding: 100px 0;
+
+    background: var(--booking-bg);
+
+    direction: rtl;
+    overflow: hidden;
+}
+
+
+// --------------------------------------------------
+// CTA Card
+// --------------------------------------------------
+
+.booking-cta-card {
+    position: relative;
+
+    overflow: hidden;
+
+    padding: 75px 60px;
+
+    border-radius: 28px;
+
+    background:
+        linear-gradient(
+            135deg,
+            var(--booking-primary),
+            color-mix(
+                in srgb,
+                var(--booking-primary) 72%,
+                #000000
+            )
+        );
+
+    box-shadow:
+        0 25px 60px
+        color-mix(
+            in srgb,
+            var(--booking-primary) 20%,
+            transparent
+        );
+}
+
+
+// --------------------------------------------------
+// Decorative Shapes
+// --------------------------------------------------
+
+.booking-decoration {
+    position: absolute;
+
+    border-radius: 50%;
+
+    pointer-events: none;
+
+    border: 1px solid rgba(255, 255, 255, .12);
+}
+
+.booking-decoration-one {
+    width: 320px;
+    height: 320px;
+
+    left: -130px;
+    bottom: -190px;
+}
+
+.booking-decoration-two {
+    width: 220px;
+    height: 220px;
+
+    right: -80px;
+    top: -130px;
+}
+
+
+// --------------------------------------------------
+// Content
+// --------------------------------------------------
+
+.booking-content {
+    position: relative;
+    z-index: 2;
+
+    max-width: 760px;
+
+    margin: 0 auto;
+
+    text-align: center;
+}
+
+.booking-eyebrow {
+    display: inline-flex;
+    align-items: center;
+    gap: 9px;
+
+    margin-bottom: 16px;
+
+    color: var(--booking-text);
+
+    font-size: 13px;
+    font-weight: 600;
+}
+
+.booking-eyebrow::before,
+.booking-eyebrow::after {
+    content: '';
+
+    width: 24px;
+    height: 1px;
+
+    background: rgba(255, 255, 255, .5);
+}
+
+.booking-content h2 {
+    margin: 0 0 16px;
+
+    color: var(--booking-heading);
+
+    font-size: 40px;
+    font-weight: 700;
+    line-height: 1.45;
+}
+
+.booking-content p {
+    max-width: 620px;
+
+    margin: 0 auto;
+
+    color: var(--booking-text);
+
+    font-size: 15px;
+    line-height: 2;
+}
+
+
+// --------------------------------------------------
+// Actions
+// --------------------------------------------------
+
+.booking-actions {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    gap: 14px;
+
+    margin-top: 32px;
+}
+
+.booking-button {
+    min-width: 190px;
+    height: 52px;
+
+    display: inline-flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+
+    padding: 0 22px !important;
+
+    border: 1px solid var(--whiteColor) !important;
+    border-radius: 11px !important;
+
+    color: var(--booking-primary) !important;
+    background: var(--whiteColor) !important;
+
+    font-family: inherit !important;
+    font-size: 14px !important;
+    font-weight: 700 !important;
+
+    text-decoration: none;
+
+    transition:
+        transform .25s ease,
+        box-shadow .25s ease,
+        background-color .25s ease;
+
+    &:hover {
+        color: var(--booking-primary-hover) !important;
+
+        background:
+            color-mix(
+                in srgb,
+                var(--whiteColor) 92%,
+                var(--booking-primary)
+            ) !important;
+
+        transform: translateY(-2px);
+
+        box-shadow:
+            0 12px 30px rgba(0, 0, 0, .15);
+    }
+
+    .mdc-button__label {
+        width: auto !important;
+
+        display: inline-flex !important;
+        align-items: center !important;
+        justify-content: center !important;
+
+        gap: 9px;
+
+        font-family: inherit !important;
+        white-space: nowrap;
+    }
+
+    i {
+        font-size: 19px;
+        line-height: 1;
+
+        transition: transform .25s ease;
+    }
+
+    &:hover i {
+        transform: translateX(-3px);
+    }
+}
+
+
+// --------------------------------------------------
+// Phone
+// --------------------------------------------------
+
+.booking-phone {
+    display: flex;
+    align-items: center;
+
+    gap: 10px;
+
+    min-height: 52px;
+
+    padding: 7px 15px 7px 18px;
+
+    border: 1px solid rgba(255, 255, 255, .25);
+    border-radius: 11px;
+
+    color: var(--booking-heading);
+
+    background: rgba(255, 255, 255, .08);
+
+    text-decoration: none;
+
+    transition:
+        background-color .25s ease,
+        border-color .25s ease,
+        transform .25s ease;
+}
+
+.booking-phone:hover {
+    background: rgba(255, 255, 255, .14);
+
+    border-color: rgba(255, 255, 255, .4);
+
+    transform: translateY(-2px);
+}
+
+.phone-icon {
+    width: 36px;
+    height: 36px;
+
+    flex: 0 0 36px;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    border-radius: 9px;
+
+    color: var(--whiteColor);
+
+    background: rgba(255, 255, 255, .12);
+
+    i {
+        font-size: 18px;
+    }
+}
+
+.phone-content {
+    display: flex;
+    flex-direction: column;
+
+    align-items: flex-start;
+
+    gap: 2px;
+}
+
+.phone-content small {
+    color: var(--booking-muted);
+
+    font-size: 10px;
+}
+
+.phone-content strong {
+    color: var(--booking-heading);
+
+    font-size: 13px;
+    font-weight: 600;
+}
+
+
+// --------------------------------------------------
+// Responsive
+// --------------------------------------------------
+
+@media only screen and (max-width: 991px) {
+
+    .profile-booking-cta {
+        padding: 80px 0;
+    }
+
+    .booking-cta-card {
+        padding: 60px 40px;
+    }
+
+    .booking-content h2 {
+        font-size: 34px;
+    }
+}
+
+
+@media only screen and (max-width: 767px) {
+
+    .profile-booking-cta {
+        padding: 70px 0;
+    }
+
+    .booking-cta-card {
+        padding: 48px 22px;
+
+        border-radius: 22px;
+    }
+
+    .booking-content h2 {
+        font-size: 28px;
+    }
+
+    .booking-content p {
+        font-size: 14px;
+    }
+
+    .booking-actions {
+        flex-direction: column;
+
+        width: 100%;
+    }
+
+    .booking-button,
+    .booking-phone {
+        width: 100%;
+
+        box-sizing: border-box;
+    }
+
+    .booking-phone {
+        justify-content: center;
+    }
+}

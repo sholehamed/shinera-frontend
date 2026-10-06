@@ -1,0 +1,203 @@
+<section class="profile-gallery" id="gallery">
+
+    <div class="container">
+
+        <!-- Header -->
+
+        <div class="section-header">
+
+            <div class="section-eyebrow">
+                <span></span>
+                نمونه‌کارها
+                <span></span>
+            </div>
+
+            <h2>
+                نگاهی به
+                <strong>نمونه‌کارهای ما</strong>
+            </h2>
+
+            <p>
+                بخشی از نمونه‌کارها و تجربه‌های انجام‌شده توسط
+                این مجموعه را مشاهده کنید.
+            </p>
+
+        </div>
+
+
+        <!-- Categories -->
+
+        @if (categories.length > 0) {
+
+            <div class="gallery-categories">
+
+                <button
+                    type="button"
+                    class="category-button"
+                    [class.active]="selectedCategory === 'all'"
+                    (click)="selectCategory('all')"
+                >
+                    همه
+                </button>
+
+                @for (category of categories; track category) {
+
+                    <button
+                        type="button"
+                        class="category-button"
+                        [class.active]="selectedCategory === category"
+                        (click)="selectCategory(category)"
+                    >
+                        {{ category }}
+                    </button>
+
+                }
+
+            </div>
+
+        }
+
+
+        <!-- Gallery -->
+
+        @if (filteredItems.length > 0) {
+
+            <div class="gallery-grid">
+
+                @for (item of filteredItems; track item.id) {
+
+                    <button
+                        type="button"
+                        class="gallery-item"
+                        (click)="openImage(item)"
+                        [attr.aria-label]="item.title || 'مشاهده تصویر'"
+                    >
+
+                        <img
+                            [src]="item.thumbnail || item.image"
+                            [alt]="item.title || 'نمونه‌کار'"
+                            loading="lazy"
+                        />
+
+                        <span class="gallery-overlay">
+
+                            <span class="gallery-info">
+
+                                @if (item.category) {
+                                    <span class="gallery-category">
+                                        {{ item.category }}
+                                    </span>
+                                }
+
+                                @if (item.title) {
+                                    <strong>
+                                        {{ item.title }}
+                                    </strong>
+                                }
+
+                            </span>
+
+                            <span class="zoom-icon">
+                                <i class="material-symbols-outlined">
+                                    zoom_in
+                                </i>
+                            </span>
+
+                        </span>
+
+                    </button>
+
+                }
+
+            </div>
+
+        }
+
+
+        <!-- Empty -->
+
+        @if (filteredItems.length === 0) {
+
+            <div class="gallery-empty">
+
+                <div class="empty-icon">
+                    <i class="material-symbols-outlined">
+                        photo_library
+                    </i>
+                </div>
+
+                <h3>
+                    نمونه‌کاری برای نمایش وجود ندارد
+                </h3>
+
+                <p>
+                    هنوز تصویری در این بخش ثبت نشده است.
+                </p>
+
+            </div>
+
+        }
+
+    </div>
+
+
+    <!-- Lightbox -->
+
+    @if (selectedItem) {
+
+        <div
+            class="gallery-lightbox"
+            role="dialog"
+            aria-modal="true"
+            (click)="closeImage()"
+        >
+
+            <button
+                type="button"
+                class="lightbox-close"
+                aria-label="بستن"
+                (click)="closeImage()"
+            >
+                <i class="material-symbols-outlined">
+                    close
+                </i>
+            </button>
+
+
+            <div
+                class="lightbox-content"
+                (click)="$event.stopPropagation()"
+            >
+
+                <img
+                    [src]="selectedItem.image"
+                    [alt]="selectedItem.title || 'نمونه‌کار'"
+                />
+
+                @if (selectedItem.title || selectedItem.category) {
+
+                    <div class="lightbox-caption">
+
+                        @if (selectedItem.category) {
+                            <span>
+                                {{ selectedItem.category }}
+                            </span>
+                        }
+
+                        @if (selectedItem.title) {
+                            <strong>
+                                {{ selectedItem.title }}
+                            </strong>
+                        }
+
+                    </div>
+
+                }
+
+            </div>
+
+        </div>
+
+    }
+
+</section>

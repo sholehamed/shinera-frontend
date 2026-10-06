@@ -1,0 +1,105 @@
+<mat-card
+    class="booking-sources-card mb-25 border-radius d-block bg-white border-0 shadow-none"
+    [class.component-dark-theme]="themeService.isDarkTheme()"
+>
+
+    <mat-card-header>
+
+        <div class="card-header-content">
+
+            <div>
+                <span class="eyebrow">
+                    رفتار رزرو
+                </span>
+
+                <mat-card-title>
+                    <h5 class="mb-0">
+                        {{ data.title }}
+                    </h5>
+                </mat-card-title>
+
+                <p class="subtitle mb-0">
+                    {{ data.subtitle }}
+                </p>
+            </div>
+
+            <span class="period">
+                {{ data.periodLabel }}
+            </span>
+
+        </div>
+
+    </mat-card-header>
+
+    <mat-card-content>
+
+        <div class="sources-list">
+
+            @for (source of data.sources; track source.type) {
+
+                <div class="source-item">
+
+                    <div class="source-main">
+
+                        <div class="source-icon">
+                            <mat-icon>
+                                {{ source.icon }}
+                            </mat-icon>
+                        </div>
+
+                        <div class="source-info">
+
+                            <div class="source-title-row">
+
+                                <strong>
+                                    {{ source.title }}
+                                </strong>
+
+                                <span class="source-count">
+                                    {{ source.count }}
+                                </span>
+
+                            </div>
+
+                            <span class="source-subtitle">
+                                {{ source.subtitle }}
+                            </span>
+
+                        </div>
+
+                    </div>
+
+                    <div class="source-progress">
+
+                        <mat-progress-bar
+                            mode="determinate"
+                            [value]="source.percentage"
+                        />
+
+                        <span>
+                            {{ source.percentage }}٪
+                        </span>
+
+                    </div>
+
+                </div>
+
+            }
+
+        </div>
+
+        <div class="card-footer">
+
+            <span>
+                مجموع رزروها
+            </span>
+
+            <strong>
+                {{ data.totalBookings }}
+            </strong>
+
+        </div>
+
+    </mat-card-content>
+
+</mat-card>

@@ -1,0 +1,242 @@
+<mat-card
+    class="solo-performance-card mb-25 border-radius d-block bg-white border-0 shadow-none"
+    [class.component-rtl-enabled]="themeService.isRTLEnabledTheme()"
+    [class.component-dark-theme]="themeService.isDarkTheme()"
+>
+
+    <mat-card-header>
+
+        <div class="header-content">
+
+            <div>
+
+                <span class="eyebrow">
+                    عملکرد شخصی
+                </span>
+
+                <mat-card-title>
+
+                    <h5 class="mb-0">
+                        عملکرد من
+                    </h5>
+
+                </mat-card-title>
+
+                <span class="period-label">
+                    {{ data.periodLabel }}
+                </span>
+
+            </div>
+
+
+            <div
+                class="trend-badge"
+                [class.positive]="data.revenueChangePercent >= 0"
+                [class.negative]="data.revenueChangePercent < 0"
+            >
+
+                <mat-icon>
+                    {{
+                        data.revenueChangePercent >= 0
+                            ? 'trending_up'
+                            : 'trending_down'
+                    }}
+                </mat-icon>
+
+                <span>
+                    {{ data.revenueChangePercent }}٪
+                </span>
+
+            </div>
+
+        </div>
+
+    </mat-card-header>
+
+
+    <mat-card-content>
+
+        <div class="performance-grid">
+
+            <!-- Appointments -->
+
+            <div class="performance-item">
+
+                <div class="metric-icon appointments">
+
+                    <mat-icon>
+                        calendar_month
+                    </mat-icon>
+
+                </div>
+
+
+                <div class="metric-content">
+
+                    <span class="metric-label">
+                        نوبت‌ها
+                    </span>
+
+                    <strong class="metric-value">
+                        {{ data.appointments }}
+                    </strong>
+
+                    <span class="metric-detail">
+                        در این دوره
+                    </span>
+
+                </div>
+
+            </div>
+
+
+            <!-- Revenue -->
+
+            <div class="performance-item">
+
+                <div class="metric-icon revenue">
+
+                    <mat-icon>
+                        payments
+                    </mat-icon>
+
+                </div>
+
+
+                <div class="metric-content">
+
+                    <span class="metric-label">
+                        درآمد
+                    </span>
+
+                    <strong class="metric-value">
+                        {{ formatRevenue(data.revenue) }}
+                    </strong>
+
+                    <span class="metric-detail">
+                        تومان
+                    </span>
+
+                </div>
+
+            </div>
+
+
+            <!-- Completion -->
+
+            <div class="performance-item">
+
+                <div class="metric-icon completion">
+
+                    <mat-icon>
+                        task_alt
+                    </mat-icon>
+
+                </div>
+
+
+                <div class="metric-content">
+
+                    <span class="metric-label">
+                        نرخ تکمیل
+                    </span>
+
+                    <strong class="metric-value">
+                        {{ data.completionRate }}٪
+                    </strong>
+
+                    <span class="metric-detail">
+                        {{ data.completedAppointments }}
+                        نوبت تکمیل‌شده
+                    </span>
+
+                </div>
+
+            </div>
+
+
+            <!-- Rating -->
+
+            <div class="performance-item">
+
+                <div class="metric-icon rating">
+
+                    <mat-icon>
+                        star
+                    </mat-icon>
+
+                </div>
+
+
+                <div class="metric-content">
+
+                    <span class="metric-label">
+                        رضایت مشتری
+                    </span>
+
+                    <strong class="metric-value">
+                        {{ data.rating }}
+                    </strong>
+
+                    <span class="metric-detail">
+                        از ۵
+                    </span>
+
+                </div>
+
+            </div>
+
+        </div>
+
+
+        <div class="performance-footer">
+
+            <div class="footer-item">
+
+                <span class="footer-label">
+                    انجام‌شده
+                </span>
+
+                <strong>
+                    {{ data.completedAppointments }}
+                </strong>
+
+            </div>
+
+
+            <span class="footer-divider"></span>
+
+
+            <div class="footer-item">
+
+                <span class="footer-label">
+                    لغوشده
+                </span>
+
+                <strong>
+                    {{ data.cancelledAppointments }}
+                </strong>
+
+            </div>
+
+
+            <span class="footer-divider"></span>
+
+
+            <div class="footer-item revenue-change">
+
+                <span class="footer-label">
+                    تغییر درآمد
+                </span>
+
+                <strong>
+                    +{{ data.revenueChangePercent }}٪
+                </strong>
+
+            </div>
+
+        </div>
+
+    </mat-card-content>
+
+</mat-card>

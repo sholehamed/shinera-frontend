@@ -1,0 +1,80 @@
+<mat-card
+    class="today-capacity-card mb-25 border-radius d-block bg-white border-0 shadow-none"
+    [class.component-dark-theme]="themeService.isDarkTheme()"
+>
+
+    <mat-card-content>
+
+        <div class="card-header">
+
+            <span class="title">
+                {{ data.title }}
+            </span>
+
+            <span
+                class="trend"
+                [class.up]="data.comparisonPercent >= 0"
+            >
+                ↑ {{ data.comparisonPercent }}٪
+            </span>
+
+        </div>
+
+        <div class="chart-wrapper">
+
+            <div
+                id="today_capacity_chart"
+                class="chart"
+            ></div>
+
+            <div class="chart-center">
+
+                <strong>
+                    {{ data.utilizationPercent }}٪
+                </strong>
+
+                <span>
+                    رزرو شده
+                </span>
+
+            </div>
+
+        </div>
+
+        <div class="capacity-footer">
+
+            <div class="capacity-stat">
+
+                <strong>
+                    {{ data.bookedSlots }}
+                </strong>
+
+                <span>
+                    رزرو
+                </span>
+
+            </div>
+
+            <span class="divider"></span>
+
+            <div class="capacity-stat">
+
+                <strong>
+                    {{ data.remainingSlots }}
+                </strong>
+
+                <span>
+                    ظرفیت باقی‌مانده
+                </span>
+
+            </div>
+
+        </div>
+
+        <div class="comparison">
+            {{ data.comparisonText }}
+        </div>
+
+    </mat-card-content>
+
+</mat-card>

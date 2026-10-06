@@ -1,0 +1,539 @@
+:host {
+    display: block;
+}
+
+
+.top-customers-card {
+
+    overflow: hidden;
+
+    border:
+        1px solid var(--borderColor) !important;
+
+
+    .mat-mdc-card-header {
+
+        padding:
+            20px 22px 15px;
+
+        margin: 0;
+
+        border-bottom:
+            1px solid var(--borderColor);
+
+    }
+
+
+    .header-content {
+
+        width: 100%;
+
+        display: flex;
+
+        align-items: flex-start;
+
+        justify-content: space-between;
+
+        gap: 20px;
+
+    }
+
+
+    .eyebrow {
+
+        display: block;
+
+        margin-bottom: 4px;
+
+        color:
+            var(--primaryColor);
+
+        font-size: 9px;
+
+        font-weight: 600;
+
+    }
+
+
+    .mat-mdc-card-title {
+
+        margin: 0;
+
+
+        h5 {
+
+            color:
+                var(--blackColor);
+
+            font-size: 16px;
+
+            font-weight: 700;
+
+        }
+
+    }
+
+
+    .subtitle {
+
+        display: block;
+
+        margin-top: 4px;
+
+        color:
+            var(--bodyColor);
+
+        font-size: 9px;
+
+    }
+
+
+    .period-button {
+
+        height: 34px;
+
+        min-width: 110px;
+
+        padding:
+            0 10px !important;
+
+        border:
+            1px solid var(--borderColor);
+
+        border-radius: 9px;
+
+        color:
+            var(--bodyColor);
+
+        background:
+            rgba(100, 116, 139, .04);
+
+        font-size: 10px;
+
+
+        ::ng-deep {
+
+            .mdc-button__label {
+
+                width: 100%;
+
+                display: flex;
+
+                align-items: center;
+
+                justify-content: space-between;
+
+                gap: 8px;
+
+            }
+
+        }
+
+
+        mat-icon {
+
+            width: 16px;
+
+            height: 16px;
+
+            margin: 0;
+
+            font-size: 16px;
+
+            line-height: 16px;
+
+        }
+
+    }
+
+
+    .mat-mdc-card-content {
+
+        padding:
+            0 22px 10px;
+
+    }
+
+
+    .table-wrapper {
+
+        width: 100%;
+
+    }
+
+
+    table {
+
+        width: 100%;
+
+        background: transparent;
+
+    }
+
+
+    .mat-mdc-header-cell {
+
+        height: 48px;
+
+        padding-inline: 10px;
+
+        border-bottom:
+            1px solid var(--borderColor);
+
+        color:
+            var(--bodyColor);
+
+        font-size: 9px;
+
+        font-weight: 600;
+
+        white-space: nowrap;
+
+    }
+
+
+    .mat-mdc-cell {
+
+        height: 58px;
+
+        padding-inline: 10px;
+
+        border-bottom:
+            1px solid var(--borderColor);
+
+        color:
+            var(--bodyColor);
+
+        font-size: 10px;
+
+    }
+
+
+    .mat-mdc-row {
+
+        transition:
+            background-color .2s ease;
+
+
+        &:hover {
+
+            background:
+                rgba(96, 93, 255, .025);
+
+        }
+
+    }
+
+
+    .customer-info {
+
+        display: flex;
+
+        align-items: center;
+
+        gap: 9px;
+
+
+        img {
+
+            width: 34px;
+
+            height: 34px;
+
+            flex-shrink: 0;
+
+            border-radius: 50%;
+
+            object-fit: cover;
+
+        }
+
+
+        strong {
+
+            display: block;
+
+            color:
+                var(--blackColor);
+
+            font-size: 10px;
+
+            font-weight: 700;
+
+        }
+
+
+        span {
+
+            display: block;
+
+            margin-top: 2px;
+
+            color:
+                var(--bodyColor);
+
+            font-size: 8px;
+
+        }
+
+    }
+
+
+    .table-value,
+    .service-name {
+
+        color:
+            var(--bodyColor);
+
+        font-weight: 500;
+
+    }
+
+
+    .visit-count {
+
+        color:
+            var(--blackColor);
+
+        font-size: 11px;
+
+    }
+
+
+    .visit-label,
+    .currency-label {
+
+        margin-inline-start: 3px;
+
+        color:
+            var(--bodyColor);
+
+        font-size: 8px;
+
+    }
+
+
+    .total-spent {
+
+        color:
+            var(--blackColor);
+
+        font-size: 11px;
+
+        font-weight: 700;
+
+    }
+
+
+    .segment-badge {
+
+        display: inline-flex;
+
+        align-items: center;
+
+        justify-content: center;
+
+        min-width: 52px;
+
+        padding:
+            4px 8px;
+
+        border-radius: 20px;
+
+        font-size: 8px;
+
+        font-weight: 600;
+
+
+        &.vip {
+
+            color: #a96a00;
+
+            background:
+                rgba(245, 158, 11, .10);
+
+        }
+
+
+        &.loyal {
+
+            color: #7c4dcc;
+
+            background:
+                rgba(124, 77, 204, .10);
+
+        }
+
+
+        &.regular {
+
+            color:
+                var(--bodyColor);
+
+            background:
+                rgba(100, 116, 139, .09);
+
+        }
+
+
+        &.new {
+
+            color: #287bb5;
+
+            background:
+                rgba(40, 123, 181, .10);
+
+        }
+
+
+        &.at-risk {
+
+            color:
+                var(--dangerColor);
+
+            background:
+                rgba(255, 64, 35, .09);
+
+        }
+
+    }
+
+
+    .action-button {
+
+        width: 32px;
+
+        height: 32px;
+
+        color:
+            var(--bodyColor);
+
+
+        mat-icon {
+
+            font-size: 18px;
+
+        }
+
+    }
+
+
+    ::ng-deep {
+
+        .mat-mdc-paginator {
+
+            background:
+                transparent;
+
+            color:
+                var(--bodyColor);
+
+            border-top:
+                1px solid var(--borderColor);
+
+        }
+
+
+        .mat-mdc-paginator-container {
+
+            min-height: 52px;
+
+            padding:
+                0 4px;
+
+        }
+
+
+        .mat-mdc-paginator-page-size-label,
+        .mat-mdc-paginator-range-label {
+
+            font-size: 9px;
+
+        }
+
+    }
+
+
+    &.component-dark-theme {
+
+        .mat-mdc-card-title h5,
+        .customer-info strong,
+        .visit-count,
+        .total-spent {
+
+            color:
+                var(--whiteColor);
+
+        }
+
+
+        .mat-mdc-row:hover {
+
+            background:
+                rgba(255, 255, 255, .025);
+
+        }
+
+    }
+
+}
+@media only screen and (max-width: 991px) {
+
+    .top-customers-card {
+
+        .table-responsive {
+
+            overflow-x: auto;
+
+        }
+
+
+        table {
+
+            min-width: 850px;
+
+        }
+
+    }
+
+}
+
+
+@media only screen and (max-width: 767px) {
+
+    .top-customers-card {
+
+        .mat-mdc-card-header {
+
+            padding:
+                18px 16px 14px;
+
+        }
+
+
+        .mat-mdc-card-content {
+
+            padding:
+                0 16px 8px;
+
+        }
+
+
+        .header-content {
+
+            align-items: stretch;
+
+            flex-direction: column;
+
+        }
+
+
+        .period-button {
+
+            width: 100%;
+
+        }
+
+    }
+
+}

@@ -1,0 +1,61 @@
+<mat-card
+    class="revenue-by-services-card mb-25 border-radius d-block bg-white border-0 shadow-none"
+>
+
+    <mat-card-header>
+
+        <mat-card-title>
+            <h5 class="mb-0">
+                درآمد بر اساس خدمات
+            </h5>
+        </mat-card-title>
+
+        <mat-card-subtitle>
+
+           <button
+    mat-button
+    [matMenuTriggerFor]="timeframeMenu"
+    class="timeframe-button"
+>
+
+    <span>
+        {{ selectedTimeframeLabel }}
+    </span>
+
+    <mat-icon>
+        keyboard_arrow_down
+    </mat-icon>
+
+</button>
+
+<mat-menu
+    #timeframeMenu="matMenu"
+    xPosition="before"
+>
+
+    @for (option of timeframeOptions; track option.value) {
+
+        <button
+            mat-menu-item
+            (click)="onTimeframeChange(option.value)"
+        >
+            {{ option.label }}
+        </button>
+
+    }
+
+</mat-menu>
+
+        </mat-card-subtitle>
+
+    </mat-card-header>
+
+    <mat-card-content>
+
+        <div class="chart">
+            <div id="revenue_by_services_chart"></div>
+        </div>
+
+    </mat-card-content>
+
+</mat-card>

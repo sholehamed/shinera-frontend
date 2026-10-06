@@ -1,0 +1,205 @@
+<div class="customer-step">
+
+  <form
+    [formGroup]="form"
+    (ngSubmit)="submit()"
+    novalidate
+  >
+
+    <!-- Customer Information -->
+
+    <div class="form-section">
+
+      <div class="section-title">
+
+        <div class="section-icon">
+          <span class="material-symbols-outlined">
+            person
+          </span>
+        </div>
+
+        <div>
+          <strong>
+            اطلاعات تماس
+          </strong>
+
+          <span>
+            برای ثبت نوبت، اطلاعات زیر را وارد کنید.
+          </span>
+        </div>
+
+      </div>
+
+
+      <!-- Full Name -->
+
+      <div class="form-field">
+
+        <label for="fullName">
+          نام و نام خانوادگی
+          <span>*</span>
+        </label>
+
+        <div
+          class="input-wrapper"
+          [class.invalid]="
+            fullName.invalid &&
+            fullName.touched
+          "
+        >
+
+          <span class="material-symbols-outlined">
+            person
+          </span>
+
+          <input
+            id="fullName"
+            type="text"
+            formControlName="fullName"
+            placeholder="مثلاً آیدا محمدی"
+            autocomplete="name"
+          />
+
+        </div>
+
+
+        @if (fullName.invalid && fullName.touched) {
+
+          <small class="error-message">
+
+            @if (fullName.errors?.['required']) {
+              وارد کردن نام و نام خانوادگی الزامی است.
+            }
+
+            @else if (fullName.errors?.['minlength']) {
+              نام و نام خانوادگی را کامل وارد کنید.
+            }
+
+          </small>
+
+        }
+
+      </div>
+
+
+      <!-- Mobile -->
+
+      <div class="form-field">
+
+        <label for="mobile">
+          شماره موبایل
+          <span>*</span>
+        </label>
+
+        <div
+          class="input-wrapper"
+          [class.invalid]="
+            mobile.invalid &&
+            mobile.touched
+          "
+        >
+
+          <span class="material-symbols-outlined">
+            phone
+          </span>
+
+          <input
+            id="mobile"
+            type="tel"
+            formControlName="mobile"
+            placeholder="مثلاً 09121234567"
+            inputmode="numeric"
+            autocomplete="tel"
+            dir="ltr"
+          />
+
+        </div>
+
+
+        @if (mobile.invalid && mobile.touched) {
+
+          <small class="error-message">
+
+            @if (mobile.errors?.['required']) {
+              وارد کردن شماره موبایل الزامی است.
+            }
+
+            @else if (mobile.errors?.['pattern']) {
+              شماره موبایل را به صورت ۱۱ رقمی وارد کنید.
+            }
+
+          </small>
+
+        }
+
+      </div>
+
+
+      <!-- Note -->
+
+      <div class="form-field">
+
+        <label for="note">
+          توضیحات
+          <span class="optional">
+            اختیاری
+          </span>
+        </label>
+
+        <div class="textarea-wrapper">
+
+          <span class="material-symbols-outlined">
+            edit_note
+          </span>
+
+          <textarea
+            id="note"
+            formControlName="note"
+            rows="4"
+            placeholder="اگر توضیح یا درخواست خاصی دارید، اینجا بنویسید."
+          ></textarea>
+
+        </div>
+
+      </div>
+
+    </div>
+
+
+    <!-- Privacy Hint -->
+
+    <div class="privacy-hint">
+
+      <span class="material-symbols-outlined">
+        lock
+      </span>
+
+      <span>
+        اطلاعات شما فقط برای هماهنگی و ثبت این نوبت استفاده می‌شود.
+      </span>
+
+    </div>
+
+
+    <!-- Actions -->
+
+    <div class="customer-actions">
+
+      <button
+        type="submit"
+        class="continue-button"
+      >
+
+        ادامه
+
+        <span class="material-symbols-outlined">
+          arrow_back
+        </span>
+
+      </button>
+
+    </div>
+
+  </form>
+
+</div>

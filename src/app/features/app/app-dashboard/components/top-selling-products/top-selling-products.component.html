@@ -1,0 +1,104 @@
+<mat-card
+  class="top-selling-products-card mb-25 border-radius d-block bg-white border-0 shadow-none"
+  [class.component-rtl-enabled]="themeService.isRTLEnabledTheme()"
+>
+  <!-- Header -->
+  <mat-card-header>
+    <div class="card-title-area">
+      <mat-card-title>
+        <h5 class="mb-0">پرفروش‌ترین محصولات</h5>
+      </mat-card-title>
+
+      <span class="card-description"> محصولات محبوب این بازه زمانی </span>
+    </div>
+
+    <mat-card-subtitle>
+      <button mat-button [matMenuTriggerFor]="periodMenu" class="period-selector">
+        <span>{{ selectedPeriod() }}</span>
+
+        <i class="ri-arrow-down-s-line"></i>
+      </button>
+
+      <mat-menu #periodMenu="matMenu" class="card-header-menu">
+        @for (period of periods; track period) {
+          <button
+            mat-menu-item
+            [class.active]="selectedPeriod() === period"
+            (click)="setPeriod(period)"
+          >
+            {{ period }}
+          </button>
+        }
+      </mat-menu>
+    </mat-card-subtitle>
+  </mat-card-header>
+
+  <mat-card-content>
+    <div class="products-wrapper">
+      <!-- Previous -->
+      <button
+        type="button"
+        class="products-navigation previous"
+        aria-label="محصولات قبلی"
+        (click)="scrollProducts('previous')"
+      >
+        <i class="ri-arrow-right-s-line"></i>
+      </button>
+
+      <!-- Products -->
+      <div class="products-scroll-container">
+        @for (product of products; track product.id) {
+          <article class="product-item">
+            <!-- Image -->
+            <a [routerLink]="['/products', product.id]" class="product-image">
+              <img [src]="product.image" [alt]="product.name" loading="lazy" />
+
+              <span class="product-rank"> #{{ $index + 1 }} </span>
+            </a>
+
+            <!-- Content -->
+            <div class="product-content">
+              <div class="product-main">
+                <h6>
+                  <a [routerLink]="['/products', product.id]">
+                    {{ product.name }}
+                  </a>
+                </h6>
+
+                <span class="product-price">
+                  {{ product.price }}
+                </span>
+              </div>
+
+              <div class="product-sales">
+                <span class="sales-count">
+                  {{ product.sold | number }}
+                </span>
+
+                <span class="sales-label"> فروش </span>
+
+                @if (product.trend !== undefined) {
+                  <span class="sales-trend" [class.down]="product.trend < 0">
+                    <i [class]="product.trend >= 0 ? 'ri-arrow-up-line' : 'ri-arrow-down-line'"></i>
+
+                    {{ absolute(product.trend) }}٪
+                  </span>
+                }
+              </div>
+            </div>
+          </article>
+        }
+      </div>
+
+      <!-- Next -->
+      <button
+        type="button"
+        class="products-navigation next"
+        aria-label="محصولات بعدی"
+        (click)="scrollProducts('next')"
+      >
+        <i class="ri-arrow-left-s-line"></i>
+      </button>
+    </div>
+  </mat-card-content>
+</mat-card>

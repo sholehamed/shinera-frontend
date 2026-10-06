@@ -1,0 +1,147 @@
+<section class="profile-hero">
+
+    <div class="hero-cover">
+        <img
+            [src]="profile.coverImage"
+            [alt]="profile.name"
+        />
+
+        <div class="hero-overlay"></div>
+    </div>
+
+    <div class="container">
+
+        <div class="hero-content">
+
+            <div class="profile-header">
+
+                <div class="profile-avatar">
+                    <img
+                        [src]="profile.logo"
+                        [alt]="profile.name"
+                    />
+                </div>
+
+                <div class="profile-info">
+
+                    <div class="profile-category">
+                        <span class="status-dot"></span>
+                        {{ profile.category }}
+                    </div>
+
+                    <h1>
+                        {{ profile.name }}
+                    </h1>
+
+                    @if (profile.tagline) {
+                        <p class="tagline">
+                            {{ profile.tagline }}
+                        </p>
+                    }
+
+                    @if (profile.location) {
+                        <div class="location">
+                            <i class="material-symbols-outlined">
+                                location_on
+                            </i>
+
+                            <span>
+                                {{ profile.location }}
+                            </span>
+                        </div>
+                    }
+
+                </div>
+
+            </div>
+
+
+            @if (profile.description) {
+                <p class="description">
+                    {{ profile.description }}
+                </p>
+            }
+
+
+            <div class="hero-actions">
+
+                <a
+                    mat-flat-button
+                    class="booking-button"
+                    [routerLink]="['booking']"
+                >
+                    <i class="material-symbols-outlined">
+                        calendar_month
+                    </i>
+
+                    دریافت نوبت
+                </a>
+
+                @if (profile.phone) {
+                    <a
+                        mat-stroked-button
+                        class="contact-button"
+                        [href]="'tel:' + profile.phone"
+                    >
+                        <i class="material-symbols-outlined">
+                            call
+                        </i>
+
+                        تماس
+                    </a>
+                }
+
+            </div>
+
+
+            <div class="hero-meta">
+
+                @if (profile.workingStatus) {
+                    <div class="meta-item">
+                        <span class="meta-icon">
+                            <i class="material-symbols-outlined">
+                                schedule
+                            </i>
+                        </span>
+
+                        <div>
+                            <strong>
+                                {{ profile.workingStatus }}
+                            </strong>
+
+                            @if (profile.workingHours) {
+                                <span>
+                                    {{ profile.workingHours }}
+                                </span>
+                            }
+                        </div>
+                    </div>
+                }
+
+                @if (profile.servicesCount !== undefined) {
+                    <div class="meta-item">
+                        <span class="meta-icon">
+                            <i class="material-symbols-outlined">
+                                auto_awesome
+                            </i>
+                        </span>
+
+                        <div>
+                            <strong>
+                                {{ profile.servicesCount }}
+                            </strong>
+
+                            <span>
+                                خدمت
+                            </span>
+                        </div>
+                    </div>
+                }
+
+            </div>
+
+        </div>
+
+    </div>
+
+</section>

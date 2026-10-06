@@ -1,0 +1,334 @@
+.profile-about {
+    --about-heading: var(--headingColor);
+    --about-text: var(--bodyColor);
+    --about-muted: var(--mutedColor);
+
+    --about-primary: var(--primaryColor);
+    --about-primary-hover: var(--primaryHoverColor);
+
+    --about-bg: var(--bodyBgColor);
+    --about-card-bg: var(--cardBgColor);
+    --about-surface: var(--surfaceColor);
+    --about-border: var(--borderColor);
+
+    padding: 110px 0;
+    background: var(--about-bg);
+
+    direction: rtl;
+    overflow: hidden;
+}
+
+
+// --------------------------------------------------
+// Wrapper
+// --------------------------------------------------
+
+.about-wrapper {
+    display: grid;
+    grid-template-columns: minmax(0, .95fr) minmax(0, 1.05fr);
+    align-items: center;
+    gap: 80px;
+}
+
+
+// --------------------------------------------------
+// Image
+// --------------------------------------------------
+
+.about-image {
+    position: relative;
+    padding: 20px 0 20px 20px;
+}
+
+.about-image-frame {
+    position: relative;
+    z-index: 2;
+
+    overflow: hidden;
+
+    border-radius: 24px;
+    background: var(--about-card-bg);
+
+    border: 1px solid var(--about-border);
+
+    box-shadow:
+        0 25px 60px rgba(0, 0, 0, .08);
+
+    aspect-ratio: 4 / 5;
+
+    img {
+        width: 100%;
+        height: 100%;
+
+        display: block;
+
+        object-fit: cover;
+
+        transition: transform .5s ease;
+    }
+}
+
+.about-image:hover {
+
+    .about-image-frame img {
+        transform: scale(1.03);
+    }
+}
+
+
+// Decorative shape behind image
+
+.about-image-decoration {
+    position: absolute;
+
+    right: 0;
+    bottom: 0;
+
+    width: 72%;
+    height: 72%;
+
+    border-radius: 28px;
+
+    background:
+        color-mix(
+            in srgb,
+            var(--about-primary) 10%,
+            var(--about-surface)
+        );
+
+    border: 1px solid
+        color-mix(
+            in srgb,
+            var(--about-primary) 15%,
+            var(--about-border)
+        );
+}
+
+
+// --------------------------------------------------
+// Content
+// --------------------------------------------------
+
+.about-content {
+    max-width: 650px;
+}
+
+.about-eyebrow {
+    position: relative;
+
+    display: inline-flex;
+    align-items: center;
+    gap: 10px;
+
+    margin-bottom: 18px;
+
+    color: var(--about-primary);
+
+    font-size: 14px;
+    font-weight: 700;
+}
+
+.about-eyebrow::before {
+    content: '';
+
+    width: 28px;
+    height: 2px;
+
+    border-radius: 999px;
+
+    background: var(--about-primary);
+}
+
+.about-content h2 {
+    margin: 0 0 22px;
+
+    color: var(--about-heading);
+
+    font-size: 40px;
+    font-weight: 700;
+    line-height: 1.45;
+
+    letter-spacing: -.5px;
+}
+
+.about-description {
+    color: var(--about-text);
+
+    font-size: 16px;
+    line-height: 2.15;
+
+    white-space: pre-line;
+}
+
+
+// --------------------------------------------------
+// Highlights
+// --------------------------------------------------
+
+.about-highlights {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+
+    gap: 14px;
+
+    margin-top: 35px;
+}
+
+.about-highlight {
+    display: flex;
+    align-items: center;
+    gap: 14px;
+
+    padding: 16px;
+
+    border: 1px solid var(--about-border);
+    border-radius: 14px;
+
+    background: var(--about-card-bg);
+
+    transition:
+        border-color .25s ease,
+        transform .25s ease,
+        box-shadow .25s ease;
+}
+
+.about-highlight:hover {
+    border-color:
+        color-mix(
+            in srgb,
+            var(--about-primary) 30%,
+            var(--about-border)
+        );
+
+    transform: translateY(-2px);
+
+    box-shadow:
+        0 10px 30px rgba(0, 0, 0, .05);
+}
+
+.highlight-icon {
+    width: 42px;
+    height: 42px;
+
+    flex: 0 0 42px;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    border-radius: 12px;
+
+    color: var(--about-primary);
+
+    background:
+        color-mix(
+            in srgb,
+            var(--about-primary) 10%,
+            var(--about-card-bg)
+        );
+
+    i {
+        font-size: 21px;
+    }
+}
+
+.highlight-content {
+    display: flex;
+    flex-direction: column;
+
+    gap: 3px;
+
+    min-width: 0;
+}
+
+.highlight-content strong {
+    color: var(--about-heading);
+
+    font-size: 16px;
+    font-weight: 700;
+}
+
+.highlight-content span {
+    color: var(--about-muted);
+
+    font-size: 13px;
+}
+
+
+// --------------------------------------------------
+// Tablet
+// --------------------------------------------------
+
+@media only screen and (max-width: 991px) {
+
+    .profile-about {
+        padding: 90px 0;
+    }
+
+    .about-wrapper {
+        grid-template-columns: 1fr;
+
+        gap: 50px;
+    }
+
+    .about-image {
+        max-width: 620px;
+        width: 100%;
+
+        margin: 0 auto;
+    }
+
+    .about-content {
+        max-width: 100%;
+    }
+
+    .about-content h2 {
+        font-size: 34px;
+    }
+}
+
+
+// --------------------------------------------------
+// Mobile
+// --------------------------------------------------
+
+@media only screen and (max-width: 767px) {
+
+    .profile-about {
+        padding: 70px 0;
+    }
+
+    .about-wrapper {
+        gap: 35px;
+    }
+
+    .about-image {
+        padding: 12px 0 12px 12px;
+    }
+
+    .about-image-frame {
+        border-radius: 18px;
+    }
+
+    .about-image-decoration {
+        border-radius: 20px;
+    }
+
+    .about-content h2 {
+        margin-bottom: 16px;
+
+        font-size: 28px;
+        line-height: 1.5;
+    }
+
+    .about-description {
+        font-size: 14px;
+        line-height: 2;
+    }
+
+    .about-highlights {
+        grid-template-columns: 1fr;
+
+        margin-top: 25px;
+    }
+}

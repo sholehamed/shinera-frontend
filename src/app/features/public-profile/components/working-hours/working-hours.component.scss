@@ -1,0 +1,496 @@
+.profile-working-hours {
+    --working-heading: var(--headingColor);
+    --working-text: var(--bodyColor);
+    --working-muted: var(--mutedColor);
+
+    --working-primary: var(--primaryColor);
+    --working-primary-hover: var(--primaryHoverColor);
+
+    --working-bg: var(--surfaceColor);
+    --working-card-bg: var(--cardBgColor);
+    --working-border: var(--borderColor);
+
+    padding: 100px 0;
+
+    background: var(--working-bg);
+
+    direction: rtl;
+}
+
+
+// --------------------------------------------------
+// Header
+// --------------------------------------------------
+
+.section-header {
+    max-width: 650px;
+
+    margin: 0 auto 50px;
+
+    text-align: center;
+}
+
+.section-eyebrow {
+    display: inline-flex;
+    align-items: center;
+    gap: 10px;
+
+    margin-bottom: 16px;
+
+    color: var(--working-primary);
+
+    font-size: 14px;
+    font-weight: 700;
+}
+
+.section-eyebrow::before,
+.section-eyebrow::after {
+    content: '';
+
+    width: 24px;
+    height: 2px;
+
+    border-radius: 999px;
+
+    background: var(--working-primary);
+}
+
+.section-header h2 {
+    margin: 0 0 14px;
+
+    color: var(--working-heading);
+
+    font-size: 36px;
+    font-weight: 700;
+    line-height: 1.5;
+}
+
+.section-header p {
+    margin: 0;
+
+    color: var(--working-text);
+
+    font-size: 15px;
+    line-height: 2;
+}
+
+
+// --------------------------------------------------
+// Grid
+// --------------------------------------------------
+
+.working-location-grid {
+    display: grid;
+
+    grid-template-columns:
+        minmax(0, 1fr)
+        minmax(0, 1fr);
+
+    gap: 24px;
+}
+
+
+// --------------------------------------------------
+// Cards
+// --------------------------------------------------
+
+.working-card,
+.location-card {
+    padding: 30px;
+
+    border: 1px solid var(--working-border);
+    border-radius: 20px;
+
+    background: var(--working-card-bg);
+
+    transition:
+        border-color .25s ease,
+        box-shadow .25s ease;
+}
+
+.working-card:hover,
+.location-card:hover {
+    border-color:
+        color-mix(
+            in srgb,
+            var(--working-primary) 25%,
+            var(--working-border)
+        );
+
+    box-shadow:
+        0 15px 40px rgba(0, 0, 0, .05);
+}
+
+
+// --------------------------------------------------
+// Card Header
+// --------------------------------------------------
+
+.card-header {
+    display: flex;
+    align-items: center;
+
+    gap: 14px;
+
+    padding-bottom: 24px;
+
+    border-bottom: 1px solid var(--working-border);
+}
+
+.card-icon {
+    width: 48px;
+    height: 48px;
+
+    flex: 0 0 48px;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    border-radius: 14px;
+
+    color: var(--working-primary);
+
+    background:
+        color-mix(
+            in srgb,
+            var(--working-primary) 10%,
+            var(--working-card-bg)
+        );
+
+    i {
+        font-size: 24px;
+    }
+}
+
+.card-header h3 {
+    margin: 0 0 3px;
+
+    color: var(--working-heading);
+
+    font-size: 17px;
+    font-weight: 700;
+}
+
+.card-header span {
+    color: var(--working-muted);
+
+    font-size: 12px;
+}
+
+
+// --------------------------------------------------
+// Working Days
+// --------------------------------------------------
+
+.working-days {
+    padding-top: 8px;
+}
+
+.working-day {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+
+    min-height: 48px;
+
+    padding: 7px 0;
+
+    border-bottom: 1px dashed var(--working-border);
+}
+
+.working-day:last-child {
+    border-bottom: 0;
+}
+
+.day-name {
+    color: var(--working-heading);
+
+    font-size: 14px;
+    font-weight: 600;
+}
+
+.mobile-day {
+    display: none;
+}
+
+.day-time {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.time {
+    color: var(--working-text);
+
+    font-size: 13px;
+
+    span {
+        margin: 0 5px;
+
+        color: var(--working-muted);
+    }
+}
+
+.open-badge,
+.closed-badge {
+    padding: 4px 9px;
+
+    border-radius: 999px;
+
+    font-size: 11px;
+    font-weight: 600;
+}
+
+.open-badge {
+    color: var(--working-primary);
+
+    background:
+        color-mix(
+            in srgb,
+            var(--working-primary) 10%,
+            var(--working-card-bg)
+        );
+}
+
+.closed-badge {
+    color: var(--working-muted);
+
+    background:
+        color-mix(
+            in srgb,
+            var(--working-muted) 10%,
+            var(--working-card-bg)
+        );
+}
+
+.working-day.closed {
+    .day-name,
+    .time {
+        color: var(--working-muted);
+    }
+}
+
+
+// --------------------------------------------------
+// Location
+// --------------------------------------------------
+
+.location-content {
+    padding-top: 22px;
+}
+
+.location-item {
+    display: flex;
+    align-items: flex-start;
+
+    gap: 14px;
+
+    padding: 15px 0;
+
+    text-decoration: none;
+
+    border-bottom: 1px dashed var(--working-border);
+}
+
+.location-item-icon {
+    width: 40px;
+    height: 40px;
+
+    flex: 0 0 40px;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    border-radius: 12px;
+
+    color: var(--working-primary);
+
+    background:
+        color-mix(
+            in srgb,
+            var(--working-primary) 8%,
+            var(--working-card-bg)
+        );
+
+    i {
+        font-size: 20px;
+    }
+}
+
+.location-item-content {
+    min-width: 0;
+}
+
+.location-label {
+    display: block;
+
+    margin-bottom: 5px;
+
+    color: var(--working-muted);
+
+    font-size: 12px;
+}
+
+.location-item-content p {
+    margin: 0;
+
+    color: var(--working-heading);
+
+    font-size: 14px;
+    line-height: 1.9;
+}
+
+.location-link {
+    transition: background-color .2s ease;
+
+    &:hover {
+        .location-item-content p {
+            color: var(--working-primary);
+        }
+    }
+}
+
+
+// --------------------------------------------------
+// Map Button
+// --------------------------------------------------
+
+.map-button {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+
+    width: 100%;
+
+    margin-top: 20px;
+    padding: 13px 16px;
+
+    border: 1px solid var(--working-border);
+    border-radius: 12px;
+
+    color: var(--working-primary);
+
+    background: transparent;
+
+    text-decoration: none;
+
+    font-size: 13px;
+    font-weight: 600;
+
+    transition:
+        color .25s ease,
+        background-color .25s ease,
+        border-color .25s ease;
+
+    span {
+        display: inline-flex;
+        align-items: center;
+        gap: 8px;
+    }
+
+    i {
+        font-size: 20px;
+    }
+
+    .arrow {
+        transition: transform .25s ease;
+    }
+
+    &:hover {
+        color: var(--working-primary-hover);
+
+        border-color:
+            color-mix(
+                in srgb,
+                var(--working-primary) 30%,
+                var(--working-border)
+            );
+
+        background:
+            color-mix(
+                in srgb,
+                var(--working-primary) 5%,
+                var(--working-card-bg)
+            );
+
+        .arrow {
+            transform: translateX(-3px);
+        }
+    }
+}
+
+
+// --------------------------------------------------
+// Responsive
+// --------------------------------------------------
+
+@media only screen and (max-width: 991px) {
+
+    .profile-working-hours {
+        padding: 80px 0;
+    }
+
+    .working-location-grid {
+        grid-template-columns: 1fr;
+    }
+
+    .section-header {
+        margin-bottom: 40px;
+    }
+}
+
+
+@media only screen and (max-width: 767px) {
+
+    .profile-working-hours {
+        padding: 70px 0;
+    }
+
+    .section-header {
+        margin-bottom: 30px;
+    }
+
+    .section-header h2 {
+        font-size: 29px;
+    }
+
+    .section-header p {
+        font-size: 14px;
+    }
+
+    .working-card,
+    .location-card {
+        padding: 22px 18px;
+
+        border-radius: 16px;
+    }
+
+    .working-day {
+        min-height: 46px;
+    }
+
+    .desktop-day {
+        display: none;
+    }
+
+    .mobile-day {
+        display: inline;
+    }
+
+    .day-time {
+        gap: 7px;
+    }
+
+    .time {
+        font-size: 12px;
+    }
+
+    .open-badge,
+    .closed-badge {
+        padding: 3px 7px;
+
+        font-size: 10px;
+    }
+}

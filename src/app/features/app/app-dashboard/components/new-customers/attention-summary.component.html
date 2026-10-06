@@ -1,0 +1,104 @@
+<mat-card
+    class="attention-card mb-25 border-radius d-block bg-white border-0 shadow-none"
+    [class.component-rtl-enabled]="themeService.isRTLEnabledTheme()"
+    [class.component-dark-theme]="themeService.isDarkTheme()"
+>
+
+    <mat-card-content>
+
+        <div class="card-header">
+
+            <div class="heading">
+
+                <div class="title-row">
+
+                    <h5>
+                        {{ data.title }}
+                    </h5>
+
+                    @if (data.totalCount > 0) {
+                        <span class="total-badge">
+                            {{ data.totalCount }}
+                        </span>
+                    }
+
+                </div>
+
+                <span class="subtitle">
+                    {{ data.subtitle }}
+                </span>
+
+            </div>
+
+            <a
+                mat-button
+                [routerLink]="data.action.route"
+                class="view-all"
+            >
+                <span>
+                    {{ data.action.title }}
+                </span>
+
+                <mat-icon>
+                    arrow_back
+                </mat-icon>
+            </a>
+
+        </div>
+
+
+        <div class="attention-list">
+
+            @for (
+                item of data.items;
+                track item.type
+            ) {
+
+                <a
+                    class="attention-item"
+                    [routerLink]="item.route"
+                >
+
+                    <div
+                        class="item-icon"
+                        [class.warning]="item.severity === 'warning'"
+                        [class.danger]="item.severity === 'danger'"
+                        [class.info]="item.severity === 'info'"
+                    >
+                        <mat-icon>
+                            {{ item.icon }}
+                        </mat-icon>
+                    </div>
+
+
+                    <div class="item-content">
+
+                        <span class="item-title">
+                            {{ item.title }}
+                        </span>
+
+                        <span class="item-description">
+                            {{ item.description }}
+                        </span>
+
+                    </div>
+
+
+                    <span
+                        class="item-count"
+                        [class.warning]="item.severity === 'warning'"
+                        [class.danger]="item.severity === 'danger'"
+                        [class.info]="item.severity === 'info'"
+                    >
+                        {{ item.count }}
+                    </span>
+
+                </a>
+
+            }
+
+        </div>
+
+    </mat-card-content>
+
+</mat-card>

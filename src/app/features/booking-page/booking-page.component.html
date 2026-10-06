@@ -1,0 +1,542 @@
+<div class="booking-page">
+
+  <main class="booking-main">
+
+    <div class="booking-container">
+
+      <!-- Intro -->
+      <section class="booking-intro">
+
+        <span class="eyebrow">
+          رزرو آنلاین
+        </span>
+
+        <h1>
+          نوبت خودت را رزرو کن
+        </h1>
+
+        <p>
+          خدمت موردنظر، زمان مناسب و اطلاعات تماس خودت را انتخاب کن.
+        </p>
+
+      </section>
+
+
+      <!-- Progress -->
+      <section class="booking-progress">
+
+        <!-- Service -->
+        <div
+          class="progress-step"
+          [class.active]="currentStep === 1"
+          [class.completed]="currentStep > 1"
+        >
+          <span class="step-number">۱</span>
+          <span class="step-title">خدمت</span>
+        </div>
+
+
+        @if (isSalon) {
+
+          <div class="progress-line"></div>
+
+          <!-- Staff -->
+          <div
+            class="progress-step"
+            [class.active]="currentStep === staffStep"
+            [class.completed]="currentStep > staffStep"
+          >
+            <span class="step-number">
+              {{ staffStep }}
+            </span>
+
+            <span class="step-title">
+              متخصص
+            </span>
+          </div>
+
+        }
+
+
+        <div class="progress-line"></div>
+
+        <!-- Schedule -->
+        <div
+          class="progress-step"
+          [class.active]="currentStep === scheduleStep"
+          [class.completed]="currentStep > scheduleStep"
+        >
+          <span class="step-number">
+            {{ scheduleStep }}
+          </span>
+
+          <span class="step-title">
+            زمان
+          </span>
+        </div>
+
+
+        <div class="progress-line"></div>
+
+        <!-- Customer -->
+        <div
+          class="progress-step"
+          [class.active]="currentStep === customerStep"
+          [class.completed]="currentStep > customerStep"
+        >
+          <span class="step-number">
+            {{ customerStep }}
+          </span>
+
+          <span class="step-title">
+            اطلاعات
+          </span>
+        </div>
+
+
+        <div class="progress-line"></div>
+
+        <!-- Confirmation -->
+        <div
+          class="progress-step"
+          [class.active]="currentStep === confirmationStep"
+        >
+          <span class="step-number">
+            {{ confirmationStep }}
+          </span>
+
+          <span class="step-title">
+            تأیید
+          </span>
+        </div>
+
+      </section>
+
+
+      <!-- Content -->
+      <section class="booking-content">
+
+
+        <!-- ========================= -->
+        <!-- STEP 1 : SERVICE -->
+        <!-- ========================= -->
+
+        @if (currentStep === 1) {
+
+          <div class="step-card">
+
+            <div class="step-header">
+
+              <div class="step-heading">
+
+                <span class="step-number-large">
+                  ۱
+                </span>
+
+                <div>
+
+                  <span class="step-eyebrow">
+                    مرحله اول
+                  </span>
+
+                  <h2>
+                    چه خدمتی می‌خواهید؟
+                  </h2>
+
+                  <p>
+                    خدمت موردنظر خود را انتخاب کنید.
+                  </p>
+
+                </div>
+
+              </div>
+
+            </div>
+
+
+            <div class="service-placeholder">
+
+              <app-booking-service-step
+                [services]="services"
+                (serviceSelected)="onServiceSelected($event)"
+              />
+
+            </div>
+
+
+            <div class="step-actions">
+
+              <a
+                class="secondary-button"
+                routerLink="../"
+              >
+
+                <span class="material-symbols-outlined">
+                  arrow_forward
+                </span>
+
+                بازگشت
+
+              </a>
+
+
+              <button
+                type="button"
+                class="primary-button"
+                (click)="nextStep()"
+              >
+
+                ادامه
+
+                <span class="material-symbols-outlined">
+                  arrow_back
+                </span>
+
+              </button>
+
+            </div>
+
+          </div>
+
+        }
+
+
+        <!-- ========================= -->
+        <!-- STEP 2 : STAFF -->
+        <!-- فقط برای Salon -->
+        <!-- ========================= -->
+
+        @if (isSalon && currentStep === staffStep) {
+
+          <div class="step-card">
+
+            <div class="step-header">
+
+              <div class="step-heading">
+
+                <span class="step-number-large">
+                  {{ staffStep }}
+                </span>
+
+                <div>
+
+                  <span class="step-eyebrow">
+                    مرحله {{ staffStep }}
+                  </span>
+
+                  <h2>
+                    چه متخصصی را می‌خواهید؟
+                  </h2>
+
+                  <p>
+                    متخصص موردنظر خود را انتخاب کنید.
+                  </p>
+
+                </div>
+
+              </div>
+
+            </div>
+
+
+            <div class="service-placeholder">
+
+              <app-booking-staff-step
+                [staff]="staff"
+                (staffSelected)="onStaffSelected($event)"
+              />
+
+            </div>
+
+
+            <div class="step-actions">
+
+              <button
+                type="button"
+                class="secondary-button"
+                (click)="previousStep()"
+              >
+
+                <span class="material-symbols-outlined">
+                  arrow_forward
+                </span>
+
+                قبلی
+
+              </button>
+
+
+              <button
+                type="button"
+                class="primary-button"
+                (click)="nextStep()"
+              >
+
+                ادامه
+
+                <span class="material-symbols-outlined">
+                  arrow_back
+                </span>
+
+              </button>
+
+            </div>
+
+          </div>
+
+        }
+
+
+        <!-- ========================= -->
+        <!-- SCHEDULE -->
+        <!-- ========================= -->
+
+        @if (currentStep === scheduleStep) {
+
+          <div class="step-card">
+
+            <div class="step-header">
+
+              <div class="step-heading">
+
+                <span class="step-number-large">
+                  {{ scheduleStep }}
+                </span>
+
+                <div>
+
+                  <span class="step-eyebrow">
+                    مرحله {{ scheduleStep }}
+                  </span>
+
+                  <h2>
+                    چه زمانی مناسب شماست؟
+                  </h2>
+
+                  <p>
+                    تاریخ و ساعت موردنظر خود را انتخاب کنید.
+                  </p>
+
+                </div>
+
+              </div>
+
+            </div>
+
+
+            <div class="service-placeholder">
+
+              <app-booking-schedule-step
+                [dates]="dates"
+                [slots]="slots"
+                (scheduleSelected)="onScheduleSelected($event)"
+              />
+
+            </div>
+
+
+            <div class="step-actions">
+
+              <button
+                type="button"
+                class="secondary-button"
+                (click)="previousStep()"
+              >
+
+                <span class="material-symbols-outlined">
+                  arrow_forward
+                </span>
+
+                قبلی
+
+              </button>
+
+
+              <button
+                type="button"
+                class="primary-button"
+                (click)="nextStep()"
+              >
+
+                ادامه
+
+                <span class="material-symbols-outlined">
+                  arrow_back
+                </span>
+
+              </button>
+
+            </div>
+
+          </div>
+
+        }
+
+
+        <!-- ========================= -->
+        <!-- CUSTOMER -->
+        <!-- ========================= -->
+
+        @if (currentStep === customerStep) {
+
+          <div class="step-card">
+
+            <div class="step-header">
+
+              <div class="step-heading">
+
+                <span class="step-number-large">
+                  {{ customerStep }}
+                </span>
+
+                <div>
+
+                  <span class="step-eyebrow">
+                    مرحله {{ customerStep }}
+                  </span>
+
+                  <h2>
+                    اطلاعات شما
+                  </h2>
+
+                  <p>
+                    اطلاعات تماس خود را وارد کنید.
+                  </p>
+
+                </div>
+
+              </div>
+
+            </div>
+
+
+            <div class="service-placeholder">
+
+              <app-booking-customer-step
+                (customerSubmitted)="onCustomerSubmitted($event)"
+              />
+
+            </div>
+
+
+            <div class="step-actions">
+
+              <button
+                type="button"
+                class="secondary-button"
+                (click)="previousStep()"
+              >
+
+                <span class="material-symbols-outlined">
+                  arrow_forward
+                </span>
+
+                قبلی
+
+              </button>
+
+
+              <button
+                type="button"
+                class="primary-button"
+                (click)="nextStep()"
+              >
+
+                ادامه
+
+                <span class="material-symbols-outlined">
+                  arrow_back
+                </span>
+
+              </button>
+
+            </div>
+
+          </div>
+
+        }
+
+
+        <!-- ========================= -->
+        <!-- CONFIRMATION -->
+        <!-- ========================= -->
+
+        @if (currentStep === confirmationStep) {
+
+          <div class="step-card">
+
+            <div class="step-header">
+
+              <div class="step-heading">
+
+                <span class="step-number-large">
+                  {{ confirmationStep }}
+                </span>
+
+                <div>
+
+                  <span class="step-eyebrow">
+                    مرحله {{ confirmationStep }}
+                  </span>
+
+                  <h2>
+                    بررسی و تأیید نوبت
+                  </h2>
+
+                  <p>
+                    اطلاعات نوبت خود را بررسی و تأیید کنید.
+                  </p>
+
+                </div>
+
+              </div>
+
+            </div>
+
+
+            <div class="service-placeholder">
+
+              <app-booking-confirmation
+                [booking]="bookingConfirmation"
+                (back)="previousStep()"
+                (confirmed)="onBookingConfirmed($event)"
+              />
+
+            </div>
+
+
+            <div class="step-actions">
+
+              <button
+                type="button"
+                class="secondary-button"
+                (click)="previousStep()"
+              >
+
+                <span class="material-symbols-outlined">
+                  arrow_forward
+                </span>
+
+                قبلی
+
+              </button>
+
+
+              <!--
+                این دکمه فعلاً اضافه است چون خود
+                booking-confirmation دکمه تأیید دارد.
+              -->
+
+            </div>
+
+          </div>
+
+        }
+
+      </section>
+
+    </div>
+
+  </main>
+
+</div>

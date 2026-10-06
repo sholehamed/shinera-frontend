@@ -1,0 +1,123 @@
+<div class="staff-step">
+
+  <div class="staff-grid">
+
+    @for (member of staff; track member.id) {
+
+      <button
+        type="button"
+        class="staff-card"
+        [class.selected]="selectedStaffId === member.id"
+        (click)="selectStaff(member)"
+      >
+
+        <div class="staff-image">
+
+          @if (member.image) {
+
+            <img
+              [src]="member.image"
+              [alt]="member.name"
+            />
+
+          } @else {
+
+            <span class="material-symbols-outlined">
+              person
+            </span>
+
+          }
+
+        </div>
+
+
+        <div class="staff-content">
+
+          <div class="staff-title-row">
+
+            <div>
+              <h3>
+                {{ member.name }}
+              </h3>
+
+              @if (member.title) {
+                <span class="staff-title">
+                  {{ member.title }}
+                </span>
+              }
+            </div>
+
+
+            @if (selectedStaffId === member.id) {
+
+              <span class="selected-icon">
+
+                <span class="material-symbols-outlined">
+                  check
+                </span>
+
+              </span>
+
+            }
+
+          </div>
+
+
+          @if (member.description) {
+
+            <p>
+              {{ member.description }}
+            </p>
+
+          }
+
+        </div>
+
+      </button>
+
+    }
+
+  </div>
+
+
+  @if (!staff.length) {
+
+    <div class="empty-state">
+
+      <span class="material-symbols-outlined">
+        group
+      </span>
+
+      <strong>
+        متخصصی برای این خدمت وجود ندارد
+      </strong>
+
+      <span>
+        در حال حاضر امکان انتخاب متخصص وجود ندارد.
+      </span>
+
+    </div>
+
+  }
+
+
+  <div class="staff-actions">
+
+    <button
+      type="button"
+      class="continue-button"
+      [disabled]="!selectedStaffId"
+      (click)="continue()"
+    >
+
+      ادامه
+
+      <span class="material-symbols-outlined">
+        arrow_back
+      </span>
+
+    </button>
+
+  </div>
+
+</div>

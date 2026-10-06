@@ -1,0 +1,211 @@
+<section class="profile-working-hours" id="location">
+
+    <div class="container">
+
+        <!-- Header -->
+        <div class="section-header">
+
+            <span class="section-eyebrow">
+                اطلاعات تماس
+            </span>
+
+            <h2>
+                ساعات کاری و موقعیت
+            </h2>
+
+            <p>
+                برای مراجعه و دریافت خدمات، می‌توانید ساعات کاری و
+                اطلاعات تماس مجموعه را مشاهده کنید.
+            </p>
+
+        </div>
+
+
+        <div class="working-location-grid">
+
+            <!-- Working Hours -->
+            <div class="working-card">
+
+                <div class="card-header">
+
+                    <div class="card-icon">
+                        <i class="material-symbols-outlined">
+                            schedule
+                        </i>
+                    </div>
+
+                    <div>
+                        <h3>ساعات کاری</h3>
+                        <span>
+                            زمان فعالیت مجموعه
+                        </span>
+                    </div>
+
+                </div>
+
+
+                <div class="working-days">
+
+                    @for (day of data.days; track day.day) {
+
+                        <div
+                            class="working-day"
+                            [class.closed]="!day.isOpen"
+                        >
+
+                            <div class="day-name">
+                                <span class="desktop-day">
+                                    {{ day.day }}
+                                </span>
+
+                                @if (day.shortDay) {
+                                    <span class="mobile-day">
+                                        {{ day.shortDay }}
+                                    </span>
+                                }
+                            </div>
+
+                            <div class="day-time">
+
+                                @if (day.isOpen) {
+
+                                    <span class="open-badge">
+                                        باز
+                                    </span>
+
+                                    <span class="time">
+                                        {{ day.openTime }}
+                                        <span>تا</span>
+                                        {{ day.closeTime }}
+                                    </span>
+
+                                } @else {
+
+                                    <span class="closed-badge">
+                                        بسته
+                                    </span>
+
+                                }
+
+                            </div>
+
+                        </div>
+
+                    }
+
+                </div>
+
+            </div>
+
+
+            <!-- Location -->
+            <div class="location-card">
+
+                <div class="card-header">
+
+                    <div class="card-icon">
+                        <i class="material-symbols-outlined">
+                            location_on
+                        </i>
+                    </div>
+
+                    <div>
+                        <h3>موقعیت و تماس</h3>
+                        <span>
+                            راه‌های ارتباطی با مجموعه
+                        </span>
+                    </div>
+
+                </div>
+
+
+                <div class="location-content">
+
+                    <!-- Address -->
+                    <div class="location-item">
+
+                        <div class="location-item-icon">
+                            <i class="material-symbols-outlined">
+                                location_on
+                            </i>
+                        </div>
+
+                        <div class="location-item-content">
+
+                            <span class="location-label">
+                                آدرس
+                            </span>
+
+                            <p>
+                                {{ data.location.address }}
+                            </p>
+
+                        </div>
+
+                    </div>
+
+
+                    <!-- Phone -->
+                    @if (data.location.phone) {
+
+                        <a
+                            class="location-item location-link"
+                            [href]="'tel:' + data.location.phone"
+                        >
+
+                            <div class="location-item-icon">
+                                <i class="material-symbols-outlined">
+                                    call
+                                </i>
+                            </div>
+
+                            <div class="location-item-content">
+
+                                <span class="location-label">
+                                    تماس
+                                </span>
+
+                                <p dir="ltr">
+                                    {{ data.location.phone }}
+                                </p>
+
+                            </div>
+
+                        </a>
+
+                    }
+
+
+                    <!-- Map -->
+                    @if (data.location.mapUrl) {
+
+                        <a
+                            class="map-button"
+                            [href]="data.location.mapUrl"
+                            target="_blank"
+                            rel="noopener noreferrer"
+                        >
+                            <span>
+                                <i class="material-symbols-outlined">
+                                    map
+                                </i>
+
+                                مشاهده روی نقشه
+                            </span>
+
+                            <i class="material-symbols-outlined arrow">
+                                arrow_back
+                            </i>
+                        </a>
+
+                    }
+
+                </div>
+
+            </div>
+
+        </div>
+
+    </div>
+
+</section>
