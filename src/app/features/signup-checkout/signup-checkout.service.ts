@@ -1,91 +1,65 @@
-import { inject, Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
-import { delay, Observable, of } from 'rxjs';
+import { inject, Injectable } from '@angular/core';
+import { Observable } from 'rxjs';
 
-export type BillingCycle = 'monthly' | 'yearly';
+import { environment } from '../../../environments/environment';
 
-export interface CheckoutPlan {
-    key: string;
-    title: string;
-    subtitle: string;
-    monthlyPrice: number;
-    yearlyPrice: number;
-    badge: string | null;
-    branchLimit: number;
-    features: string[];
+export type RegistrationPlanKey = 'solo' | 'solo-pro' | 'salon' | 'salon-pro';
+export type BusinessMode = 1 | 2;
+
+export interface RegistrationRequest {
+  planKey: RegistrationPlanKey;
+  business: {
+    name: string;
+    businessType: string;
+    mode: BusinessMode;
+    phone: string;
+    email: string | null;
+    city: string;
+    address: string;
+    defaultTimeZoneId: string;
+  };
+  owner: {
+    firstName: string;
+    lastName: string;
+    phone: string;
+    email: string;
+    password: string;
+  };
+  branch: {
+    name: string;
+    phone: string;
+    address: string;
+    timeZoneId: string | null;
+  };
 }
 
-export interface SignupCheckoutPayload {
-    planKey: string;
-    billingCycle: BillingCycle;
-    promoCode: string | null;
-
-    tenant: {
-        name: string;
-        slug: string;
-        culture: string;
-        timezone: string;
-        currency: string;
-    };
-
-    businessProfile: {
-        displayName: string;
-        activityType: string;
-        phone: string | null;
-        city: string;
-        address: string;
-        postalCode: string | null;
-        instagram: string | null;
-    };
-
-    owner: {
-        firstName: string;
-        lastName: string;
-        mobile: string;
-        email: string;
-        password: string;
-    };
-
-    branch: {
-        name: string;
-        phone: string;
-        city: string;
-        address: string;
-    } | null;
-
-    metadata: {
-        source: string;
-        locale: string;
-    };
+export interface RegistrationSuccess {
+  userId: string;
+  tenantId: string;
+  tenantSlug: string;
+  branchId: string;
+  businessProfileId: string;
+  subscriptionId: string;
+  planKey: string;
+  next: string;
 }
 
-export interface SignupCheckoutResponse {
-    checkoutId: string;
-    paymentUrl: string;
-    mode: 'mock' | 'gateway';
+export interface ApiResponse<T> {
+  success: boolean;
+  data: T | null;
+  error: { code: string; message: string } | null;
 }
 
 @Injectable({ providedIn: 'root' })
 export class SignupCheckoutService {
-    private readonly http = inject(HttpClient);
+  private readonly http = inject(HttpClient);
 
-    // Keep true until backend endpoint is ready.
-    private readonly useMock = true;
-
-    startCheckout(payload: SignupCheckoutPayload): Observable<SignupCheckoutResponse> {
-        if (this.useMock) {
-            return of({
-                checkoutId: crypto.randomUUID(),
-                paymentUrl: '/mock-payment',
-                mode: 'mock' as const
-            }).pipe(delay(850));
-        }
-
-        // Suggested endpoint:
-        // POST /api/public/signup/checkout
-        return this.http.post<SignupCheckoutResponse>(
-            '/api/public/signup/checkout',
-            payload
-        );
-    }
+  register(request: RegistrationRequest): Observable<ApiResponse<RegistrationSuccess>> {
+    return this.http.post<ApiResponse<RegistrationSuccess>>(
+      `${environment.apiBaseUrl.replace(/\/+$/, '')}/System/Registration`,
+      request,
+      { withCredentials: true }
+    );
+  }
 }

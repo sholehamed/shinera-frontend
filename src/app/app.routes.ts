@@ -10,6 +10,7 @@ import { PublicProfileComponent } from './features/public-profile/public-profile
 import { SignupCheckoutComponent } from './features/signup-checkout/signup-checkout.component';
 import { AccessStatusComponent } from './features/status/access-status.component';
 import { WorkspaceSelectorComponent } from './features/workspace/workspace-selector.component';
+import { OnboardingComponent } from './features/onboarding/onboarding.component';
 import { CustomerPagesComponent } from './layouts/cp-layout/customer-pages.component';
 import { FrontPagesComponent } from './layouts/fp-layout/front-pages.component';
 import { PanelLayoutComponent } from './layouts/panel-layout/panel-layout.component';
@@ -35,6 +36,11 @@ export const routes: Routes = [
     path: 'workspace/select',
     component: WorkspaceSelectorComponent,
     canActivate: [authGuard]
+  },
+  {
+    path: 'onboarding',
+    component: OnboardingComponent,
+    canActivate: [workspaceGuard]
   },
   {
     path: 's/:slug',

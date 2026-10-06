@@ -1,15 +1,14 @@
 import { CommonModule } from '@angular/common';
-import { Component, DestroyRef, inject, signal } from '@angular/core';
+import { Component, inject, signal } from '@angular/core';
 import {
-    AbstractControl,
-    FormBuilder,
-    ReactiveFormsModule,
-    ValidationErrors,
-    ValidatorFn,
-    Validators
+  AbstractControl,
+  FormBuilder,
+  ReactiveFormsModule,
+  ValidationErrors,
+  ValidatorFn,
+  Validators
 } from '@angular/forms';
-import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
-import { ActivatedRoute, RouterLink } from '@angular/router';
+import { ActivatedRoute } from '@angular/router';
 import { finalize } from 'rxjs';
 
 import { MatButtonModule } from '@angular/material/button';
@@ -17,390 +16,231 @@ import { MatCheckboxModule } from '@angular/material/checkbox';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
 import { MatSelectModule } from '@angular/material/select';
-import { MatSlideToggleModule } from '@angular/material/slide-toggle';
 
+import { AuthService } from '../../core/services/auth.service';
 import {
-    BillingCycle,
-    CheckoutPlan,
-    SignupCheckoutPayload,
-    SignupCheckoutService
+  BusinessMode,
+  RegistrationPlanKey,
+  RegistrationRequest,
+  SignupCheckoutService
 } from './signup-checkout.service';
 
 const matchFields = (first: string, second: string): ValidatorFn => {
-    return (control: AbstractControl): ValidationErrors | null => {
-        const a = control.get(first)?.value;
-        const b = control.get(second)?.value;
-        return a && b && a !== b ? { fieldsMismatch: true } : null;
-    };
+  return (control: AbstractControl): ValidationErrors | null => {
+    const firstValue = control.get(first)?.value;
+    const secondValue = control.get(second)?.value;
+    return firstValue && secondValue && firstValue !== secondValue
+      ? { fieldsMismatch: true }
+      : null;
+  };
 };
 
 @Component({
-    selector: 'app-signup-checkout',
-    standalone: true,
-    imports: [
-        CommonModule,
-        ReactiveFormsModule,
-        RouterLink,
-        MatButtonModule,
-        MatCheckboxModule,
-        MatFormFieldModule,
-        MatInputModule,
-        MatSelectModule,
-        MatSlideToggleModule
-    ],
-    templateUrl: './signup-checkout.component.html',
-    styleUrl: './signup-checkout.component.scss'
+  selector: 'app-signup-checkout',
+  standalone: true,
+  imports: [
+    CommonModule,
+    ReactiveFormsModule,
+    MatButtonModule,
+    MatCheckboxModule,
+    MatFormFieldModule,
+    MatInputModule,
+    MatSelectModule
+  ],
+  templateUrl: './signup-checkout.component.html',
+  styleUrl: './signup-checkout.component.scss'
 })
 export class SignupCheckoutComponent {
-    private readonly fb = inject(FormBuilder);
-    private readonly route = inject(ActivatedRoute);
-    private readonly destroyRef = inject(DestroyRef);
-    private readonly checkoutService = inject(SignupCheckoutService);
+  private readonly fb = inject(FormBuilder);
+  private readonly route = inject(ActivatedRoute);
+  private readonly registration = inject(SignupCheckoutService);
+  private readonly auth = inject(AuthService);
 
-    readonly currentStep = signal(0);
-    readonly submitting = signal(false);
-    readonly mockCheckoutId = signal<string | null>(null);
+  readonly currentStep = signal(0);
+  readonly submitting = signal(false);
+  readonly errorMessage = signal('');
 
-    readonly steps = [
-        { title: 'انتخاب پلن', subtitle: 'پلن و دوره پرداخت' },
-        { title: 'حساب مالک', subtitle: 'اطلاعات ورود و تماس' },
-        { title: 'کسب‌وکار', subtitle: 'فضای کاری و شعبه' },
-        { title: 'مرور و پرداخت', subtitle: 'تأیید نهایی سفارش' }
-    ];
+  readonly plans: Array<{
+    key: RegistrationPlanKey;
+    title: string;
+    subtitle: string;
+    mode: BusinessMode;
+  }> = [
+    { key: 'solo', title: 'Solo', subtitle: 'برای متخصص مستقل', mode: 1 },
+    { key: 'solo-pro', title: 'Solo Pro', subtitle: 'برای متخصص مستقل در حال رشد', mode: 1 },
+    { key: 'salon', title: 'Salon', subtitle: 'برای سالن و تیم', mode: 2 },
+    { key: 'salon-pro', title: 'Salon Pro', subtitle: 'برای مجموعه حرفه‌ای', mode: 2 }
+  ];
 
-    // Mock plans — replace by GET /api/public/plans later.
-    readonly plans: CheckoutPlan[] = [
-        {
-            key: 'solo',
-            title: 'انفرادی',
-            subtitle: 'برای متخصص مستقل',
-            monthlyPrice: 690_000,
-            yearlyPrice: 6_900_000,
-            badge: null,
-            branchLimit: 1,
-            features: ['مدیریت نوبت‌ها', 'مشتریان', 'خدمات', 'گزارش پایه']
-        },
-        {
-            key: 'solo-pro',
-            title: 'انفرادی حرفه‌ای',
-            subtitle: 'برای رشد جدی‌تر',
-            monthlyPrice: 990_000,
-            yearlyPrice: 9_900_000,
-            badge: 'پیشنهادی',
-            branchLimit: 1,
-            features: ['همه امکانات انفرادی', 'گزارش پیشرفته', 'اتوماسیون بیشتر', 'پشتیبانی اولویت‌دار']
-        },
-        {
-            key: 'salon',
-            title: 'سالن',
-            subtitle: 'برای تیم و سالن',
-            monthlyPrice: 1_490_000,
-            yearlyPrice: 14_900_000,
-            badge: null,
-            branchLimit: 1,
-            features: ['پرسنل', 'شیفت و برنامه کاری', 'داشبورد مدیریتی', 'گزارش فروش']
-        },
-        {
-            key: 'salon-pro',
-            title: 'سالن حرفه‌ای',
-            subtitle: 'برای مجموعه‌های چندشعبه‌ای',
-            monthlyPrice: 2_290_000,
-            yearlyPrice: 22_900_000,
-            badge: 'کامل',
-            branchLimit: 5,
-            features: ['همه امکانات سالن', 'چند شعبه', 'گزارش تجمیعی', 'قابلیت‌های حرفه‌ای']
-        }
-    ];
+  readonly steps = [
+    { title: 'انتخاب پلن', subtitle: 'انتخاب اشتراک اولیه' },
+    { title: 'کسب‌وکار', subtitle: 'مشخصات فضای کاری' },
+    { title: 'حساب مالک', subtitle: 'اطلاعات ورود مالک' },
+    { title: 'شعبه اصلی', subtitle: 'ایجاد شعبه و تأیید نهایی' }
+  ];
 
-    readonly form = this.fb.nonNullable.group({
-        subscription: this.fb.nonNullable.group({
-            planKey: ['solo-pro', Validators.required],
-            billingCycle: ['monthly' as BillingCycle, Validators.required],
-            promoCode: ['']
-        }),
+  readonly form = this.fb.nonNullable.group({
+    planKey: ['solo' as RegistrationPlanKey, Validators.required],
+    business: this.fb.nonNullable.group({
+      name: ['', [Validators.required, Validators.maxLength(200)]],
+      businessType: ['beauty', [Validators.required, Validators.maxLength(100)]],
+      mode: [1 as BusinessMode, Validators.required],
+      phone: ['', [Validators.required, Validators.maxLength(32)]],
+      email: ['', [Validators.email, Validators.maxLength(256)]],
+      city: ['', [Validators.required, Validators.maxLength(150)]],
+      address: ['', [Validators.required, Validators.maxLength(500)]],
+      defaultTimeZoneId: ['Asia/Tehran', Validators.required]
+    }),
+    owner: this.fb.nonNullable.group(
+      {
+        firstName: ['', [Validators.required, Validators.maxLength(100)]],
+        lastName: ['', [Validators.required, Validators.maxLength(100)]],
+        phone: ['', [Validators.required, Validators.maxLength(32)]],
+        email: ['', [Validators.required, Validators.email, Validators.maxLength(256)]],
+        password: ['', [Validators.required, Validators.minLength(8), Validators.maxLength(200)]],
+        confirmPassword: ['', Validators.required]
+      },
+      { validators: matchFields('password', 'confirmPassword') }
+    ),
+    branch: this.fb.nonNullable.group({
+      name: ['شعبه اصلی', [Validators.required, Validators.maxLength(200)]],
+      phone: ['', [Validators.required, Validators.maxLength(32)]],
+      address: ['', [Validators.required, Validators.maxLength(500)]],
+      timeZoneId: ['Asia/Tehran']
+    }),
+    acceptTerms: [false, Validators.requiredTrue]
+  });
 
-        owner: this.fb.nonNullable.group(
-            {
-                firstName: ['', [Validators.required, Validators.maxLength(60)]],
-                lastName: ['', [Validators.required, Validators.maxLength(80)]],
-                mobile: ['', [Validators.required, Validators.pattern(/^09\d{9}$/)]],
-                email: ['', [Validators.required, Validators.email]],
-                password: ['', [Validators.required, Validators.minLength(8)]],
-                confirmPassword: ['', Validators.required]
-            },
-            { validators: matchFields('password', 'confirmPassword') }
-        ),
+  constructor() {
+    const requestedPlan = this.route.snapshot.queryParamMap.get('plan');
+    const plan = this.plans.find(item => item.key === requestedPlan);
+    if (plan) {
+      this.selectPlan(plan.key);
+    }
+  }
 
-        business: this.fb.nonNullable.group({
-            displayName: ['', [Validators.required, Validators.maxLength(120)]],
-            activityType: ['salon', Validators.required],
-            phone: ['', Validators.maxLength(20)],
-            city: ['', Validators.required],
-            address: ['', [Validators.required, Validators.maxLength(400)]],
-            postalCode: ['', Validators.maxLength(20)],
-            instagram: ['', Validators.maxLength(80)]
-        }),
-
-        workspace: this.fb.nonNullable.group({
-            slug: [
-                '',
-                [
-                    Validators.required,
-                    Validators.minLength(3),
-                    Validators.maxLength(40),
-                    Validators.pattern(/^[a-z0-9]+(?:-[a-z0-9]+)*$/)
-                ]
-            ],
-            culture: ['fa-IR', Validators.required],
-            timezone: ['Asia/Tehran', Validators.required],
-            currency: ['IRR', Validators.required]
-        }),
-
-        branch: this.fb.nonNullable.group({
-            enabled: [false],
-            name: ['شعبه اصلی'],
-            phone: [''],
-            city: [''],
-            address: ['']
-        }),
-
-        legal: this.fb.nonNullable.group({
-            acceptTerms: [false, Validators.requiredTrue],
-            acceptPrivacy: [false, Validators.requiredTrue]
-        })
-    });
-
-    constructor() {
-        this.applyPlanFromRoute();
-
-        this.form.controls.branch.controls.enabled.valueChanges
-            .pipe(takeUntilDestroyed(this.destroyRef))
-            .subscribe(enabled => this.applyBranchValidators(enabled));
-
-        this.form.controls.business.controls.displayName.valueChanges
-            .pipe(takeUntilDestroyed(this.destroyRef))
-            .subscribe(name => {
-                const branchName = this.form.controls.branch.controls.name;
-                if (!branchName.dirty && name?.trim()) {
-                    branchName.setValue(`شعبه اصلی ${name.trim()}`, { emitEvent: false });
-                }
-            });
+  selectPlan(planKey: RegistrationPlanKey): void {
+    const plan = this.plans.find(item => item.key === planKey);
+    if (!plan) {
+      return;
     }
 
-    get selectedPlan(): CheckoutPlan {
-        return (
-            this.plans.find(
-                x => x.key === this.form.controls.subscription.controls.planKey.value
-            ) ?? this.plans[0]
-        );
+    this.form.controls.planKey.setValue(plan.key);
+    this.form.controls.business.controls.mode.setValue(plan.mode);
+  }
+
+  goToStep(index: number): void {
+    if (index <= this.currentStep()) {
+      this.currentStep.set(index);
+    }
+  }
+
+  next(): void {
+    if (!this.validateStep(this.currentStep())) {
+      return;
     }
 
-    get billingCycle(): BillingCycle {
-        return this.form.controls.subscription.controls.billingCycle.value;
+    if (this.currentStep() < this.steps.length - 1) {
+      this.currentStep.update(value => value + 1);
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+    }
+  }
+
+  previous(): void {
+    if (this.currentStep() > 0) {
+      this.currentStep.update(value => value - 1);
+    }
+  }
+
+  submit(): void {
+    if (this.submitting() || !this.validateStep(3)) {
+      return;
     }
 
-    get selectedPrice(): number {
-        return this.billingCycle === 'yearly'
-            ? this.selectedPlan.yearlyPrice
-            : this.selectedPlan.monthlyPrice;
+    this.form.markAllAsTouched();
+    if (this.form.invalid) {
+      return;
     }
 
-    get hasBranch(): boolean {
-        return this.form.controls.branch.controls.enabled.value;
-    }
+    this.errorMessage.set('');
+    this.submitting.set(true);
 
-    selectPlan(plan: CheckoutPlan): void {
-        this.form.controls.subscription.controls.planKey.setValue(plan.key);
-    }
-
-    setBillingCycle(cycle: BillingCycle): void {
-        this.form.controls.subscription.controls.billingCycle.setValue(cycle);
-    }
-
-    goToStep(index: number): void {
-        // Allow going backwards freely; forward movement stays validated.
-        if (index <= this.currentStep()) {
-            this.currentStep.set(index);
-        }
-    }
-
-    next(): void {
-        const step = this.currentStep();
-
-        if (!this.validateStep(step)) {
+    this.registration
+      .register(this.buildRequest())
+      .pipe(finalize(() => this.submitting.set(false)))
+      .subscribe({
+        next: response => {
+          if (!response.success || !response.data) {
+            this.errorMessage.set(response.error?.message ?? 'ثبت‌نام کامل نشد.');
             return;
-        }
+          }
 
-        if (step < this.steps.length - 1) {
-            this.currentStep.set(step + 1);
-            window.scrollTo({ top: 0, behavior: 'smooth' });
+          void this.auth.beginAuthorization(response.data.next || '/onboarding');
+        },
+        error: error => {
+          const code = error?.error?.error?.code as string | undefined;
+          if (code === 'registration.owner_email_exists') {
+            this.errorMessage.set('برای این ایمیل قبلاً حساب کاربری ساخته شده است.');
+          } else {
+            this.errorMessage.set(
+              error?.error?.error?.message ?? 'ثبت‌نام با خطا مواجه شد. دوباره تلاش کنید.'
+            );
+          }
         }
+      });
+  }
+
+  private validateStep(step: number): boolean {
+    const control =
+      step === 0
+        ? this.form.controls.planKey
+        : step === 1
+          ? this.form.controls.business
+          : step === 2
+            ? this.form.controls.owner
+            : this.form.controls.branch;
+
+    control.markAsTouched();
+    if ('markAllAsTouched' in control) {
+      control.markAllAsTouched();
     }
 
-    previous(): void {
-        if (this.currentStep() > 0) {
-            this.currentStep.update(value => value - 1);
-            window.scrollTo({ top: 0, behavior: 'smooth' });
-        }
+    if (step === 3) {
+      this.form.controls.acceptTerms.markAsTouched();
+      return control.valid && this.form.controls.acceptTerms.valid;
     }
 
-    submit(): void {
-        if (!this.validateStep(3)) {
-            return;
-        }
+    return control.valid;
+  }
 
-        this.form.markAllAsTouched();
+  private buildRequest(): RegistrationRequest {
+    const raw = this.form.getRawValue();
 
-        if (this.form.invalid) {
-            return;
-        }
-
-        const payload = this.buildPayload();
-
-        // Useful while backend is not connected.
-        console.group('Shinera checkout payload');
-        console.log(payload);
-        console.groupEnd();
-
-        this.submitting.set(true);
-        this.mockCheckoutId.set(null);
-
-        this.checkoutService
-            .startCheckout(payload)
-            .pipe(finalize(() => this.submitting.set(false)))
-            .subscribe({
-                next: response => {
-                    if (response.mode === 'mock') {
-                        this.mockCheckoutId.set(response.checkoutId);
-                        return;
-                    }
-
-                    window.location.assign(response.paymentUrl);
-                },
-                error: error => {
-                    console.error('Checkout failed', error);
-                }
-            });
-    }
-
-    formatMoney(value: number): string {
-        return new Intl.NumberFormat('fa-IR').format(value);
-    }
-
-    private applyPlanFromRoute(): void {
-        const planFromPath = this.route.snapshot.paramMap.get('plan');
-        const planFromQuery = this.route.snapshot.queryParamMap.get('plan');
-        const requestedPlan = planFromPath ?? planFromQuery;
-
-        if (requestedPlan && this.plans.some(x => x.key === requestedPlan)) {
-            this.form.controls.subscription.controls.planKey.setValue(requestedPlan);
-        }
-    }
-
-    private validateStep(step: number): boolean {
-        switch (step) {
-            case 0: {
-                const group = this.form.controls.subscription;
-                group.markAllAsTouched();
-                return group.valid;
-            }
-
-            case 1: {
-                const group = this.form.controls.owner;
-                group.markAllAsTouched();
-                return group.valid;
-            }
-
-            case 2: {
-                this.form.controls.business.markAllAsTouched();
-                this.form.controls.workspace.markAllAsTouched();
-
-                if (this.hasBranch) {
-                    this.form.controls.branch.markAllAsTouched();
-                }
-
-                return (
-                    this.form.controls.business.valid &&
-                    this.form.controls.workspace.valid &&
-                    (!this.hasBranch || this.form.controls.branch.valid)
-                );
-            }
-
-            case 3: {
-                this.form.controls.legal.markAllAsTouched();
-                return this.form.controls.legal.valid;
-            }
-
-            default:
-                return true;
-        }
-    }
-
-    private applyBranchValidators(enabled: boolean): void {
-        const branch = this.form.controls.branch.controls;
-        const controls = [branch.name, branch.phone, branch.city, branch.address];
-
-        controls.forEach(control => {
-            control.clearValidators();
-        });
-
-        if (enabled) {
-            branch.name.setValidators([Validators.required, Validators.maxLength(120)]);
-            branch.phone.setValidators([Validators.required, Validators.maxLength(20)]);
-            branch.city.setValidators([Validators.required, Validators.maxLength(80)]);
-            branch.address.setValidators([Validators.required, Validators.maxLength(400)]);
-        }
-
-        controls.forEach(control => control.updateValueAndValidity({ emitEvent: false }));
-    }
-
-    private buildPayload(): SignupCheckoutPayload {
-        const raw = this.form.getRawValue();
-
-        return {
-            planKey: raw.subscription.planKey,
-            billingCycle: raw.subscription.billingCycle,
-            promoCode: raw.subscription.promoCode || null,
-
-            tenant: {
-                name: raw.business.displayName,
-                slug: raw.workspace.slug,
-                culture: raw.workspace.culture,
-                timezone: raw.workspace.timezone,
-                currency: raw.workspace.currency
-            },
-
-            businessProfile: {
-                displayName: raw.business.displayName,
-                activityType: raw.business.activityType,
-                phone: raw.business.phone || null,
-                city: raw.business.city,
-                address: raw.business.address,
-                postalCode: raw.business.postalCode || null,
-                instagram: raw.business.instagram || null
-            },
-
-            owner: {
-                firstName: raw.owner.firstName,
-                lastName: raw.owner.lastName,
-                mobile: raw.owner.mobile,
-                email: raw.owner.email,
-                password: raw.owner.password
-            },
-
-            branch: raw.branch.enabled
-                ? {
-                      name: raw.branch.name,
-                      phone: raw.branch.phone,
-                      city: raw.branch.city,
-                      address: raw.branch.address
-                  }
-                : null,
-
-            metadata: {
-                source: 'shinera-landing',
-                locale: 'fa-IR'
-            }
-        };
-    }
+    return {
+      planKey: raw.planKey,
+      business: {
+        name: raw.business.name.trim(),
+        businessType: raw.business.businessType.trim(),
+        mode: raw.business.mode,
+        phone: raw.business.phone.trim(),
+        email: raw.business.email.trim() || null,
+        city: raw.business.city.trim(),
+        address: raw.business.address.trim(),
+        defaultTimeZoneId: raw.business.defaultTimeZoneId
+      },
+      owner: {
+        firstName: raw.owner.firstName.trim(),
+        lastName: raw.owner.lastName.trim(),
+        phone: raw.owner.phone.trim(),
+        email: raw.owner.email.trim(),
+        password: raw.owner.password
+      },
+      branch: {
+        name: raw.branch.name.trim(),
+        phone: raw.branch.phone.trim(),
+        address: raw.branch.address.trim(),
+        timeZoneId: raw.branch.timeZoneId.trim() || null
+      }
+    };
+  }
 }

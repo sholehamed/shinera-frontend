@@ -2,6 +2,7 @@ export const environment = {
   production: true,
   appName: 'Shinera',
   apiBaseUrl: '/api',
+  apiUrl: '/api',
   oidcAuthority: '',
   oidc: {
     clientId: 'shinera-web',
