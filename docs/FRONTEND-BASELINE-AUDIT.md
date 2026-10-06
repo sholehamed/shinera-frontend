@@ -25,6 +25,7 @@ The audit compares this repository with the current PRD, Product Backlog, Projec
 - Runtime dashboard mock widgets were disconnected from the production dashboard baseline; unfinished modules now present explicit neutral states rather than fabricated business metrics.
 - Keyboard focus is no longer globally suppressed.
 - Unit-test baseline, Playwright smoke coverage, and repository CI were added.
+- Unit tests use the stable Angular 20 Karma/Jasmine path instead of the experimental Vitest integration; this also removes the residual Vitest dev-server advisory from the dependency graph.
 
 ## Deliberately not marked complete
 
@@ -47,4 +48,5 @@ A pull request is mergeable only after:
 2. Unit tests pass.
 3. Production Angular build passes.
 4. Playwright baseline E2E passes.
-5. Final review finds no unresolved Critical or High deviation in the changed baseline.
+5. Dependency audit contains no unresolved high or critical advisory.
+6. Final review finds no unresolved Critical or High deviation in the changed baseline.
