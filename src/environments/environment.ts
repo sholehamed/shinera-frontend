@@ -1,8 +1,12 @@
 export const environment = {
-  apiUrl: 'https://localhost:7156/api',
-  SubPath: '/UWMS',
-  AppName: 'سامانه مدیریت کاربران',
-  scope: 'openid profile email api offline_access',
-  client_id: 'postman',
-  grant_type: 'password',
-}
+  production: false,
+  appName: 'Shinera',
+  apiBaseUrl: 'https://localhost:7156/api',
+  oidcAuthority: 'https://localhost:7156',
+  oidc: {
+    clientId: 'shinera-web',
+    scope: 'openid profile email shinera_api offline_access',
+    redirectPath: '/auth/callback',
+    postLogoutRedirectPath: '/'
+  }
+} as const;
