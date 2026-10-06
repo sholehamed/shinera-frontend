@@ -1477,3 +1477,83 @@
     }
 
 }
+
+/* Shinera baseline shell */
+.shinera-header {
+  min-height: 70px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 20px;
+  padding: 10px 24px;
+}
+
+.header-primary,
+.header-context {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.workspace-copy,
+.user-copy {
+  display: grid;
+  gap: 2px;
+}
+
+.workspace-copy span,
+.user-copy span,
+.context-select span {
+  color: var(--mutedColor);
+  font-size: 11px;
+}
+
+.context-select {
+  display: grid;
+  gap: 3px;
+}
+
+.context-select select {
+  min-width: 130px;
+  height: 36px;
+  border: 1px solid var(--borderColor);
+  border-radius: 9px;
+  padding: 0 10px;
+  color: var(--headingColor);
+  background: var(--cardBgColor);
+}
+
+.shell-icon-button,
+.logout-button {
+  min-height: 38px;
+  border: 1px solid var(--borderColor);
+  border-radius: 10px;
+  color: var(--headingColor);
+  background: var(--surfaceColor);
+}
+
+.shell-icon-button {
+  width: 40px;
+  display: grid;
+  place-items: center;
+}
+
+.logout-button {
+  padding: 0 14px;
+}
+
+@media (max-width: 767px) {
+  .shinera-header {
+    align-items: flex-start;
+    flex-direction: column;
+  }
+
+  .header-context {
+    width: 100%;
+    flex-wrap: wrap;
+  }
+
+  .user-copy {
+    margin-inline-start: auto;
+  }
+}

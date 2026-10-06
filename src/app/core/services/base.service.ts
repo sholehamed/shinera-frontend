@@ -9,7 +9,7 @@ export class BaseService {
     constructor(private _baseUrl:string){}
 protected http:HttpClient=inject(HttpClient)
  protected get baseUrl(): string {
-    return environment.apiUrl + this._baseUrl;
+    return environment.apiBaseUrl + this._baseUrl;
   }
       pagedList(query:GridQuery){
         return this.http.post<PagedList>(this.baseUrl+'pagedList',query,{responseType:'json'})

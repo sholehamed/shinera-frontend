@@ -3,7 +3,12 @@ import { AppDashboardComponent } from './app-dashboard/app-dashboard.component';
 
 export default [
   {
-    path: 'dashboard',
-    component: AppDashboardComponent,
+    path: '',
+    pathMatch: 'full',
+    redirectTo: 'dashboard'
   },
+  {
+    path: 'dashboard',
+    component: AppDashboardComponent
+  }
 ] as Routes;

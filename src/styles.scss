@@ -258,10 +258,7 @@ a {
   font-family: var(--fontFamily);
 
   text-decoration: none;
-
-  outline: 0 !important;
-
-  transition: var(--transition);
+transition: var(--transition);
 
   &:hover {
     color: var(--primaryColor);
@@ -300,8 +297,9 @@ textarea::placeholder {
    Focus
 ========================================================= */
 
-:focus {
-  outline: 0 !important;
+:focus-visible {
+  outline: 3px solid color-mix(in srgb, var(--primaryColor) 65%, transparent);
+  outline-offset: 3px;
 }
 
 /* =========================================================

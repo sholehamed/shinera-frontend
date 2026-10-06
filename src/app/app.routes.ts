@@ -56,12 +56,6 @@ export const routes: Routes = [
     canActivate: [workspaceGuard],
     loadChildren: () => import('./features/app/app.routes')
   },
-  {
-    path: 'admin',
-    component: PanelLayoutComponent,
-    canActivate: [workspaceGuard],
-    loadChildren: () => import('./features/admin/admin.routes')
-  },
   { path: 'forbidden', component: AccessStatusComponent },
   { path: 'feature-unavailable', component: AccessStatusComponent },
   { path: '**', redirectTo: '' }

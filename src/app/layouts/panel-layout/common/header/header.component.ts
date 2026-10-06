@@ -1,80 +1,62 @@
-import { filter } from 'rxjs/operators';
-import { ToggleService } from './toggle.service';
-import { MatMenuModule } from '@angular/material/menu';
-import { MatButtonModule } from '@angular/material/button';
-import { NavbarComponent } from './navbar/navbar.component';
-import { NgClass, isPlatformBrowser } from '@angular/common';
-import { RouterLink, NavigationEnd, Router } from '@angular/router';
-import { Component, HostListener, inject, PLATFORM_ID, AfterViewInit } from '@angular/core';
-import { AvatarUploadComponent } from '../../../../shared/components/form-components';
-import { AuthService } from '../../../../core/services/auth.service';
-import { CustomizerSettingsService } from '../../../../core/util/customizer-settings.service';
+import { NgClass } from '@angular/common';
+import { Component, computed, inject } from '@angular/core';
 
+import { AuthService } from '../../../../core/services/auth.service';
+import { WorkspaceService } from '../../../../core/services/workspace.service';
+import { CustomizerSettingsService } from '../../../../core/util/customizer-settings.service';
+import { ToggleService } from './toggle.service';
 
 @Component({
-    selector: 'app-header',
-    imports: [RouterLink, MatButtonModule, MatMenuModule, NgClass, NavbarComponent, AvatarUploadComponent],
-    templateUrl: './header.component.html',
-    styleUrl: './header.component.scss',
-        standalone: true
-
+  selector: 'app-header',
+  standalone: true,
+  imports: [NgClass],
+  templateUrl: './header.component.html',
+  styleUrl: './header.component.scss'
 })
-export class HeaderComponent implements AfterViewInit {
+export class HeaderComponent {
+  private readonly toggleService = inject(ToggleService);
 
-    private toggleService = inject(ToggleService);
-    public themeService = inject(CustomizerSettingsService);
-    private platformId = inject(PLATFORM_ID);
-    private router = inject(Router);
-    protected auth = inject(AuthService);
+  readonly auth = inject(AuthService);
+  readonly workspace = inject(WorkspaceService);
+  readonly themeService = inject(CustomizerSettingsService);
 
-    isSidebarToggled = this.toggleService.isSidebarToggled;
-    isToggled = this.themeService.isNavbarToggled;
-
-    constructor() {
-        this.router.events.pipe(
-            filter(event => event instanceof NavigationEnd)
-        ).subscribe(() => {
-            if (this.isSidebarToggled()) {
-                this.toggleService.toggle();
-            }
-        });
+  readonly isSidebarToggled = this.toggleService.isSidebarToggled;
+  readonly fullName = computed(() => {
+    const user = this.auth.currentUser()?.user;
+    if (!user) {
+      return '';
     }
 
-    toggle() { this.toggleService.toggle(); }
-    settingsButtonToggle() { this.themeService.toggle(); }
-    toggleTheme() { this.themeService.toggleTheme(); }
+    return [user.firstName, user.lastName].filter(Boolean).join(' ') || user.userName;
+  });
 
-    isSticky = false;
-    @HostListener('window:scroll')
-    checkScroll() {
-        const scrollPosition = window.scrollY || document.documentElement.scrollTop || document.body.scrollTop || 0;
-        this.isSticky = scrollPosition >= 50;
+  toggle(): void {
+    this.toggleService.toggle();
+  }
+
+  toggleTheme(): void {
+    this.themeService.toggleTheme();
+  }
+
+  changeTenant(tenantId: string): void {
+    if (!tenantId || tenantId === this.workspace.selection.tenantId()) {
+      return;
     }
 
-    isFullscreen = false;
-    ngAfterViewInit() {
-        if (isPlatformBrowser(this.platformId)) {
-            ['fullscreenchange', 'webkitfullscreenchange', 'mozfullscreenchange', 'MSFullscreenChange']
-                .forEach(e => document.addEventListener(e, this.onFullscreenChange.bind(this)));
-        }
+    this.workspace.selectTenant(tenantId);
+    window.location.reload();
+  }
+
+  changeBranch(branchId: string): void {
+    if (!branchId || branchId === this.workspace.selection.branchId()) {
+      return;
     }
-    toggleFullscreen() {
-        this.isFullscreen ? this.closeFullscreen() : this.openFullscreen();
-    }
-    openFullscreen() {
-        if (!isPlatformBrowser(this.platformId)) return;
-        const el = document.documentElement as any;
-        (el.requestFullscreen ?? el.mozRequestFullScreen ?? el.webkitRequestFullscreen ?? el.msRequestFullscreen)?.call(el);
-    }
-    closeFullscreen() {
-        if (!isPlatformBrowser(this.platformId)) return;
-        const doc = document as any;
-        (doc.exitFullscreen ?? doc.mozCancelFullScreen ?? doc.webkitExitFullscreen ?? doc.msExitFullscreen)?.call(doc);
-    }
-    onFullscreenChange() {
-        if (isPlatformBrowser(this.platformId)) {
-            const doc = document as any;
-            this.isFullscreen = !!(doc.fullscreenElement ?? doc.webkitFullscreenElement ?? doc.mozFullScreenElement ?? doc.msFullscreenElement);
-        }
-    }
+
+    this.workspace.selectBranch(branchId);
+    window.location.reload();
+  }
+
+  logout(): void {
+    this.auth.logout();
+  }
 }

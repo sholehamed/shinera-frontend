@@ -1,62 +1,36 @@
-<div class="row">
-    <div class="col-xxl-12">
-
-       <app-dashboard-overview/>
-
+<main class="dashboard-baseline" dir="rtl">
+  <section class="dashboard-heading">
+    <div>
+      <span class="eyebrow">داشبورد</span>
+      <h1>{{ workspace.activeTenant()?.name ?? 'شاینرا' }}</h1>
+      <p>
+        زمینه فعال:
+        {{ workspace.activeBranch()?.name ?? 'بدون شعبه انتخاب‌شده' }}
+      </p>
     </div>
-    <div class="col-xxl-6 ">
 
-        <app-welcome  />
-
+    <div class="plan-chip">
+      {{ features.entitlements()?.subscription?.planKey ?? 'اشتراک در حال بررسی' }}
     </div>
-    <div class="col-xxl-6">
-        <div class="row">
-            <div class="col-sm-6">
+  </section>
 
-                <app-today-capacity />
+  <section class="baseline-grid" aria-label="وضعیت راه‌اندازی">
+    <article>
+      <i class="material-symbols-outlined" aria-hidden="true">event_available</i>
+      <h2>نوبت‌ها</h2>
+      <p>ماژول نوبت‌ها پس از اتصال flow کامل به API واقعی در این داشبورد نمایش داده می‌شود.</p>
+    </article>
 
-            </div>
-            <div class="col-sm-6">
-<app-attention-summary/>
-                <!-- <app-new-customers /> -->
-                
-            </div>
-        </div>
-    </div>
-    <div class="col-lg-8">
-        <app-featured-services />
+    <article>
+      <i class="material-symbols-outlined" aria-hidden="true">spa</i>
+      <h2>خدمات</h2>
+      <p>اطلاعات نمونه از baseline حذف شده و فقط داده واقعی محصول وارد داشبورد خواهد شد.</p>
+    </article>
 
-        <!-- <app-top-selling-products /> -->
-
-    </div>
-    <div class="col-lg-4">
-
-        <!-- Customers From Channels -->
-        <!-- <app-customers-from-channels /> -->
-         <app-booking-sources/>
-        
-    </div>
-    
-    <div class="col-xxl-12">
-
-        <!-- Recent Appointments -->
-        <app-recent-appointments />
-        
-    </div>
-    <div class="col-lg-8">
-
-        <!-- Revenue By Services -->
-        <app-revenue-by-services />
-
-    </div>
-    <div class="col-lg-4">
-
-        <!-- Top Stylist Performance -->
-        <!-- <app-top-stylist-performance /> -->
-         <app-solo-performance/>
-        
-    </div>
-</div>
-
-<!-- Top Customers -->
-<app-top-customers />
+    <article>
+      <i class="material-symbols-outlined" aria-hidden="true">groups</i>
+      <h2>تیم و مشتریان</h2>
+      <p>این بخش تا تکمیل storyهای مربوطه حالت خالی و صریح دارد و داده ساختگی نشان نمی‌دهد.</p>
+    </article>
+  </section>
+</main>
