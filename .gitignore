@@ -147,3 +147,5 @@ vite.config.ts.timestamp-*
 
 # Turbo Repo
 .turbo
+/.angular/cache/22.2.0/ShineraApp
+/.vs
