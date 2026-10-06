@@ -38,3 +38,6 @@ jobs:
 
       - name: Baseline E2E
         run: npm run e2e
+
+      - name: Dependency security audit
+        run: npm audit --audit-level=high
