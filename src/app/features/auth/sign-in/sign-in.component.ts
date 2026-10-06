@@ -1,22 +1,20 @@
-import { Component, ViewChild } from '@angular/core';
-import { RouterLink } from '@angular/router';
-import { ReactiveFormsModule, FormControl, FormGroup, Validators } from '@angular/forms';
+import { Component, inject, signal, ViewChild } from '@angular/core';
+import { ActivatedRoute, RouterLink } from '@angular/router';
+import { FormControl, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
+import { finalize } from 'rxjs';
 
-import { MatInputModule } from '@angular/material/input';
 import { MatButtonModule } from '@angular/material/button';
 import { MatFormFieldModule } from '@angular/material/form-field';
-import { environment } from '../../../../environments/environment';
-import { CaptchaComponent } from '../../../shared/components/share-captcha/share-captcha.component';
-import { CustomInputComponent } from '../../../shared/components/input-string.component';
+import { MatInputModule } from '@angular/material/input';
+
 import { AuthService } from '../../../core/services/auth.service';
 import { CustomizerSettingsService } from '../../../core/util/customizer-settings.service';
-
-
+import { CaptchaComponent } from '../../../shared/components/share-captcha/share-captcha.component';
+import { CustomInputComponent } from '../../../shared/components/input-string.component';
 
 @Component({
   selector: 'app-sign-in',
   standalone: true,
-  providers: [AuthService],
   imports: [
     ReactiveFormsModule,
     RouterLink,
@@ -24,72 +22,88 @@ import { CustomizerSettingsService } from '../../../core/util/customizer-setting
     MatFormFieldModule,
     MatInputModule,
     CustomInputComponent,
-    CaptchaComponent,
-    
-],
+    CaptchaComponent
+  ],
   templateUrl: './sign-in.component.html',
-  styleUrl: './sign-in.component.scss',
+  styleUrl: './sign-in.component.scss'
 })
 export class SignInComponent {
   @ViewChild(CaptchaComponent) captchaComponent?: CaptchaComponent;
 
-  AppName = environment.AppName;
-  ApiUrl = environment.apiUrl;
+  private readonly auth = inject(AuthService);
+  private readonly route = inject(ActivatedRoute);
+
+  readonly themeService = inject(CustomizerSettingsService);
+  readonly loading = signal(false);
+  readonly errorMessage = signal('');
 
   submitted = false;
   captchaToken = '';
 
-  loginForm = new FormGroup({
+  readonly loginForm = new FormGroup({
     username: new FormControl('', {
       nonNullable: true,
-      validators: [Validators.required],
+      validators: [Validators.required]
     }),
     password: new FormControl('', {
       nonNullable: true,
-      validators: [Validators.required],
+      validators: [Validators.required]
     }),
     captchaCode: new FormControl('', {
       nonNullable: true,
-      validators: [Validators.required],
-    }),
+      validators: [Validators.required]
+    })
   });
-
-  constructor(
-    public themeService: CustomizerSettingsService,
-    private authService: AuthService,
-  ) {}
 
   onCaptchaTokenChange(token: string): void {
     this.captchaToken = token;
   }
 
-  GetToken(): void {
+  submit(): void {
+    if (this.loading()) {
+      return;
+    }
+
     this.submitted = true;
+    this.errorMessage.set('');
     this.loginForm.markAllAsTouched();
 
     if (this.loginForm.invalid || !this.captchaToken) {
       return;
     }
 
-    const username = this.loginForm.controls.username.value;
-    const password = this.loginForm.controls.password.value;
-    const captchaCode = this.loginForm.controls.captchaCode.value;
+    const returnUrl = this.route.snapshot.queryParamMap.get('returnUrl');
 
-    this.authService.login(
-      username,
-      password,
-      captchaCode,
-      this.captchaToken,
-    ).subscribe({
-      next: (response) => {
-        this.authService.saveTokens(response)
-      },
-      error: (d) => {
-        
-        this.loginForm.controls.captchaCode.setValue('');
-        this.captchaToken = '';
-        this.captchaComponent?.reload();
-      },
-    });
+    this.loading.set(true);
+    this.auth
+      .login({
+        identifier: this.loginForm.controls.username.value,
+        password: this.loginForm.controls.password.value,
+        captchaCode: this.loginForm.controls.captchaCode.value,
+        captchaToken: this.captchaToken,
+        returnUrl
+      })
+      .pipe(finalize(() => this.loading.set(false)))
+      .subscribe({
+        next: response => {
+          if (response.returnUrl) {
+            this.auth.resumeInteractiveAuthorization(response.returnUrl);
+            return;
+          }
+
+          void this.auth.beginAuthorization('/app');
+        },
+        error: error => {
+          this.loginForm.controls.captchaCode.setValue('');
+          this.captchaToken = '';
+          this.captchaComponent?.reload();
+
+          this.errorMessage.set(
+            error?.error?.message === 'Captcha is invalid or expired.'
+              ? 'کد امنیتی نامعتبر یا منقضی شده است.'
+              : 'نام کاربری یا رمز عبور صحیح نیست.'
+          );
+        }
+      });
   }
 }

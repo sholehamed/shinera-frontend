@@ -622,7 +622,7 @@ export class CaptchaComponent
   private readonly destroyRef = inject(DestroyRef);
 
   private readonly apiBaseUrl =
-    environment.apiUrl.replace(/\/+$/, '');
+    environment.apiBaseUrl.replace(/\/+$/, '');
 
 
   private onChange: (value: string) => void = () => {};
@@ -654,7 +654,7 @@ export class CaptchaComponent
 
     this.http
       .get<CaptchaResponse>(
-        `${this.apiBaseUrl}/system/Auth/captcha/new`
+        `${this.apiBaseUrl}/System/Auth/captcha/new`
       )
       .pipe(
         finalize(() => {
