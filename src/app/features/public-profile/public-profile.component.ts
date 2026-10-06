@@ -1,5 +1,4 @@
 import { Component } from "@angular/core";
-import { MatButtonModule } from "@angular/material/button";
 import { ProfileHeroComponent } from "./components/profile-hero/profile-hero.component";
 import { ServicesComponent } from "./components/services/services.component";
 import { PublicGalleryItem, GalleryComponent } from "./components/gallery/gallery.component";
@@ -7,20 +6,18 @@ import { PublicProfileAbout, AboutComponent } from "./components/about/about.com
 import { PublicProfileWorkingHours, WorkingHoursComponent } from "./components/working-hours/working-hours.component";
 import { PublicProfileContact, ContactComponent } from "./components/contact/contact.component";
 import { PublicBookingCta, BookingCtaComponent } from "./components/booking-cta/booking-cta.component";
-import { CpNavbarComponent } from "./components/cp-navbar/cp-navbar.component";
 
 @Component({
     selector: 'app-public-profile',
     standalone: true,
     imports: [
-    MatButtonModule, ProfileHeroComponent,
+    ProfileHeroComponent,
     ServicesComponent,
     GalleryComponent,
     AboutComponent,
     WorkingHoursComponent,
     ContactComponent,
-    BookingCtaComponent,
-    CpNavbarComponent
+    BookingCtaComponent
 ],
     templateUrl: './public-profile.component.html',
     styleUrl: './public-profile.component.scss'

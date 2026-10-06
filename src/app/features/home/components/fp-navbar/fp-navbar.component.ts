@@ -1,12 +1,12 @@
 import { NgClass } from '@angular/common';
 import { Component, HostListener } from '@angular/core';
 import { MatButtonModule } from '@angular/material/button';
-import { RouterLink, RouterLinkActive } from '@angular/router';
+import { RouterLink } from '@angular/router';
 import { CustomizerSettingsService } from '../../../../core/util/customizer-settings.service';
 
 @Component({
     selector: 'app-fp-navbar',
-    imports: [RouterLink, RouterLinkActive, NgClass, MatButtonModule],
+    imports: [RouterLink, NgClass, MatButtonModule],
     templateUrl: './fp-navbar.component.html',
     styleUrl: './fp-navbar.component.scss'
 })
