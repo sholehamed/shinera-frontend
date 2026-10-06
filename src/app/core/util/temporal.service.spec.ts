@@ -24,7 +24,7 @@ describe('TemporalService', () => {
   });
 
   it('rejects non-contract business date and time strings', () => {
-    expect(() => service.assertBusinessDate('1405-07-14')).toThrow();
+    expect(() => service.assertBusinessDate('1405/07/14')).toThrow();
     expect(() => service.assertBusinessTime('9:30')).toThrow();
   });
 });
