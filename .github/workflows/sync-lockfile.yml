@@ -6,6 +6,7 @@ on:
       - audit/frontend-baseline-alignment
     paths:
       - package.json
+      - .github/workflows/sync-lockfile.yml
 
 permissions:
   contents: write
@@ -23,10 +24,11 @@ jobs:
         uses: actions/setup-node@v4
         with:
           node-version: "22.22.3"
-          cache: npm
 
       - name: Regenerate package lock
-        run: npm install --package-lock-only --ignore-scripts
+        run: |
+          rm -f package-lock.json
+          npm install --package-lock-only --ignore-scripts
 
       - name: Commit package lock
         run: |
